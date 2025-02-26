@@ -26,7 +26,7 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
         {products.map((product) => (
           <motion.div
             key={product.id}
-            className="group bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
+            className="group bg-white/20 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -42,6 +42,7 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
                   whileHover={{ scale: 1.1 }}
                   className="bg-white p-2 rounded-full shadow-md hover:bg-red-400 relative"
                   whileTap={{ scale: 0.9 }}
+                  aria-label="Add to favorites"
                 >
                   <FiHeart className="text-gray-600 w-5 hover:text-white h-5 peer" />
                   <div className="absolute -left-20 -bottom-6 hidden peer-hover:block">
@@ -53,19 +54,18 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
                 </motion.button>
               </div>
             </div>
-
             <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-1">
+              <h3 className="text-xl font-bold text-gray-50 mb-2 line-clamp-1">
                 {product.title}
               </h3>
 
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+              <p className="text-gray-200 text-sm mb-4 line-clamp-2">
                 {product.description.slice(0, 50)}...
               </p>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500">قیمت محصول</p>
+                  <p className="text-xs text-gray-300">قیمت محصول</p>
                   <span className="text-xl font-bold text-yellow-600">
                     {product.price} تومان
                   </span>
@@ -73,6 +73,7 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
 
                 <motion.button
                   whileTap={{ scale: 0.95 }}
+                  aria-label="Add to cart"
                   className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
                 >
                   <FiShoppingCart className="w-5 h-5" />
@@ -82,12 +83,6 @@ const ProductList: FC<ProductListProps> = ({ products }) => {
                 </motion.button>
               </div>
             </div>
-
-            {/* <div className="absolute top-3 left-3">
-              <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                فروش ویژه
-              </span>
-            </div> */}
           </motion.div>
         ))}
       </div>

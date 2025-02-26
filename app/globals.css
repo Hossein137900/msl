@@ -17,6 +17,9 @@ body {
   background: var(--background);
   font-family: sahel, sans-serif;
 }
+
+/* card-hover-border.tsx */
+
 .card-wrapper {
   position: relative;
   background: transparent;
@@ -82,3 +85,5 @@ body {
     filter: drop-shadow(0 0 15px #ffd700) brightness(1.2);
   }
 }
+
+/* card-hover-border.tsx */
