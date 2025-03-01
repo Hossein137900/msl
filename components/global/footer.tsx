@@ -7,7 +7,7 @@ import { contactInfo, quickLinks, socialLinks } from "../../lib/footerData";
 const Footer = () => {
   return (
     <footer
-      className="bg-gradient-to-l from-[#16222A] to-[#3A6073] text-white"
+      className="bg-gradient-to-l border-t border-gray-500 from-[#16222A] to-[#3A6073] text-white"
       dir="rtl"
     >
       {/* Main Footer Content */}

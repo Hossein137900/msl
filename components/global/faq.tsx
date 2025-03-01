@@ -29,7 +29,7 @@ const FAQSection = () => {
                 onClick={() =>
                   setActiveIndex(activeIndex === index ? null : index)
                 }
-                className="w-full p-4 flex items-center justify-between text-right hover:bg-yellow-400 transition-colors duration-300"
+                className="w-full p-4 flex items-center justify-between text-right hover:bg-gray-100/10 transition-colors duration-300"
               >
                 <h3 className="text-base md:text-xl font-semibold">
                   {faq.question}

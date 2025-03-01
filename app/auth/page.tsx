@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-hot-toast";
+
 import {
   BiUser,
   BiPhone,
@@ -9,6 +11,15 @@ import {
   BiLogIn,
   BiUserPlus,
 } from "react-icons/bi";
+
+type LoginResponse = {
+  token: string;
+  user: {
+    id: string;
+    name: string;
+    phone: string;
+  };
+};
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -43,11 +54,90 @@ const AuthPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (phone: string, password: string) => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ phone, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("خطا در ورود به سیستم");
+    }
+
+    const data: LoginResponse = await response.json();
+    localStorage.setItem("token", data.token);
+    return data;
+  };
+
+  const handleSignup = async (
+    name: string,
+    phone: string,
+    password: string
+  ) => {
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, phone, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error("خطا در ثبت نام");
+    }
+
+    const data: LoginResponse = await response.json();
+    localStorage.setItem("token", data.token);
+    return data;
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Handle authentication logic here
+      try {
+        if (isLogin) {
+          const userData = await handleLogin(formData.phone, formData.password);
+          toast.success(`خوش آمدید ${userData.user.name}`, {
+            position: "top-center",
+            duration: 3000,
+            style: {
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          window.location.href = "/dashboard";
+        } else {
+          const userData = await handleSignup(
+            formData.name,
+            formData.phone,
+            formData.password
+          );
+          toast.success(`ثبت نام ${userData.user.name} موفقیت انجام شد`, {
+            position: "top-center",
+            duration: 3000,
+            style: {
+              background: "#333",
+              color: "#fff",
+            },
+          });
+
+          window.location.href = "/dashboard";
+        }
+      } catch (error) {
+        toast.error("خطا در ورود به سیستم", {
+          position: "top-center",
+          duration: 3000,
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        });
+
+        console.log("Authentication error:", error);
+      }
     }
   };
 
