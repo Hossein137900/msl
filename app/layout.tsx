@@ -3,6 +3,7 @@ import "./globals.css";
 import { sahel } from "@/next-persian-fonts/sahel";
 import Navbar from "@/components/global/navbar";
 import Footer from "@/components/global/footer";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "MSL - Next.js",
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={` ${sahel.className} antialiased relative`}>
         <Navbar />
+        <Toaster  />
         {children}
         <Footer />
       </body>

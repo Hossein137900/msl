@@ -65,14 +65,14 @@ const ContactPage = () => {
                     <input
                       type="text"
                       placeholder="نام و نام خانوادگی"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg text-black border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
                     />
                   </motion.div>
                   <motion.div>
                     <input
                       type="email"
                       placeholder="ایمیل"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
                     />
                   </motion.div>
                 </div>
@@ -80,20 +80,20 @@ const ContactPage = () => {
                   <input
                     type="text"
                     placeholder="موضوع"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
                   />
                 </motion.div>
                 <motion.div>
                   <textarea
                     rows={6}
                     placeholder="پیام شما"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none"
                   />
                 </motion.div>
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 0.99 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-yellow-500 text-white px-8 py-3 rounded-lg hover:bg-yellow-600 transition-colors w-full md:w-full"
+                  className="bg-yellow-500 text-white px-8 py-3 rounded-lg hover:bg-yellow-600 transition-all duration-300 w-full md:w-full"
                 >
                   ارسال پیام
                 </motion.button>

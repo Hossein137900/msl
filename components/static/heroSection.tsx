@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 
 const HeroSection = () => {
   return (
-    <div className=" h-screen w-full">
+    <div className=" h-screen w-full ">
       {/* Video Background */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover brightness-75 blur-sm"
+        className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
       >
         <source src="/assets/video/hero.mp4" type="video/mp4" />
       </video>
@@ -83,7 +83,7 @@ const HeroSection = () => {
       </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-black/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-black z-10" />
     </div>
   );
 };
