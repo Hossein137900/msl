@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { motion, useInView, useAnimation } from "framer-motion";
+import { doranthin } from "@/next-persian-fonts/doran";
 
 const ScrollOpacity = () => {
   const controls = useAnimation();
@@ -44,13 +44,15 @@ const ScrollOpacity = () => {
         className="min-h-screen w-full relative flex items-center justify-center"
       >
         <div className="w-full h-[1000px] relative">
-          <Image
-            src="/assets/images/fade3.jpg"
-            alt="Luxury Chandelier"
-            fill
-            className="object-cover"
-            priority
-          />
+        <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
+      >
+        <source src="/assets/video/video.mp4" type="video/mp4" />
+      </video>
           <div className="absolute inset-0  bg-gradient-to-b from-black to-transparent" />
           {/* Light Glow Effect */}
           <motion.div
@@ -83,19 +85,19 @@ const ScrollOpacity = () => {
             }}
           />
 
-          <div className="absolute inset-0 flex items-center mt-56 mr-10 justify-end">
+          <div className="absolute inset-0 flex items-center  ml-10 justify-start">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={controls}
               transition={{ delay: 0.5 }}
-              className="text-center space-y-8 text-white px-4 max-w-4xl"
+              className="text-left space-y-8 text-white px-4 max-w-4xl"
             >
-              <h2 className="text-5xl md:text-7xl font-bold tracking-tight">
-                روشنایی که با شما به اوج می‌رسد
+              <h2 className={`text-5xl md:text-7xl  ${doranthin.className} tracking-tight `}>
+              Discover The World Of Light With Us
               </h2>
-              <p className="text-xl md:text-2xl text-gray-200">
+              {/* <p className="text-xl md:text-2xl text-gray-200">
                 طراحی مدرن، کیفیت برتر
-              </p>
+              </p> */}
             </motion.div>
           </div>
         </div>
