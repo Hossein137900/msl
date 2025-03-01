@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import { doranthin } from "@/next-persian-fonts/doran";
 
 const HeroSection = () => {
   return (
@@ -10,52 +11,38 @@ const HeroSection = () => {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
+        className="absolute top-0 left-0 w-full h-full object-cover"
       >
-        <source src="/assets/video/hero.mp4" type="video/mp4" />
+        <source src="/assets/video/vid.mp4" type="video/mp4" />
       </video>
 
       {/* Content Overlay */}
-      <div className="relative h-full flex flex-col items-center justify-center text-center px-4 z-50">
+      <div className="relative h-full flex w-full flex-col items-end mr-24 md:justify-center justify-end  text-center px-4 z-50">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto space-y-8"
+          className=""
         >
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl md:text-7xl mt-6 font-bold text-white"
+            className={`text-2xl mb-24 md:text-7xl text-right text-white ${doranthin.className}`}
           >
-            روشنایی خانه رویایی شما
-            <span className="block text-yellow-400 mt-2">
-              با طراحی های مدرن و خلاقانه
-            </span>
+            . نوری که آرامش می بخشد
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-2xl text-gray-200"
-          >
-            مجموعه‌ای از لوسترها و چراغ‌های مدرن و کلاسیک
-            <br />
-            برای فضای منحصر به فرد شما
-          </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="lg:flex flex-col hidden md:flex-row gap-4 md:justify-end md:mr-8 md:items-end"
           >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-yellow-400 text-gray-900 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors duration-300"
+              className="px-8 py-4  text-gray-100 rounded-full font-bold text-lg hover:bg-yellow-500 transition-colors duration-300"
             >
               مشاهده محصولات
             </motion.button>
@@ -70,7 +57,7 @@ const HeroSection = () => {
         </motion.div>
 
         {/* Scroll Indicator */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, delay: 1 }}
@@ -79,7 +66,7 @@ const HeroSection = () => {
           <div className="w-8 h-12 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white rounded-full mt-2" />
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* Gradient Overlay */}
