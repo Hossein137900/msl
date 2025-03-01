@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { sahel } from "@/next-persian-fonts/sahel";
+import { doranlight } from "@/next-persian-fonts/doran";
 import Navbar from "@/components/global/navbar";
 import Footer from "@/components/global/footer";
 import { Toaster } from "react-hot-toast";
@@ -17,9 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${sahel.className} antialiased relative`}>
+      <body className={` ${doranlight.className} antialiased relative`}>
         <Navbar />
-        <Toaster  />
+        <Toaster />
         {children}
         <Footer />
       </body>
