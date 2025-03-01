@@ -1,15 +1,18 @@
  "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-import { prisma } from '@/lib/prisma';
+import { getBlogs } from "@/lib/blogActions";
+
 interface BlogPost {
   id: string;
   title: string;
   excerpt: string;
   coverImage: string;
-  author: string;
+  user: {
+    name: string;
+  }
   date: Date;
   readTime: number;
   tags: string[];
@@ -41,18 +44,32 @@ interface BlogPost {
 // ];
 
 export default function BlogGrid() {
-    const blogs =  prisma.blog.findMany({
-
-    });
-    const sampleBlogs = blogs;
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredBlogs = sampleBlogs.filter((blog) => {
+  useEffect(() => {
+    async function fetchBlogs() {
+      const fetchedBlogs = await getBlogs();
+      const mappedBlogs = fetchedBlogs.map(blog => ({
+        id: blog.id,
+        title: blog.title,
+        excerpt: blog.description,
+        coverImage: blog.image || '/assets/images/fade3.jpg',
+        author: blog?.user?.name || 'Admin',
+        date: blog.createdAt,
+        readTime: blog.readTime,
+        tags: blog.tags
+      }));
+      setBlogs(mappedBlogs);
+    }
+    fetchBlogs();
+  }, []);
+  const filteredBlogs = blogs.filter((blog) => {
     return (
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+  
 
   return (
     <div
@@ -94,11 +111,11 @@ export default function BlogGrid() {
       {/* Blog Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredBlogs.map((blog) => (
-          <Link target="_blank" href={`/blog/${blog.id}`} key={blog.id}>
+          <Link target="_blank" href={`/blogs/${blog.id}`} key={blog.id}>
             <article className="bg-white/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
-                <Image
-                  src={blog.coverImage}
+              <Image
+                  src="/assets/images/fade3.jpg"
                   alt={blog.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -133,9 +150,9 @@ export default function BlogGrid() {
                 <div className="flex items-center justify-between text-sm text-gray-200">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                      {blog.author[0]}
+                      {blog.user.name}
                     </div>
-                    <span>{blog.author}</span>
+                    <span>{blog.user.name}</span>
                   </div>
                   <span>{blog.readTime} دقیقه مطالعه</span>
                 </div>
