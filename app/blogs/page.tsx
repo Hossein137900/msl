@@ -1,9 +1,9 @@
-"use client";
+ "use client";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-
+import { prisma } from '@/lib/prisma';
 interface BlogPost {
   id: string;
   title: string;
@@ -15,32 +15,36 @@ interface BlogPost {
   tags: string[];
 }
 
-const sampleBlogs: BlogPost[] = [
-  {
-    id: "1",
-    title: "جدیدترین مدل‌های لوستر مدرن ۱۴۰۳",
-    excerpt:
-      "معرفی برترین لوسترهای مدرن با طراحی خاص و نورپردازی منحصر به فرد برای دکوراسیون داخلی منزل",
-    coverImage: "/assets/images/fade3.jpg",
-    author: "سارا احمدی",
-    date: new Date(),
-    readTime: 6,
-    tags: ["لوستر", "دکوراسیون", "روشنایی مدرن"],
-  },
-  {
-    id: "2",
-    title: "راهنمای خرید چراغ‌های دیواری",
-    excerpt:
-      "بررسی کامل نکات مهم در انتخاب و خرید انواع چراغ‌های دیواری برای فضاهای مختلف منزل و محل کار",
-    coverImage: "/assets/images/fade3.jpg",
-    author: "رضا کریمی",
-    date: new Date(),
-    readTime: 5,
-    tags: ["چراغ دیواری", "نورپردازی", "دکوراسیون داخلی"],
-  },
-];
+// const sampleBlogs: BlogPost[] = [
+//   {
+//     id: "1",
+//     title: "جدیدترین مدل‌های لوستر مدرن ۱۴۰۳",
+//     excerpt:
+//       "معرفی برترین لوسترهای مدرن با طراحی خاص و نورپردازی منحصر به فرد برای دکوراسیون داخلی منزل",
+//     coverImage: "/assets/images/fade3.jpg",
+//     author: "سارا احمدی",
+//     date: new Date(),
+//     readTime: 6,
+//     tags: ["لوستر", "دکوراسیون", "روشنایی مدرن"],
+//   },
+//   {
+//     id: "2",
+//     title: "راهنمای خرید چراغ‌های دیواری",
+//     excerpt:
+//       "بررسی کامل نکات مهم در انتخاب و خرید انواع چراغ‌های دیواری برای فضاهای مختلف منزل و محل کار",
+//     coverImage: "/assets/images/fade3.jpg",
+//     author: "رضا کریمی",
+//     date: new Date(),
+//     readTime: 5,
+//     tags: ["چراغ دیواری", "نورپردازی", "دکوراسیون داخلی"],
+//   },
+// ];
 
 export default function BlogGrid() {
+    const blogs =  prisma.blog.findMany({
+
+    });
+    const sampleBlogs = blogs;
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredBlogs = sampleBlogs.filter((blog) => {
