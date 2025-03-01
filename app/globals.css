@@ -15,7 +15,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: sahel, sans-serif;
+  font-family: doran, sans-serif;
 }
 
 /* card-hover-border.tsx */
