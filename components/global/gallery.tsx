@@ -63,10 +63,10 @@ const galleryItems = [
 
 const GalleryGrid = () => {
   return (
-    <div className="mt-36" dir="rtl">
-        <h2 className="text-center text-4xl text-yellow-400 font-bold mb-12">
-            گالری  ساخته شده توسط ما
-        </h2>
+    <div className="mt-36 py-4" dir="rtl">
+      <h2 className="text-center text-4xl text-yellow-400 font-bold mb-12">
+        گالری ساخته شده توسط ما
+      </h2>
       <div className="flex flex-col lg:grid lg:grid-cols-4 bg-transparent  gap-4 lg:auto-rows-[200px]">
         {galleryItems.map((item) => (
           <div

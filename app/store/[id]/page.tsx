@@ -2,9 +2,10 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiAlertCircle } from "react-icons/fi";
+import { FiAlertCircle, FiMinus, FiPlus, FiShoppingCart, FiTrash2 } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
 interface ProductProps {
   id: string;
@@ -13,7 +14,9 @@ interface ProductProps {
   price: number;
   images: string[];
 }
-
+interface CartItem extends ProductProps {
+  quantity: number;
+}
 const fakeProducts: ProductProps[] = [
   {
     id: "1",
@@ -52,11 +55,83 @@ const fakeProducts: ProductProps[] = [
     ],
   },
 ];
+const initializeDB = () => {
+  const request = indexedDB.open("CartDB", 1);
+
+  request.onerror = () => console.error("DB Failed to open");
+
+  request.onupgradeneeded = (event) => {
+    const db = (event.target as IDBOpenDBRequest).result;
+    if (!db.objectStoreNames.contains('cart')) {
+      db.createObjectStore('cart', { keyPath: 'id' });
+    }
+  };
+};
 
 export default function ProductDetailPage() {
   const params = useParams();
   const product = fakeProducts.find((p) => p.id === params.id);
   const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
+  const [quantity, setQuantity] = useState(0);
+  useEffect(() => {
+    if (!product) return;
+    
+    const request = indexedDB.open("CartDB", 1);
+  
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains('cart')) {
+        db.createObjectStore('cart', { keyPath: 'id' });
+      }
+    };
+  
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      try {
+        const transaction = db.transaction(['cart'], 'readonly');
+        const store = transaction.objectStore('cart');
+        const getRequest = store.get(product.id);
+        
+        getRequest.onsuccess = () => {
+          if (getRequest.result) {
+            setQuantity(getRequest.result.quantity);
+          }
+        };
+      } catch (error) {
+        console.log('Store access error:', error);
+      }
+    };
+  }, [product?.id]);
+  
+  
+  const handleQuantityChange = async (action: 'increase' | 'decrease' | 'remove') => {
+    const request = indexedDB.open("CartDB", 1);
+
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      const transaction = db.transaction(['cart'], 'readwrite');
+      const store = transaction.objectStore('cart');
+
+      if (!product) return;
+
+      if (action === 'remove' || (action === 'decrease' && quantity === 1)) {
+        store.delete(product.id);
+        setQuantity(0);
+        toast.success('محصول از سبد خرید حذف شد');
+        return;
+      }
+
+      const newQuantity = action === 'increase' ? quantity + 1 : quantity - 1;
+      setQuantity(newQuantity);
+
+      store.put({
+        ...product,
+        quantity: newQuantity
+      });
+
+      toast.success(action === 'increase' ? 'محصول به سبد خرید اضافه شد' : 'تعداد محصول کاهش یافت');
+    };
+  };
 
   if (!product) {
     return (
@@ -86,11 +161,10 @@ export default function ProductDetailPage() {
             {product.images.map((img, index) => (
               <div
                 key={index}
-                className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${
-                  index === currentImgIndex
+                className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${index === currentImgIndex
                     ? "border-yellow-500"
                     : "border-transparent"
-                }`}
+                  }`}
                 onClick={() => setCurrentImgIndex(index)}
               >
                 <Image
@@ -111,24 +185,60 @@ export default function ProductDetailPage() {
               قیمت: {product.price} تومان
             </p>
           </div>
+          
+
           <div className="flex flex-col gap-4">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
-            >
-              افزودن به سبد خرید
-            </motion.button>
+            {quantity === 0 ? (
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleQuantityChange('increase')}
+                className="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
+              >
+                افزودن به سبد خرید
+              </motion.button>
+            ) : (
+              <div className="flex items-center justify-between bg-yellow-500 rounded-xl p-2">
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleQuantityChange('increase')}
+                  className="p-2 hover:bg-yellow-600 rounded-lg"
+                >
+                  <FiPlus className="text-white w-6 h-6" />
+                </motion.button>
+
+                <span className="text-white font-bold text-xl">{quantity}</span>
+
+                {quantity === 1 ? (
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleQuantityChange('remove')}
+                    className="p-2 hover:bg-yellow-600 rounded-lg"
+                  >
+                    <FiTrash2 className="text-white w-6 h-6" />
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleQuantityChange('decrease')}
+                    className="p-2 hover:bg-yellow-600 rounded-lg"
+                  >
+                    <FiMinus className="text-white w-6 h-6" />
+                  </motion.button>
+                )}
+              </div>
+            )}
+
             <Link href="/cart">
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center justify-center border border-yellow-500 hover:bg-yellow-500 hover:text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
+                className="w-full flex items-center justify-center border border-yellow-500 hover:bg-yellow-500 hover:text-white text-yellow-500 px-6 py-3 rounded-xl font-medium transition-colors duration-200"
               >
                 مشاهده سبد خرید
               </motion.button>
             </Link>
           </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+      );
 }

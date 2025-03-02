@@ -10,10 +10,10 @@ export const socialLinks = [
 
 export const quickLinks = [
   { name: "صفحه اصلی", href: "/" },
-  { name: "محصولات", href: "/products" },
+  { name: "محصولات", href: "/store" },
   { name: "درباره ما", href: "/about" },
   { name: "تماس با ما", href: "/contact" },
-  { name: "بلاگ", href: "/blog" },
+  { name: "بلاگ", href: "/blogs" },
 ];
 
 export const contactInfo = [

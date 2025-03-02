@@ -24,7 +24,6 @@ export default function BlogGrid() {
   useEffect(() => {
     async function fetchBlogs() {
       const fetchedBlogs = await getBlogs();
-      console.log(fetchedBlogs);
       const mappedBlogs = fetchedBlogs.map((blog) => ({
         id: blog.id,
         title: blog.title,

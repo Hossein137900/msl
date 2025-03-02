@@ -13,14 +13,14 @@ import {
   BiUserPlus,
 } from "react-icons/bi";
 
-type LoginResponse = {
-  token: string;
-  user: {
-    id: string;
-    name: string;
-    phone: string;
-  };
-};
+// type LoginResponse = {
+//   token: string;
+//   user: {
+//     id: string;
+//     name: string;
+//     phone: string;
+//   };
+// };
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,6 +62,7 @@ const AuthPage = () => {
         localStorage.setItem("token", data.token);
         return data;
       } catch (error) {
+        console.log(error);
         throw new Error("Login failed");
       }
   };

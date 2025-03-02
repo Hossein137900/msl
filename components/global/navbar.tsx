@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BsCart3 } from "react-icons/bs";
+
 import {
   BiSearch,
   // BiSun,
@@ -22,9 +24,6 @@ const Navbar = () => {
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const pathname = usePathname();
-  if (pathname === "/dashboard") {
-    return null;
-  }
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -55,6 +54,10 @@ const Navbar = () => {
   const handleCategoryHover = useCallback((id: number) => {
     setActiveCategory(id);
   }, []);
+
+  if (pathname === "/dashboard") {
+    return null;
+  }
 
   return (
     <motion.nav
@@ -229,7 +232,19 @@ const Navbar = () => {
               size={20}
             />
           </div>
-
+          <Link href="/cart">
+  <div className="relative">
+    <motion.div
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      className="p-2 rounded-full text-white hover:bg-gray-700 bg-gray-600"
+    >
+      <BsCart3 size={24} />
+    
+      
+    </motion.div>
+  </div>
+</Link>
           {/* <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

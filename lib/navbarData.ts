@@ -1,8 +1,8 @@
 export const navItems = [
   { title: "صفحه اصلی", href: "/" },
-  { title: "محصولات", href: "/products" },
+  { title: "محصولات", href: "/store" },
   { title: "پروژه ها", href: "/projects" },
-  { title: "مشاوره", href: "/consultation" },
+  { title: "وبلاگ", href: "/blogs" },
   { title: "درباره ما", href: "/about" },
   { title: "تماس با ما", href: "/contact" },
 ];

@@ -20,6 +20,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "framer-motion": "^12.4.7",
+    "idb": "^8.0.2",
     "jsonwebtoken": "^9.0.2",
     "moment-jalaali": "^0.10.4",
     "mongoose": "^8.11.0",

@@ -4,7 +4,11 @@ import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "msl";
 
-export async function signUp(name: string, phoneNumber: string, password: string) {
+export async function signUp(
+  name: string,
+  phoneNumber: string,
+  password: string
+) {
   try {
     const existingUser = await prisma.user.findUnique({
       where: { phoneNumber },
@@ -51,7 +55,8 @@ export async function login(phoneNumber: string, password: string) {
       throw new Error("User not found");
     }
 
-    if (user.password !== password) { // In production, compare hashed passwords
+    if (user.password !== password) {
+      // In production, compare hashed passwords
       throw new Error("Invalid password");
     }
 
