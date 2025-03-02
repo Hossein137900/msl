@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${doranlight.className} antialiased relative`}>
-        {/* <Navbar /> */}
+      <body className={` ${doranregular.className} antialiased relative`}>
+        <Navbar />
         <Toaster />
         {children}
         <Footer />
