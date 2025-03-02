@@ -22,9 +22,6 @@ const Navbar = () => {
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const pathname = usePathname();
-  if (pathname === "/dashboard") {
-    return null;
-  }
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -55,6 +52,10 @@ const Navbar = () => {
   const handleCategoryHover = useCallback((id: number) => {
     setActiveCategory(id);
   }, []);
+
+  if (pathname === "/dashboard") {
+    return null;
+  }
 
   return (
     <motion.nav
