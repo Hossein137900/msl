@@ -14,17 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 import { addBlog } from "@/lib/action";
 
-interface Editor {
-  id: string;
-  title: string;
-  excerpt: string;
-  coverImage: string;
-  author: string;
-  date: Date;
-  getText(): string;
-  readTime: number;
-  tags: string[];
-}
+
 
 const MenuButton = ({
   onClick,
@@ -159,7 +149,7 @@ export default function AddBlogPage() {
         class: "prose prose-lg max-w-none focus:outline-none min-h-[200px] rtl",
       },
     },
-    onUpdate: (editor: Editor) => {
+    onUpdate: ({ editor }) => {
       const text = editor.getText();
       const words: string[] = text
         .trim()
@@ -191,7 +181,7 @@ export default function AddBlogPage() {
     formData.append("content", editor?.getHTML() || "");
     formData.append("userId", "3d1ad2d5-04a1-4b31-b92a-0c46c75e2953");
     formData.append("image", "default-image.jpg");
-    formData.append("tags", JSON.stringify([]));
+    formData.append("tags", JSON.stringify(tags));
     formData.append("readTime", "5");
 
     try {

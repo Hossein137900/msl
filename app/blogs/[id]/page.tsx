@@ -12,6 +12,8 @@ export default function BlogDetailPage() {
       const urlParts = window.location.pathname.split('/');
       const id = urlParts[urlParts.length - 1];
       const data = await getBlogById(id);
+      console.log(data);
+      
       setBlog(data);
     };
     fetchBlog();
@@ -35,5 +37,17 @@ export default function BlogDetailPage() {
     tags: blog.tags || ['لوستر', 'دکوراسیون']
   };
 
-  return <BlogPost {...blogPostData} />;
+ if(blog){ return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <BlogPost {...blogPostData} />
+    </div>
+  );}
+  if(!blog){
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-yellow-500"></div>
+      </div>
+    );
+  }
+
 }

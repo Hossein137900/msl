@@ -54,7 +54,9 @@ export default function BlogGrid() {
         title: blog.title,
         excerpt: blog.description,
         coverImage: blog.image || '/assets/images/fade3.jpg',
-        author: blog?.user?.name || 'Admin',
+        user: {
+          name: blog?.user?.name || 'Admin'
+        },
         date: blog.createdAt,
         readTime: blog.readTime,
         tags: blog.tags
