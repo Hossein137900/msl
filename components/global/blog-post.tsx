@@ -48,7 +48,7 @@ export default function BlogPost(blogPostData: BlogPost) {
           />
         </div>
 
-        <div className="mb-8">
+        <div className="mb-4">
           <h1 className="md:text-4xl text-2xl font-bold mb-2">
             {sampleBlogPost.title}
           </h1>
@@ -69,7 +69,7 @@ export default function BlogPost(blogPostData: BlogPost) {
           {sampleBlogPost.tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-yellow-400 text-gray-700 px-3 py-1 rounded-full text-sm"
+              className="bg-yellow-400 text-gray-700 px-3 py-1 rounded-full text-xs"
             >
               #{tag}
             </span>

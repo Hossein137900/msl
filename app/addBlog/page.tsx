@@ -208,7 +208,7 @@ export default function AddBlogPage() {
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text"
+        className="text-3xl font-bold mb-8 text-center text-white text-transparent bg-clip-text"
       >
         افزودن بلاگ جدید
       </motion.h2>
@@ -226,12 +226,14 @@ export default function AddBlogPage() {
             onChange={(e) => setSeoTitle(e.target.value)}
             className="w-full px-4 py-3 rounded-xl border"
             placeholder="عنوان سئو"
+            required
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full px-4 py-3 rounded-xl border mt-4"
             placeholder="توضیحات کوتاه"
+            required
           />
           <div className="space-y-4 mt-5">
             <div className="flex gap-2">
@@ -242,6 +244,7 @@ export default function AddBlogPage() {
                 onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
                 className="w-full px-4 py-3 rounded-xl border border-blue-200 outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="برچسب‌ها را وارد کنید..."
+                required
               />
               <button
                 type="button"
@@ -425,7 +428,7 @@ export default function AddBlogPage() {
         </div>
       </form>
 
-      <ToastContainer position="top-right" rtl={true} />
+      <ToastContainer position="top-center" rtl={true} />
     </div>
   );
 }
