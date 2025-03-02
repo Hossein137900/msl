@@ -89,7 +89,7 @@ body {
 /* card-hover-border.tsx */
 
 .prose img {
-  @apply rounded-xl shadow-lg my-8;
+  @apply rounded-xl shadow-lg;
 }
 
 .prose blockquote {
@@ -97,7 +97,7 @@ body {
 }
 
 .prose h2 {
-  @apply text-3xl font-bold mt-12 mb-6;
+  @apply text-3xl font-bold mt-12 mb-3;
 }
 
 .prose h3 {
@@ -105,7 +105,7 @@ body {
 }
 
 .prose p {
-  @apply text-gray-100 leading-relaxed mb-6;
+  @apply leading-relaxed mb-1 ;
 }
 
 .prose ul {

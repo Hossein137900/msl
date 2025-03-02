@@ -1,20 +1,38 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import BlogPost from '@/components/global/blog-post';
-import { getBlogById } from '@/lib/blogActions';
+import { useEffect, useState } from "react";
+import BlogPost from "@/components/global/blog-post";
+import { getBlogById } from "@/lib/blogActions";
+
+interface BlogPost {
+  title: string;
+  content: string;
+  readTime: number;
+  image: string | null;
+  tags: string[];
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  description: string;
+  seoTitle: string;
+  user: {
+    name: string;
+  };
+}
 
 export default function BlogDetailPage() {
-  const [blog, setBlog] = useState<any>(null);
+  const [blog, setBlog] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     const fetchBlog = async () => {
-      const urlParts = window.location.pathname.split('/');
+      const urlParts = window.location.pathname.split("/");
       const id = urlParts[urlParts.length - 1];
-      const data = await getBlogById(id);
+      const data = (await getBlogById(id)) as BlogPost;
       console.log(data);
-      
-      setBlog(data);
+      if (data) {
+        setBlog(data);
+      }
     };
     fetchBlog();
   }, []);
@@ -30,11 +48,11 @@ export default function BlogDetailPage() {
   const blogPostData = {
     title: blog.title,
     content: blog.content,
-    author: blog.author?.name || 'Admin',
+    author: blog.user?.name || "Admin",
     date: blog.createdAt,
     readTime: 5,
-    image: blog.image || '/assets/images/fade3.jpg',
-    tags: blog.tags || ['لوستر', 'دکوراسیون']
+    image: blog.image || "/assets/images/fade3.jpg",
+    tags: blog.tags || ["لوستر", "دکوراسیون"],
   };
 
  if(blog){ return (

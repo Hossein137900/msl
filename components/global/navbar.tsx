@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BiSearch,
-  BiSun,
-  BiMoon,
+  // BiSun,
+  // BiMoon,
   BiMenu,
   BiX,
   BiChevronDown,
@@ -15,7 +15,7 @@ import { megaMenuCategories, navItems } from "@/lib/navbarData";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  // const [isDark, setIsDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
@@ -32,7 +32,7 @@ const Navbar = () => {
   }, [handleScroll]);
 
   // Toggle functions
-  const toggleDarkMode = () => setIsDark((prev) => !prev);
+  // const toggleDarkMode = () => setIsDark((prev) => !prev);
   const toggleMobileMenu = () => setIsOpen((prev) => !prev);
   const toggleMobileDropdown = (title: string) => {
     setMobileDropdown((prev) => (prev === title ? null : title));
@@ -225,7 +225,7 @@ const Navbar = () => {
             />
           </div>
 
-          <motion.button
+          {/* <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={toggleDarkMode}
@@ -233,7 +233,7 @@ const Navbar = () => {
             aria-label="Toggle Theme"
           >
             {isDark ? <BiSun size={24} /> : <BiMoon size={24} />}
-          </motion.button>
+          </motion.button> */}
         </div>
 
         {/* Mobile Menu Button */}
@@ -252,7 +252,7 @@ const Navbar = () => {
         {isOpen && (
           <>
             {/* Mobile Search & Theme Toggle */}
-            <div className="flex items-center justify-between mt-4 lg:hidden">
+            {/* <div className="flex items-center justify-between mt-4 lg:hidden">
               <div className="relative block">
                 <input
                   type="text"
@@ -273,7 +273,7 @@ const Navbar = () => {
               >
                 {isDark ? <BiSun size={24} /> : <BiMoon size={24} />}
               </motion.button>
-            </div>
+            </div> */}
 
             {/* Mobile Nav Items */}
             <motion.div
