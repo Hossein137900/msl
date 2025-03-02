@@ -2,14 +2,22 @@
 import { prisma } from "./prisma";
 
 export async function getBlogs() {
-  const blogs = await prisma.blog.findMany();
+  const blogs = await prisma.blog.findMany({
+    include: {
+      user: true
+    }
+  });
   return blogs;
 }
+
 export async function getBlogById(id: string) {
   const blog = await prisma.blog.findUnique({
     where: {
       id,
     },
+    include: {
+      user: true
+    }
   });
   return blog;
 }

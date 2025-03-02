@@ -100,11 +100,17 @@ export default function AddBlogPage() {
   const [tags, setTags] = useState<string[]>([]);
 
   const handleAddTag = () => {
+    if (tags.length >= 3) {
+      toast.warning('شما فقط می‌توانید ۳ برچسب اضافه کنید');
+      return;
+    }
+    
     if (tagInput.trim()) {
       setTags([...tags, tagInput.trim()]);
       setTagInput("");
     }
   };
+  
 
   const editor = useEditor({
     extensions: [
