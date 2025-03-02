@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
+import { login, signUp } from "@/lib/auth";
 
 import {
   BiUser,
@@ -54,44 +55,31 @@ const AuthPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = async (phone: string, password: string) => {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ phone, password }),
-    });
 
-    if (!response.ok) {
-      throw new Error("خطا در ورود به سیستم");
-    }
-
-    const data: LoginResponse = await response.json();
-    localStorage.setItem("token", data.token);
-    return data;
+    const handleLogin = async (phoneNumber: string, password: string) => {
+      try {
+        const data = await login(phoneNumber, password);
+        localStorage.setItem("token", data.token);
+        return data;
+      } catch (error) {
+        throw new Error("Login failed");
+      }
   };
 
   const handleSignup = async (
     name: string,
-    phone: string,
+    phoneNumber: string,
     password: string
   ) => {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, phone, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error("خطا در ثبت نام");
-    }
-
-    const data: LoginResponse = await response.json();
-    localStorage.setItem("token", data.token);
-    return data;
+    try {
+      const data = await signUp(name, phoneNumber, password);
+      localStorage.setItem("token", data.token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      
+      throw new Error("خطا در ثبت نام");    }
+  
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -127,6 +115,8 @@ const AuthPage = () => {
           window.location.href = "/dashboard";
         }
       } catch (error) {
+        console.log("Authentication error:", error);
+        
         toast.error("خطا در ورود به سیستم", {
           position: "top-center",
           duration: 3000,
