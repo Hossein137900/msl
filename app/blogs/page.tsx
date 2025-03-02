@@ -1,4 +1,4 @@
- "use client";
+"use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,36 +12,11 @@ interface BlogPost {
   coverImage: string;
   user: {
     name: string;
-  }
+  };
   date: Date;
   readTime: number;
   tags: string[];
 }
-
-// const sampleBlogs: BlogPost[] = [
-//   {
-//     id: "1",
-//     title: "جدیدترین مدل‌های لوستر مدرن ۱۴۰۳",
-//     excerpt:
-//       "معرفی برترین لوسترهای مدرن با طراحی خاص و نورپردازی منحصر به فرد برای دکوراسیون داخلی منزل",
-//     coverImage: "/assets/images/fade3.jpg",
-//     author: "سارا احمدی",
-//     date: new Date(),
-//     readTime: 6,
-//     tags: ["لوستر", "دکوراسیون", "روشنایی مدرن"],
-//   },
-//   {
-//     id: "2",
-//     title: "راهنمای خرید چراغ‌های دیواری",
-//     excerpt:
-//       "بررسی کامل نکات مهم در انتخاب و خرید انواع چراغ‌های دیواری برای فضاهای مختلف منزل و محل کار",
-//     coverImage: "/assets/images/fade3.jpg",
-//     author: "رضا کریمی",
-//     date: new Date(),
-//     readTime: 5,
-//     tags: ["چراغ دیواری", "نورپردازی", "دکوراسیون داخلی"],
-//   },
-// ];
 
 export default function BlogGrid() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -49,15 +24,18 @@ export default function BlogGrid() {
   useEffect(() => {
     async function fetchBlogs() {
       const fetchedBlogs = await getBlogs();
-      const mappedBlogs = fetchedBlogs.map(blog => ({
+      console.log(fetchedBlogs);
+      const mappedBlogs = fetchedBlogs.map((blog) => ({
         id: blog.id,
         title: blog.title,
         excerpt: blog.description,
-        coverImage: blog.image || '/assets/images/fade3.jpg',
-        author: blog?.user?.name || 'Admin',
+        coverImage: blog.image || "/assets/images/fade3.jpg",
+        user: {
+          name: blog?.title || "Admin",
+        },
         date: blog.createdAt,
         readTime: blog.readTime,
-        tags: blog.tags
+        tags: blog.tags,
       }));
       setBlogs(mappedBlogs);
     }
@@ -69,7 +47,6 @@ export default function BlogGrid() {
       blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
-  
 
   return (
     <div
@@ -77,8 +54,8 @@ export default function BlogGrid() {
       dir="rtl"
     >
       {/* Header Section */}
-      <div className="text-center mt-24 mb-4">
-        <h1 className="text-4xl font-bold mb-4">وبلاگ ما</h1>
+      <div className="text-center mt-20 mb-4">
+        <h1 className="text-4xl font-bold  mb-4">وبلاگ ما</h1>
         <p className="text-gray-300">آخرین مقالات و اخبار دنیای روشنایی</p>
       </div>
 
@@ -88,7 +65,7 @@ export default function BlogGrid() {
           <input
             type="text"
             placeholder="جستجو در مقالات..."
-            className="w-full px-4 py-3 text-black rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-500 "
+            className="w-full px-4 py-3 bg-white/10 focus:bg-white/20 text-white rounded-lg border placeholder:text-white/70 border-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-50 "
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -109,12 +86,12 @@ export default function BlogGrid() {
       </div>
 
       {/* Blog Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 items-center justify-center md:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredBlogs.map((blog) => (
           <Link target="_blank" href={`/blogs/${blog.id}`} key={blog.id}>
             <article className="bg-white/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
-              <Image
+                <Image
                   src="/assets/images/fade3.jpg"
                   alt={blog.title}
                   fill
@@ -133,7 +110,7 @@ export default function BlogGrid() {
                   {blog.title}
                 </h2>
                 <p className="text-gray-300 mb-4 line-clamp-3">
-                  {blog.excerpt.slice(0, 50)}...
+                  {blog.excerpt.slice(0, 30)}...
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -150,7 +127,7 @@ export default function BlogGrid() {
                 <div className="flex items-center justify-between text-sm text-gray-200">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
-                      {blog.user.name}
+                      {blog.user.name.slice(0, 1)}
                     </div>
                     <span>{blog.user.name}</span>
                   </div>
