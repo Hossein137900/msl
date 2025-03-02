@@ -7,31 +7,32 @@ interface BlogPost {
   author: string;
   date: Date;
   readTime: number;
-  coverImage: string;
+  image: string;
   tags: string[];
 }
 
-const sampleBlogPost: BlogPost = {
-  title: "آینده توسعه وب در سال 1403",
-  content: `
-    <h2>تکامل وب مدرن</h2>
-    <p>چشم‌انداز توسعه وب به سرعت در حال تکامل است. با ظهور فریم‌ورک‌ها و ابزارهای جدید هر روز، توسعه‌دهندگان باید جلوتر از منحنی باشند.</p>
-    <h3>روندهای کلیدی</h3>
-    <ul>
-      <li>توسعه مبتنی بر هوش مصنوعی</li>
-      <li>انقلاب WebAssembly</li>
-      <li>رایانش لبه</li>
-    </ul>
-    <blockquote>نوآوری فقط ایجاد چیز جدید نیست، بلکه ایجاد چیزی ارزشمند است.</blockquote>
-  `,
-  author: "سارا جانسون",
-  date: new Date(),
-  readTime: 5,
-  coverImage: "/assets/images/fade3.jpg",
-  tags: ["توسعه وب", "تکنولوژی", "هوش مصنوعی", "آینده"],
-};
+// const sampleBlogPost: BlogPost = {
+//   title: "آینده توسعه وب در سال 1403",
+//   content: `
+//     <h2>تکامل وب مدرن</h2>
+//     <p>چشم‌انداز توسعه وب به سرعت در حال تکامل است. با ظهور فریم‌ورک‌ها و ابزارهای جدید هر روز، توسعه‌دهندگان باید جلوتر از منحنی باشند.</p>
+//     <h3>روندهای کلیدی</h3>
+//     <ul>
+//       <li>توسعه مبتنی بر هوش مصنوعی</li>
+//       <li>انقلاب WebAssembly</li>
+//       <li>رایانش لبه</li>
+//     </ul>
+//     <blockquote>نوآوری فقط ایجاد چیز جدید نیست، بلکه ایجاد چیزی ارزشمند است.</blockquote>
+//   `,
+//   author: "سارا جانسون",
+//   date: new Date(),
+//   readTime: 5,
+//   image: "/assets/images/fade3.jpg",
+//   tags: ["توسعه وب", "تکنولوژی", "هوش مصنوعی", "آینده"],
+// };
 
-export default function BlogPost() {
+export default function BlogPost(blogPostData: BlogPost) {
+  const sampleBlogPost = blogPostData;
   const persianDate = moment(sampleBlogPost.date)
     .format("jDD jMMMM jYYYY")
     .replace(
@@ -56,7 +57,7 @@ export default function BlogPost() {
     <article className="max-w-4xl mx-auto px-4 py-8" dir="rtl">
       <div className="relative h-[400px] mb-8 rounded-2xl overflow-hidden">
         <Image
-          src={sampleBlogPost.coverImage}
+          src="/assets/images/fade3.jpg"
           alt={sampleBlogPost.title}
           fill
           className="object-cover"
