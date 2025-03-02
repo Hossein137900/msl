@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { contactInfo, quickLinks, socialLinks } from "../../lib/footerData";
+import { usePathname } from "next/navigation";
 const Footer = () => {
+  const pathname = usePathname();
+  if (pathname === "/dashboard") {
+    return null;
+  }
   return (
     <footer
       className="bg-gradient-to-l border-t border-gray-500 from-[#16222A] to-[#3A6073] text-white"
