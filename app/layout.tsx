@@ -3,7 +3,7 @@ import "./globals.css";
 import { doranregular } from "@/next-persian-fonts/doran";
 import Navbar from "@/components/global/navbar";
 import Footer from "@/components/global/footer";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "MSL - Next.js",
@@ -17,9 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${doranregular.className} antialiased relative`}>
+      <body
+        className={` ${doranregular.className} bg-gradient-to-l from-[#16222A] to-[#3A6073] antialiased relative`}
+      >
         <Navbar />
-        <Toaster />
+        <ToastContainer position="top-center" rtl={true} />
         {children}
         <Footer />
       </body>

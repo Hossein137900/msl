@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-hot-toast";
 import { login, signUp } from "@/lib/auth";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   BiUser,
   BiPhone,
@@ -89,8 +89,6 @@ const AuthPage = () => {
         if (isLogin) {
           const userData = await handleLogin(formData.phone, formData.password);
           toast.success(`خوش آمدید ${userData.user.name}`, {
-            position: "top-center",
-            duration: 3000,
             style: {
               background: "#333",
               color: "#fff",
@@ -104,8 +102,6 @@ const AuthPage = () => {
             formData.password
           );
           toast.success(`ثبت نام ${userData.user.name} موفقیت انجام شد`, {
-            position: "top-center",
-            duration: 3000,
             style: {
               background: "#333",
               color: "#fff",
@@ -118,8 +114,6 @@ const AuthPage = () => {
         console.log("Authentication error:", error);
         
         toast.error("خطا در ورود به سیستم", {
-          position: "top-center",
-          duration: 3000,
           style: {
             background: "#333",
             color: "#fff",
