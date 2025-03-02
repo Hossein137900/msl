@@ -51,7 +51,7 @@ const ScrollOpacity = () => {
         playsInline
         className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
       >
-        <source src="/assets/video/video.mp4" type="video/mp4" />
+        <source src="/assets/video/vid.mp4" type="video/mp4" />
       </video>
           <div className="absolute inset-0  bg-gradient-to-b from-black to-transparent" />
           {/* Light Glow Effect */}

@@ -49,13 +49,13 @@ export default function BlogGrid() {
 
   return (
     <div
-      className=" px-4 py-12 bg-gradient-to-l from-[#16222A] to-[#3A6073]"
+      className=" px-4 py-12 bg-[#e5d8d0]"
       dir="rtl"
     >
       {/* Header Section */}
       <div className="text-center mt-20 mb-4">
-        <h1 className="text-4xl font-bold  mb-4">وبلاگ ما</h1>
-        <p className="text-gray-300">آخرین مقالات و اخبار دنیای روشنایی</p>
+        <h1 className="text-4xl font-bold text-[#a37462]  mb-4">وبلاگ ما</h1>
+        <p className="text-gray-600">آخرین مقالات و اخبار دنیای روشنایی</p>
       </div>
 
       {/* Search Section */}

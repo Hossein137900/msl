@@ -101,7 +101,7 @@ const Navbar = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link href={item.href}>
-                <span className="text-gray-200 hover:text-gray-50 relative  transition-colors duration-300 flex items-center gap-1">
+                <span className="text-[#e5d8d0] hover:text-gray-50 relative  transition-colors duration-300 flex items-center gap-1">
                   {item.title}
                   {item.title === "محصولات" && (
                     <motion.div
@@ -125,7 +125,7 @@ const Navbar = () => {
                     y: activeDropdown === "محصولات" ? 0 : 10,
                   }}
                   transition={{ duration: 0.3 }}
-                  className="absolute top-4 -right-10 mt-2 w-[800px] bg-white/10 backdrop-blur-md shadow-2xl border border-gray-200/20 rounded-2xl"
+                  className="absolute top-12 -right-10  w-[800px] bg-[#e5d8d0]/20 backdrop-blur-md shadow-2xl border border-gray-200/20 rounded-2xl"
                   style={{
                     pointerEvents:
                       activeDropdown === "محصولات" ? "auto" : "none",
@@ -146,7 +146,7 @@ const Navbar = () => {
                             activeCategory === category.id ? "bg-white/20" : ""
                           }`}
                         >
-                          <h3 className="text-white font-semibold text-lg">
+                          <h3 className="text-[#a37462] text-lg">
                             {category.title}
                           </h3>
                         </motion.div>
@@ -166,7 +166,7 @@ const Navbar = () => {
                             className="flex h-full"
                           >
                             <div className="w-1/2">
-                              <h4 className="text-yellow-400 font-bold mb-4">
+                              <h4 className="text-[#a37462] font-bold mb-4">
                                 {
                                   megaMenuCategories.find(
                                     (c) => c.id === activeCategory
@@ -225,26 +225,24 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="جستجو ..."
-              className="w-64 px-4 py-2 rounded-full backdrop-blur-sm placeholder:text-gray-50 border border-gray-400 bg-transparent text-gray-50 focus:outline-none"
+              className="w-64 px-4 py-2 rounded-full backdrop-blur-sm placeholder:text-[#e5d8d0] border border-[#e5d8d0] bg-transparent text-[#e5d8d0] focus:outline-none"
             />
             <BiSearch
-              className="absolute text-gray-100 left-3 top-1/2 transform -translate-y-1/2"
+              className="absolute text-[#e5d8d0] left-3 top-1/2 transform -translate-y-1/2"
               size={20}
             />
           </div>
           <Link href="/cart">
-  <div className="relative">
-    <motion.div
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      className="p-2 rounded-full text-white hover:bg-gray-700 bg-gray-600"
-    >
-      <BsCart3 size={24} />
-    
-      
-    </motion.div>
-  </div>
-</Link>
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-2 rounded-full text-[#e5d8d0] hover:bg-[#a37462] hover:text-white "
+              >
+                <BsCart3 size={24} />
+              </motion.div>
+            </div>
+          </Link>
           {/* <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -260,7 +258,7 @@ const Navbar = () => {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={toggleMobileMenu}
-          className="md:hidden p-2 rounded-lg text-white bg-white/20 backdrop-blur-sm"
+          className="md:hidden p-2 rounded-lg text-[#e5d8d0] bg-white/10 backdrop-blur-sm"
           aria-label="Toggle navbar"
         >
           {isOpen ? <BiX size={24} /> : <BiMenu size={24} />}
@@ -300,7 +298,7 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white/10 backdrop-blur-md border border-gray-500 mt-4 rounded-2xl overflow-y-auto max-h-[70vh]"
+              className="md:hidden bg-[#a37462]/10 backdrop-blur-md border border-[#a37462] mt-4 rounded-2xl overflow-y-auto max-h-[70vh]"
             >
               {navItems.map((item) => (
                 <motion.div key={item.title}>
@@ -315,7 +313,9 @@ const Navbar = () => {
                         toggleMobileDropdown("محصولات")
                       }
                     >
-                      <span className="block text-gray-50">{item.title}</span>
+                      <span className="block text-[#e5d8d0]  ">
+                        {item.title}
+                      </span>
                       {item.title === "محصولات" && (
                         <motion.div
                           animate={{
@@ -323,7 +323,7 @@ const Navbar = () => {
                           }}
                           transition={{ duration: 0.2 }}
                         >
-                          <BiChevronDown className="text-xl text-gray-50" />
+                          <BiChevronDown className="text-xl text-[#e5d8d0]" />
                         </motion.div>
                       )}
                     </div>
@@ -339,14 +339,14 @@ const Navbar = () => {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="mt-2 space-y-1 border-r-2 border-yellow-500/50 touch-pan-y">
+                        <div className="mt-2 space-y-1 border-r-2 border-[#a37462] touch-pan-y">
                           {megaMenuCategories.map((category) => (
                             <div key={category.id}>
                               <motion.div
                                 whileHover={{
                                   backgroundColor: "rgba(255,255,255,0.1)",
                                 }}
-                                className="pr-4 py-3 text-gray-200 text-sm hover:text-white font-semibold"
+                                className="pr-4 py-3 text-[#a37462] text-sm hover:text-white font-semibold"
                               >
                                 {category.title}
                               </motion.div>
@@ -357,7 +357,7 @@ const Navbar = () => {
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="text-gray-300 text-xs hover:text-white cursor-pointer py-1"
+                                    className="text-[#e5d8d0] text-xs hover:text-white cursor-pointer py-1"
                                   >
                                     {product}
                                   </motion.div>
