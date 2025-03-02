@@ -101,39 +101,31 @@ export default function AddBlogPage() {
 
   const handleAddTag = () => {
     if (tags.length >= 3) {
-      toast.warning('شما فقط می‌توانید ۳ برچسب اضافه کنید');
+      toast.warning("شما فقط می‌توانید ۳ برچسب اضافه کنید");
       return;
     }
-    
+
     if (tagInput.trim()) {
       setTags([...tags, tagInput.trim()]);
       setTagInput("");
     }
   };
-  
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
-        paragraph: {
-          HTMLAttributes: {
-            dir: "auto",
-          },
-        },
+        paragraph: { HTMLAttributes: { dir: "auto" } },
         bulletList: false,
         orderedList: false,
       }),
       BulletList.configure({
         keepMarks: true,
-        HTMLAttributes: {
-          class: "list-disc ml-4",
-        },
+        HTMLAttributes: { class: "list-disc ml-4" },
       }),
       OrderedList.configure({
         keepMarks: true,
-        HTMLAttributes: {
-          class: "list-decimal ml-4",
-        },
+        HTMLAttributes: { class: "list-decimal ml-4" },
       }),
       TextStyle,
       Color,
@@ -155,6 +147,7 @@ export default function AddBlogPage() {
         class: "prose prose-lg max-w-none focus:outline-none min-h-[200px] rtl",
       },
     },
+    //@ts-expect-error 7031
     onUpdate: ({ editor }) => {
       const text = editor.getText();
       const words: string[] = text
@@ -179,7 +172,10 @@ export default function AddBlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    if (tags.length < 1) {
+      toast.warning("لطفا حداقل یک برچسب اضافه کنید");
+      return;
+    }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -198,20 +194,27 @@ export default function AddBlogPage() {
       setSeoTitle("");
       editor?.commands.clearContent();
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("خطا در ایجاد بلاگ");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-6 md:mt-36 my-16 lg:mx-auto">
+    <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-3xl font-bold mb-8 text-center text-white text-transparent bg-clip-text"
+        className="text-3xl font-bold mb-4 text-center text-white text-transparent bg-clip-text"
       >
         افزودن بلاگ جدید
       </motion.h2>
+      <motion.p
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="text-base font-thin mb-8 text-center text-white/70"
+      >
+        در این قسمت می‌توانید بلاگ جدید خود را ایجاد کنید
+      </motion.p>
 
       <link
         rel="stylesheet"
@@ -219,19 +222,22 @@ export default function AddBlogPage() {
       />
 
       <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">
-        <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100">
+        <div className="bg-blue-50/20 rounded-xl p-6 border border-blue-100">
+          <label className="block mb-4 text-xl text-center text-gray-100">
+            <span className="text-gray-100 font-bold">قسمت سئو</span>
+          </label>
           <input
             type="text"
             value={seoTitle}
             onChange={(e) => setSeoTitle(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border"
+            className="w-full px-4 py-3 text-black rounded-xl border"
             placeholder="عنوان سئو"
             required
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border mt-4"
+            className="w-full px-4 py-3 text-black rounded-xl border mt-4"
             placeholder="توضیحات کوتاه"
             required
           />
@@ -242,16 +248,15 @@ export default function AddBlogPage() {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
-                className="w-full px-4 py-3 rounded-xl border border-blue-200 outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-4 py-3 text-black rounded-xl border border-blue-200 outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="برچسب‌ها را وارد کنید..."
-                required
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="bg-blue-500 text-white px-4 rounded-xl hover:bg-blue-600"
+                className="bg-emerald-500 text-white px-4 text-center rounded-xl hover:bg-emerald-600"
               >
-                <i className="fas fa-plus"></i>
+                <i className="fas fa-plus mt-1.5"></i>
               </button>
             </div>
 
@@ -276,144 +281,150 @@ export default function AddBlogPage() {
             </div>
           </div>
         </div>
-
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl border"
-          placeholder="عنوان بلاگ"
-        />
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 text-right mb-2">
-            محتوای بلاگ
+        <div className="bg-blue-50/20 rounded-xl p-6 border border-blue-100">
+          <label className="block text-xl font-bold text-gray-100 text-center mb-4">
+            عنوان بلاگ
           </label>
-          <div className="border border-gray-300 rounded-lg">
-            <div className="bg-gray-50 p-2 border-b border-gray-300 flex flex-wrap gap-2">
-              <MenuButton
-                onClick={() => editor?.chain().focus().toggleBold().run()}
-                active={editor?.isActive("bold")}
-              >
-                <i className="fas fa-bold"></i>
-              </MenuButton>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full px-4 text-black py-3 rounded-xl border"
+            placeholder="عنوان بلاگ"
+          />
 
-              <MenuButton
-                onClick={() => editor?.chain().focus().toggleItalic().run()}
-                active={editor?.isActive("italic")}
-              >
-                <i className="fas fa-italic"></i>
-              </MenuButton>
-
-              <MenuButton onClick={setLink} active={editor?.isActive("link")}>
-                <i className="fas fa-link"></i>
-              </MenuButton>
-
-              <MenuButton
-                onClick={() => editor?.chain().focus().unsetLink().run()}
-                active={false}
-              >
-                <i className="fas fa-unlink"></i>
-              </MenuButton>
-
-              {[1, 2, 3, 4, 5].map((level) => (
+          <div>
+            <label className="block text-xl font-bold text-gray-100 text-center my-4">
+              محتوای بلاگ
+            </label>
+            <div className="border border-gray-300 rounded-lg">
+              <div className="bg-gray-50 text-black p-2 border-b border-gray-300 flex flex-wrap gap-2">
                 <MenuButton
-                  key={level}
+                  onClick={() => editor?.chain().focus().toggleBold().run()}
+                  active={editor?.isActive("bold")}
+                >
+                  <i className="fas fa-bold"></i>
+                </MenuButton>
+
+                <MenuButton
+                  onClick={() => editor?.chain().focus().toggleItalic().run()}
+                  active={editor?.isActive("italic")}
+                >
+                  <i className="fas fa-italic"></i>
+                </MenuButton>
+
+                <MenuButton onClick={setLink} active={editor?.isActive("link")}>
+                  <i className="fas fa-link"></i>
+                </MenuButton>
+
+                <MenuButton
+                  onClick={() => editor?.chain().focus().unsetLink().run()}
+                  active={false}
+                >
+                  <i className="fas fa-unlink"></i>
+                </MenuButton>
+
+                {[2, 3, 4, 5].map((level) => (
+                  <MenuButton
+                    key={level}
+                    onClick={() =>
+                      editor
+                        ?.chain()
+                        .focus()
+                        .toggleHeading({ level: level as 1 | 2 | 3 | 4 | 5 })
+                        .run()
+                    }
+                    active={editor?.isActive("heading", { level })}
+                  >
+                    H{level}
+                  </MenuButton>
+                ))}
+
+                <div className="relative">
+                  <MenuButton
+                    onClick={() => setShowTextColorPicker(!showTextColorPicker)}
+                    active={showTextColorPicker}
+                  >
+                    <i className="fas fa-font"></i>
+                  </MenuButton>
+                  <ColorPickerDropdown
+                    isOpen={showTextColorPicker}
+                    onClose={() => setShowTextColorPicker(false)}
+                    onColorSelect={(color) =>
+                      editor?.chain().focus().setColor(color).run()
+                    }
+                  />
+                </div>
+
+                <div className="relative">
+                  <MenuButton
+                    onClick={() => setShowBgColorPicker(!showBgColorPicker)}
+                    active={showBgColorPicker}
+                  >
+                    <i className="fas fa-fill-drip"></i>
+                  </MenuButton>
+                  <ColorPickerDropdown
+                    isOpen={showBgColorPicker}
+                    onClose={() => setShowBgColorPicker(false)}
+                    onColorSelect={(color) =>
+                      editor?.chain().focus().setHighlight({ color }).run()
+                    }
+                  />
+                </div>
+
+                <MenuButton
                   onClick={() =>
-                    editor
-                      ?.chain()
-                      .focus()
-                      .toggleHeading({ level: level as 1 | 2 | 3 | 4 | 5 })
-                      .run()
+                    editor?.chain().focus().setTextAlign("left").run()
                   }
-                  active={editor?.isActive("heading", { level })}
+                  active={editor?.isActive({ textAlign: "left" })}
                 >
-                  H{level}
+                  <i className="fas fa-align-left"></i>
                 </MenuButton>
-              ))}
 
-              <div className="relative">
                 <MenuButton
-                  onClick={() => setShowTextColorPicker(!showTextColorPicker)}
-                  active={showTextColorPicker}
-                >
-                  <i className="fas fa-font"></i>
-                </MenuButton>
-                <ColorPickerDropdown
-                  isOpen={showTextColorPicker}
-                  onClose={() => setShowTextColorPicker(false)}
-                  onColorSelect={(color) =>
-                    editor?.chain().focus().setColor(color).run()
+                  onClick={() =>
+                    editor?.chain().focus().setTextAlign("center").run()
                   }
-                />
+                  active={editor?.isActive({ textAlign: "center" })}
+                >
+                  <i className="fas fa-align-center"></i>
+                </MenuButton>
+
+                <MenuButton
+                  onClick={() =>
+                    editor?.chain().focus().setTextAlign("right").run()
+                  }
+                  active={editor?.isActive({ textAlign: "right" })}
+                >
+                  <i className="fas fa-align-right"></i>
+                </MenuButton>
+
+                <MenuButton
+                  onClick={() =>
+                    editor?.chain().focus().toggleBulletList().run()
+                  }
+                  active={editor?.isActive("bulletList")}
+                >
+                  <i className="fas fa-list-ul"></i>
+                </MenuButton>
+
+                <MenuButton
+                  onClick={() =>
+                    editor?.chain().focus().toggleOrderedList().run()
+                  }
+                  active={editor?.isActive("orderedList")}
+                >
+                  <i className="fas fa-list-ol"></i>
+                </MenuButton>
               </div>
 
-              <div className="relative">
-                <MenuButton
-                  onClick={() => setShowBgColorPicker(!showBgColorPicker)}
-                  active={showBgColorPicker}
-                >
-                  <i className="fas fa-fill-drip"></i>
-                </MenuButton>
-                <ColorPickerDropdown
-                  isOpen={showBgColorPicker}
-                  onClose={() => setShowBgColorPicker(false)}
-                  onColorSelect={(color) =>
-                    editor?.chain().focus().setHighlight({ color }).run()
-                  }
-                />
+              <div className="p-4 bg-white text-black">
+                <EditorContent editor={editor} />
               </div>
 
-              <MenuButton
-                onClick={() =>
-                  editor?.chain().focus().setTextAlign("left").run()
-                }
-                active={editor?.isActive({ textAlign: "left" })}
-              >
-                <i className="fas fa-align-left"></i>
-              </MenuButton>
-
-              <MenuButton
-                onClick={() =>
-                  editor?.chain().focus().setTextAlign("center").run()
-                }
-                active={editor?.isActive({ textAlign: "center" })}
-              >
-                <i className="fas fa-align-center"></i>
-              </MenuButton>
-
-              <MenuButton
-                onClick={() =>
-                  editor?.chain().focus().setTextAlign("right").run()
-                }
-                active={editor?.isActive({ textAlign: "right" })}
-              >
-                <i className="fas fa-align-right"></i>
-              </MenuButton>
-
-              <MenuButton
-                onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                active={editor?.isActive("bulletList")}
-              >
-                <i className="fas fa-list-ul"></i>
-              </MenuButton>
-
-              <MenuButton
-                onClick={() =>
-                  editor?.chain().focus().toggleOrderedList().run()
-                }
-                active={editor?.isActive("orderedList")}
-              >
-                <i className="fas fa-list-ol"></i>
-              </MenuButton>
-            </div>
-
-            <div className="p-4 bg-white">
-              <EditorContent editor={editor} />
-            </div>
-
-            <div className="mt-2 text-sm text-gray-500 text-right border-t p-2">
-              تعداد کلمات: {wordCount}
+              <div className="mt-2 text-sm text-gray-200 text-right border-t p-2">
+                تعداد کلمات: {wordCount}
+              </div>
             </div>
           </div>
         </div>
@@ -421,7 +432,7 @@ export default function AddBlogPage() {
         <div className="text-right pt-4">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm hover:shadow-md"
+            className="bg-emerald-500 text-white px-8 py-3 w-full rounded-lg hover:bg-emerald-600 transition-colors font-medium shadow-sm hover:shadow-md"
           >
             انتشار بلاگ
           </button>

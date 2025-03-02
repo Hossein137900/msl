@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { megaMenuCategories, navItems } from "@/lib/navbarData";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +21,10 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const pathname = usePathname();
+  if (pathname === "/dashboard") {
+    return null;
+  }
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
