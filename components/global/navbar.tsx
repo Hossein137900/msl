@@ -5,19 +5,19 @@ import { BsCart3 } from "react-icons/bs";
 import { BiSearch, BiMenu, BiX, BiChevronDown } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
-import { megaMenuCategories, navItems } from "@/lib/navbarData";
+import { navItems } from "@/lib/navbarData";
 import { usePathname } from "next/navigation";
-import 
-export interface Product {
-  id: string;
-  name: string;
-}
+import { getCategories } from "@/lib/category";
 
 export interface Category {
-  id: number;
+  id: string;
   title: string;
-  image: string;
-  products: Product[];
+  children: string[];
+}
+
+export interface CategoryResponse {
+  success: boolean;
+  data: Category[];
 }
 
 const Navbar = () => {
@@ -25,13 +25,28 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
 
+  // Fetch categories on component mount
+  const fetchCategories = async () => {
+    const data = await getCategories();
 
+    setIsLoading(true);
 
+    if (data.success && data.data) {
+      setIsLoading(false);
+      setCategories(data.data);
+    }
+  };
+
+  console.log(categories);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -58,7 +73,7 @@ const Navbar = () => {
     setActiveDropdown(null);
   }, []);
 
-  const handleCategoryHover = useCallback((id: number) => {
+  const handleCategoryHover = useCallback((id: string) => {
     setActiveCategory(id);
   }, []);
 
@@ -157,7 +172,7 @@ const Navbar = () => {
                 >
                   <div className="flex h-[400px]">
                     <div className="w-1/3 border-l border-white/20 bg-white/5">
-                      {megaMenuCategories.map((category) => (
+                      {categories.map((category) => (
                         <motion.div
                           key={category.id}
                           onMouseEnter={() => handleCategoryHover(category.id)}
@@ -165,11 +180,11 @@ const Navbar = () => {
                             backgroundColor: "rgba(255,255,255,0.15)",
                           }}
                           className={`px-6 py-4 cursor-pointer transition-all duration-300
-                    ${
-                      activeCategory === category.id
-                        ? "bg-white/20 border-r-4 border-[#a37462]"
-                        : ""
-                    }`}
+        ${
+          activeCategory === category.id
+            ? "bg-white/20 border-r-4 border-[#a37462]"
+            : ""
+        }`}
                         >
                           <h3 className="text-[#fff] font-medium text-lg">
                             {category.title}
@@ -192,27 +207,32 @@ const Navbar = () => {
                             <div className="w-1/2">
                               <h4 className="text-[#fff] text-xl font-bold mb-6">
                                 {
-                                  megaMenuCategories.find(
+                                  categories.find(
                                     (c) => c.id === activeCategory
                                   )?.title
                                 }
                               </h4>
                               <div className="space-y-3">
-                                {megaMenuCategories
+                                {categories
                                   .find((c) => c.id === activeCategory)
-                                  ?.products.map((product, idx) => (
-                                    <motion.div
-                                      key={idx}
-                                      initial={{ opacity: 0, x: -10 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: idx * 0.1 }}
-                                      className="text-gray-200 hover:text-white 
+                                  ?.children.map(
+                                    (child, idx) => (
+                                      console.log(child, "ccccccccccccccccc"),
+                                      (
+                                        <motion.div
+                                          key={idx}
+                                          initial={{ opacity: 0, x: -10 }}
+                                          animate={{ opacity: 1, x: 0 }}
+                                          transition={{ delay: idx * 0.1 }}
+                                          className="text-gray-900 hover:text-white 
                                 cursor-pointer py-1 px-2 rounded
                                 hover:bg-white/10 transition-all duration-200"
-                                    >
-                                      {product}
-                                    </motion.div>
-                                  ))}
+                                        >
+                                          {child}
+                                        </motion.div>
+                                      )
+                                    )
+                                  )}
                               </div>
                             </div>
 
@@ -224,11 +244,7 @@ const Navbar = () => {
                           shadow-lg transform hover:scale-105 transition-transform duration-300"
                               >
                                 <Image
-                                  src={
-                                    megaMenuCategories.find(
-                                      (c) => c.id === activeCategory
-                                    )?.image || ""
-                                  }
+                                  src="/assets/images/fade3.jpg"
                                   alt="Category"
                                   fill
                                   className="object-cover"
@@ -342,7 +358,7 @@ const Navbar = () => {
                         className="overflow-hidden"
                       >
                         <div className="mt-2 space-y-1 border-r-2 border-[#a37462] touch-pan-y">
-                          {megaMenuCategories.map((category) => (
+                          {categories.map((category) => (
                             <div key={category.id}>
                               <motion.div
                                 whileHover={{
@@ -353,7 +369,7 @@ const Navbar = () => {
                                 {category.title}
                               </motion.div>
                               <div className="pr-8 space-y-2">
-                                {category.products.map((product, idx) => (
+                                {category.children.map((child, idx) => (
                                   <motion.div
                                     key={idx}
                                     initial={{ opacity: 0, x: -10 }}
@@ -361,7 +377,7 @@ const Navbar = () => {
                                     transition={{ delay: idx * 0.05 }}
                                     className="text-[#e5d8d0] text-xs hover:text-white cursor-pointer py-1"
                                   >
-                                    {product}
+                                    {child}
                                   </motion.div>
                                 ))}
                               </div>

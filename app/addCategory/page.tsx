@@ -3,6 +3,8 @@ import { addCategory } from '@/lib/category';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
+
+
 export default function AddCategory() {
   const [title, setTitle] = useState("");
   const [children, setChildren] = useState<string[]>([]);
