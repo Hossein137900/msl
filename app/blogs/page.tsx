@@ -118,7 +118,7 @@ export default function BlogGrid() {
             href={`/blogs/${blog.id}:${blog.slug}`}
             key={blog.id}
           >
-            <article className="bg-white/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <article className="bg-white/30  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
                 <Image
                   src={blog.coverImage}
@@ -126,8 +126,8 @@ export default function BlogGrid() {
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-[#e5d8d0] bg-[#a37462]/50 px-4 py-2 rounded-t-lg text-lg font-bold flex items-center gap-2 transform translate-y-full group-hover:translate-y-0 transition-all duration-300">
+                <div className="absolute inset-0 bg-black/60 flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-[#e5d8d0] my-auto  bg-[#a37462]/10 px-4 py-2 rounded-t-lg text-lg font-bold flex items-center gap-2 transform translate-y-full group-hover:translate-y-0 transition-all duration-300">
                     مشاهده وبلاگ
                     <BsArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" />
                   </span>
@@ -138,13 +138,13 @@ export default function BlogGrid() {
                   {blog.title}
                 </h2>
                 <p className="text-stone-600 flex-grow line-clamp-3 mb-4">
-                  {blog.excerpt.slice(0, 30)}...
+                  {blog.excerpt.slice(0, 25)}...
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {blog.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="bg-[#a37462] text-white px-2 py-1 rounded-full text-xs"
+                      className="bg-[#a37462] text-white px-2 py-1 rounded-lg text-xs"
                     >
                       #{tag}
                     </span>
