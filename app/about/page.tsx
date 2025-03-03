@@ -6,10 +6,7 @@ import { storyCards, teamMembers, timelineEvents } from "../../lib/aboutData";
 
 const AboutPage = () => {
   return (
-    <div
-      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073]"
-      dir="rtl"
-    >
+    <div className="min-h-screen" dir="rtl">
       {/* Hero Section with Parallax */}
       <motion.section
         initial={{ opacity: 0 }}
@@ -57,7 +54,9 @@ const AboutPage = () => {
             whileInView={{ opacity: 1 }}
             className="space-y-8"
           >
-            <h2 className="text-3xl font-bold text-center mb-12">تاریخچه ما</h2>
+            <h2 className="text-3xl font-bold text-center text-[#a37462]  mb-12">
+              تاریخچه ما
+            </h2>
             <div className="flex flex-col md:flex-row gap-8">
               {timelineEvents.map((event, index) => (
                 <motion.div
@@ -65,10 +64,8 @@ const AboutPage = () => {
                   transition={{ delay: index * 0.3 }}
                   className="flex-1 relative"
                 >
-                  <div className="border-l-4 border-yellow-300 pl-4">
-                    <span className="text-yellow-400 text-xl">
-                      {event.year}
-                    </span>
+                  <div className="border-l-4 border-[#a37462] pl-4">
+                    <span className="text-[#a37462] text-xl">{event.year}</span>
                     <h3 className="text-lg font-semibold my-2">
                       {event.title}
                     </h3>
@@ -88,8 +85,10 @@ const AboutPage = () => {
           whileInView={{ opacity: 1 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold">آشنایی با هنرمندان ما</h2>
-          <p className="text-gray-300 mt-4">
+          <h2 className="text-3xl font-bold text-[#a37462]">
+            آشنایی با هنرمندان ما
+          </h2>
+          <p className="text-stone-500 mt-4">
             استادکاران خبره، سازندگان آثار بی‌نظیر{" "}
           </p>
         </motion.div>
@@ -99,7 +98,7 @@ const AboutPage = () => {
               key={index}
               initial={{ scale: 0.9, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-lg overflow-hidden shadow-lg"
+              className="bg-[#a37462]/70 rounded-lg overflow-hidden shadow-lg"
             >
               <Image
                 src={member.image}
@@ -109,11 +108,11 @@ const AboutPage = () => {
                 className="w-full h-64 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-black">
+                <h3 className="text-xl font-semibold mb-1 text-[#e5d8d0]">
                   {member.name}
                 </h3>
-                <p className="text-yellow-500">{member.role}</p>
-                <p className="text-gray-400 mt-2">{member.bio}</p>
+                <p className="text-[#e5d8d0]">{member.role}</p>
+                <p className="text-stone-600 mt-2">{member.bio}</p>
               </div>
             </motion.div>
           ))}
@@ -124,16 +123,16 @@ const AboutPage = () => {
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        className="bg-yellow-500 text-white py-16"
+        className="bg-[#a37462] text-white py-16"
       >
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-serif mb-6">
             بیایید با هم چیزی زیبا خلق کنیم{" "}
           </h2>
-          <p className="mb-8 max-w-2xl mx-auto">
+          <p className="mb-8 max-w-2xl text-stone-300 mx-auto">
             فضای خود را با طراحی‌های منحصر به فرد ما متحول کنید{" "}
           </p>
-          <button className="bg-white text-yellow-400 px-8 py-3 rounded-full font-semibold hover:bg-yellow-50 transition-colors">
+          <button className="bg-white text-[#a37462] px-8 py-3 rounded-full font-semibold hover:bg-stone-50 transition-colors">
             تماس با ما{" "}
           </button>
         </div>

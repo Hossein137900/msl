@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` ${doranregular.className} bg-white/70 antialiased relative`}
+        className={` ${doranregular.className} bg-[#e5d8d0] antialiased relative`}
       >
         <Navbar />
         <ToastContainer position="top-center" rtl={true} />

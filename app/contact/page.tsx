@@ -7,10 +7,7 @@ import CardWithMouseBorder from "@/components/global/card-hover-border";
 
 const ContactPage = () => {
   return (
-    <div
-      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073]"
-      dir="rtl"
-    >
+    <div className="min-h-screen " dir="rtl">
       {/* Hero Section with Parallax */}
       {/* Hero Section with Parallax */}
       <motion.section
@@ -58,21 +55,23 @@ const ContactPage = () => {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <motion.div className="bg-transparentp-8 rounded-2xl">
-              <h2 className="text-3xl font-bold mb-6">ارسال پیام</h2>
+              <h2 className="text-3xl font-bold mb-6  text-[#a37462]">
+                ارسال پیام
+              </h2>
               <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <motion.div>
                     <input
                       type="text"
                       placeholder="نام و نام خانوادگی"
-                      className="w-full px-4 py-3 rounded-lg text-black border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg text-black border border-gray-200  focus:ring-2 focus:outline-none transition-all"
                     />
                   </motion.div>
                   <motion.div>
                     <input
                       type="email"
                       placeholder="ایمیل"
-                      className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all"
                     />
                   </motion.div>
                 </div>
@@ -80,20 +79,20 @@ const ContactPage = () => {
                   <input
                     type="text"
                     placeholder="موضوع"
-                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all"
                   />
                 </motion.div>
                 <motion.div>
                   <textarea
                     rows={6}
                     placeholder="پیام شما"
-                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all resize-none"
                   />
                 </motion.div>
                 <motion.button
                   whileHover={{ scale: 0.99 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-yellow-500 text-white px-8 py-3 rounded-lg hover:bg-yellow-600 transition-all duration-300 w-full md:w-full"
+                  className="hover:bg-[#a37462] font-bold hover:text-[#ffffff] border-b border-[#a37462] text-[#a37462]  px-8 py-3 transition-all duration-300 w-full md:w-full"
                 >
                   ارسال پیام
                 </motion.button>

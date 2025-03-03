@@ -30,7 +30,7 @@ export default function BlogGrid() {
         title: blog.title,
         slug: generateSlug(blog.title),
         excerpt: blog.description,
-        coverImage: blog.image || "/assets/images/fade3.jpg",
+        coverImage: "/assets/images/fade3.jpg",
         user: {
           name: blog.user.name || "Admin",
         },
@@ -38,7 +38,6 @@ export default function BlogGrid() {
         readTime: blog.readTime || 5,
         tags: blog.tags || [],
       }));
-      
 
       setBlogs(mappedBlogs);
     }
@@ -53,40 +52,50 @@ export default function BlogGrid() {
   function generateSlug(title: string) {
     return title
       .trim()
-      .replace(/\s+/g, '-')        // Replace spaces with hyphens
-      .replace(/[^آ-یa-z0-9\-]/g, '')  // Keep Persian and English letters, numbers, and hyphens
-      .replace(/\-\-+/g, '-')      // Replace multiple hyphens with single hyphen
-      .replace(/^-+/, '')          // Trim hyphens from start
-      .replace(/-+$/, '');         // Trim hyphens from end
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/[^آ-یa-z0-9\-]/g, "") // Keep Persian and English letters, numbers, and hyphens
+      .replace(/\-\-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-+/, "") // Trim hyphens from start
+      .replace(/-+$/, ""); // Trim hyphens from end
   }
-  
-  
-  
-  
 
   return (
     <div
-      className=" px-4 py-12 bg-[#e5d8d0]"
+      className="min-h-screen bg-gradient-to-b from-[#e5d8d0]  to-white py-8"
       dir="rtl"
     >
-      {/* Header Section */}
-      <div className="text-center mt-20 mb-4">
-        <h1 className="text-4xl font-bold text-[#a37462]  mb-4">وبلاگ ما</h1>
-        <p className="text-gray-600">آخرین مقالات و اخبار دنیای روشنایی</p>
+      {/* Store Banner */}
+      <div className="max-w-4xl mx-auto mt-24  pb-12 px-4">
+        <div className="bg-[#a37462] rounded-2xl shadow-xl overflow-hidden relative">
+          <Image
+            src="/assets/images/fade3.jpg"
+            alt="بنر بلاگ"
+            fill
+            className="object-cover opacity-30"
+          />
+          <div className="relative z-10 p-8 text-center">
+            <h1 className="text-2xl md:text-5xl font-extrabold text-white mb-4">
+              وبلاگ ما
+            </h1>
+            <p className="text-base md:text-lg text-[#e5d8d0]">
+              مقالات و دنیای روشنایی و سیستم های انرژی
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Search Section */}
-      <div className="mb-12">
-        <div className="relative w-full max-w-xl mx-auto">
+      <div className="max-w-xl mx-auto mb-12 px-4">
+        <div className="relative">
           <input
             type="text"
-            placeholder="جستجو در مقالات..."
-            className="w-full px-4 py-3 bg-white/10 focus:bg-white/20 text-white rounded-lg border placeholder:text-white/70 border-gray-400 focus:outline-none focus:ring-1 focus:ring-yellow-50 "
+            placeholder="جستجو در وبلاگ..."
+            className="w-full px-4 py-3 rounded-lg border border-[#a37462] focus:outline-none focus:ring-2 focus:ring-[#a37462] text-[#a37462] placeholder-[#a37462]/80 bg-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <svg
-            className="absolute left-3 top-3.5 h-5 w-5 text-gray-400"
+            className="absolute left-3 top-3.5 h-5 w-5 text-[#a37462]/70"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -101,53 +110,56 @@ export default function BlogGrid() {
         </div>
       </div>
 
-      {/* Blog Grid */}
-      <div className="grid grid-cols-1 items-center justify-center md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* Product (Blog) Grid */}
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredBlogs.map((blog) => (
-          <Link target="_blank" href={`/blogs/${blog.id}:${blog.slug}`} key={blog.id}>
-            <article className="bg-white/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <Link
+            target="_blank"
+            href={`/blogs/${blog.id}:${blog.slug}`}
+            key={blog.id}
+          >
+            <article className="bg-white/30  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
                 <Image
-                  src="/assets/images/fade3.jpg"
+                  src={blog.coverImage}
                   alt={blog.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-white text-lg font-bold translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2">
+                <div className="absolute inset-0 bg-black/60 flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-[#e5d8d0] my-auto  bg-[#a37462]/10 px-4 py-2 rounded-t-lg text-lg font-bold flex items-center gap-2 transform translate-y-full group-hover:translate-y-0 transition-all duration-300">
                     مشاهده وبلاگ
-                    <BsArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
+                    <BsArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300" />
                   </span>
                 </div>
               </div>
-
-              <div className="p-6">
-                <h2 className="text-xl text-white font-semibold mb-3 line-clamp-2">
+              <div className="p-4 flex flex-col flex-grow">
+                <h2 className="text-2xl font-bold text-[#a37462] mb-2 line-clamp-2">
                   {blog.title}
                 </h2>
-                <p className="text-gray-300 mb-4 line-clamp-3">
-                  {blog.excerpt.slice(0, 30)}...
+                <p className="text-stone-600 flex-grow line-clamp-3 mb-4">
+                  {blog.excerpt.slice(0, 25)}...
                 </p>
-
                 <div className="flex flex-wrap gap-2 mb-4">
                   {blog.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="bg-yellow-300 text-gray-600 px-2 py-1 rounded-full text-xs"
+                      className="bg-[#a37462] text-white px-2 py-1 rounded-lg text-xs"
                     >
                       #{tag}
                     </span>
                   ))}
                 </div>
-
-                <div className="flex items-center justify-between text-sm text-gray-200">
+                <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-[#e5d8d0] flex items-center justify-center text-[#a37462] font-bold">
                       {blog.user.name.slice(0, 1)}
                     </div>
-                    <span>{blog.user.name}</span>
+                    <span className="text-[#a37462]">{blog.user.name}</span>
                   </div>
-                  <span>{blog.readTime} دقیقه مطالعه</span>
+                  <span className="text-stone-500">
+                    {blog.readTime} دقیقه مطالعه
+                  </span>
                 </div>
               </div>
             </article>
@@ -157,10 +169,12 @@ export default function BlogGrid() {
 
       {/* Empty State */}
       {filteredBlogs.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-bold mb-2">مقاله‌ای یافت نشد</h3>
-          <p className="text-gray-400">لطفا با کلمات کلیدی دیگری جستجو کنید</p>
+        <div className="max-w-xl mx-auto text-center py-12">
+          <div className="text-[#a37462] text-6xl mb-4">🔍</div>
+          <h3 className="text-2xl font-bold mb-2 text-[#a37462]">
+            محصولی یافت نشد
+          </h3>
+          <p className="text-stone-600">لطفا با کلمات کلیدی دیگری جستجو کنید</p>
         </div>
       )}
     </div>
