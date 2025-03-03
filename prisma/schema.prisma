@@ -32,9 +32,9 @@ model Product {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   image       String?
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String   @db.ObjectIdcart    
-  Cart[]
+  categoryId  String    
+  category    Category  @relation(fields: [categoryId], references: [id])
+  cart        Cart[]
   properties  Json      
   videoes     String[]  
   colors      Json  

@@ -1,6 +1,7 @@
 'use client';
 import { addCategory } from '@/lib/category';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function AddCategory() {
   const [title, setTitle] = useState('');
@@ -19,14 +20,20 @@ export default function AddCategory() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('children', JSON.stringify(children));
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('children', JSON.stringify(children))
 
-   const response = await addCategory(formData)
-  };
+    const response = await addCategory(formData)
+    if (response.success) {
+      toast.success('دسته‌بندی با موفقیت افزوده شد')
+    } else {
+      console.error('Failed to add category:', response.error)
+      toast.error('خطا در افزودن دسته‌بندی')
+    }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] py-12 pt-28 px-4 sm:px-6 lg:px-8" dir="rtl">
