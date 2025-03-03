@@ -11,9 +11,11 @@ export async function getBlogs() {
 }
 
 export async function getBlogById(id: string) {
+  const decodedId = decodeURIComponent(id);
+  const blogId = decodedId.split(":")[0];
   const blog = await prisma.blog.findUnique({
     where: {
-      id,
+      id: blogId,
     },
     include: {
       user: true

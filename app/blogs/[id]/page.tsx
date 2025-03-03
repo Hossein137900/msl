@@ -8,6 +8,9 @@ export async function generateMetadata({
 }) {
   // Await params to get an object that includes "id"
   const { id } = await params;
+  const blogId= id.split(":")[0];
+  console.log(blogId);
+  
   const blog = await getBlogById(id);
   if (!blog || !blog.title || !blog.content || !blog.createdAt) {
     return {

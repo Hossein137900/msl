@@ -20,20 +20,25 @@ model User {
   phoneNumber String    @unique
   password    String  
   role        String    @default("user")
-  carts       Cart[]    
+  cart       Cart[]    
   blogs       Blog[]    
 }
 
 model Product {
   id          String    @id @default(uuid())
-  name        String
-  price       Int
+  title       String
+  price       String
   description String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   image       String?
-  category    String
-  carts       Cart[]   
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @db.ObjectIdcart    
+  Cart[]
+  properties  Json      
+  videoes     String[]  
+  colors      Json  
+  thumbnails  String[]  
 }
 
 model Cart {
@@ -45,6 +50,7 @@ model Cart {
   updatedAt   DateTime  @updatedAt
   user        User      @relation(fields: [userId], references: [id])
   product     Product   @relation(fields: [productId], references: [id])
+  path        String
 }
 
 model Blog {
@@ -63,3 +69,15 @@ model Blog {
 
   @@index([userId, id], name: "userId_id_idx")
 }
+
+model Category {
+  id            String     @id @default(uuid())
+  title         String 
+  children      String[]
+  products      Product[]
+  
+}
+
+
+
+

@@ -17,7 +17,6 @@
     "@tiptap/extension-text-align": "^2.10.3",
     "@tiptap/react": "^2.10.3",
     "@tiptap/starter-kit": "^2.11.5",
-    "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
     "framer-motion": "^12.4.7",
     "idb": "^8.0.2",
@@ -34,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/moment-jalaali": "^0.7.9",
     "@types/node": "^20",
     "@types/react": "^19",
