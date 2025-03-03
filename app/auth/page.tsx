@@ -13,15 +13,6 @@ import {
   BiUserPlus,
 } from "react-icons/bi";
 
-// type LoginResponse = {
-//   token: string;
-//   user: {
-//     id: string;
-//     name: string;
-//     phone: string;
-//   };
-// };
-
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -55,16 +46,15 @@ const AuthPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
-    const handleLogin = async (phoneNumber: string, password: string) => {
-      try {
-        const data = await login(phoneNumber, password);
-        localStorage.setItem("token", data.token);
-        return data;
-      } catch (error) {
-        console.log(error);
-        throw new Error("Login failed");
-      }
+  const handleLogin = async (phoneNumber: string, password: string) => {
+    try {
+      const data = await login(phoneNumber, password);
+      localStorage.setItem("token", data.token);
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Login failed");
+    }
   };
 
   const handleSignup = async (
@@ -78,9 +68,9 @@ const AuthPage = () => {
       return data;
     } catch (error) {
       console.log(error);
-      
-      throw new Error("خطا در ثبت نام");    }
-  
+
+      throw new Error("خطا در ثبت نام");
+    }
   };
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
@@ -113,7 +103,7 @@ const AuthPage = () => {
         }
       } catch (error) {
         console.log("Authentication error:", error);
-        
+
         toast.error("خطا در ورود به سیستم", {
           style: {
             background: "#333",
@@ -135,15 +125,12 @@ const AuthPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073]  flex items-center justify-center p-4"
-      dir="rtl"
-    >
-      <motion.div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 w-full max-w-md mt-24">
+    <div className=" flex items-center justify-center p-4" dir="rtl">
+      <motion.div className="bg-white/40 backdrop-blur-lg rounded-3xl p-8 w-full max-w-md my-32 md:my-36">
         <AnimatePresence mode="wait">
           <motion.div key={isLogin ? "login" : "signup"}>
-            <h2 className="text-3xl font-bold text-white text-center flex items-center justify-center gap-2">
-              {isLogin ? "ورود به حساب کاربری" : "ثبت نام"}
+            <h2 className="text-3xl font-bold text-[#a37462] text-center flex items-center justify-center gap-2">
+              {isLogin ? "ورود" : "ثبت نام"}
               {/* {isLogin ? (
                 <BiLogIn className="text-yellow-400" size={30} />
               ) : (
@@ -155,14 +142,14 @@ const AuthPage = () => {
               {!isLogin && (
                 <div className="relative">
                   <BiUser
-                    className="absolute right-3 top-3.5 text-gray-400"
+                    className="absolute right-3 top-3.5 text-[#a37462]"
                     size={20}
                   />
                   <input
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-yellow-400"
+                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
                     placeholder="نام و نام خانوادگی"
                   />
                   {errors.name && (
@@ -175,14 +162,14 @@ const AuthPage = () => {
 
               <div className="relative">
                 <BiPhone
-                  className="absolute right-3 top-3.5 text-gray-400"
+                  className="absolute right-3 top-3.5 text-[#a37462]"
                   size={20}
                 />
                 <input
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-yellow-400"
+                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
                   placeholder="شماره موبایل"
                 />
                 {errors.phone && (
@@ -194,7 +181,7 @@ const AuthPage = () => {
 
               <div className="relative">
                 <BiLock
-                  className="absolute right-3 top-3.5 text-gray-400"
+                  className="absolute right-3 top-3.5 text-[#a37462]"
                   size={20}
                 />
                 <input
@@ -202,7 +189,7 @@ const AuthPage = () => {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-yellow-400"
+                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
                   placeholder="رمز عبور"
                 />
                 {errors.password && (
@@ -215,7 +202,7 @@ const AuthPage = () => {
               {!isLogin && (
                 <div className="relative">
                   <BiLockAlt
-                    className="absolute right-3 top-3.5 text-gray-400"
+                    className="absolute right-3 top-3.5 text-[#a37462]"
                     size={20}
                   />
                   <input
@@ -223,7 +210,7 @@ const AuthPage = () => {
                     type="password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-yellow-400"
+                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
                     placeholder="تکرار رمز عبور"
                   />
                   {errors.confirmPassword && (
@@ -237,7 +224,7 @@ const AuthPage = () => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-3 rounded-xl bg-yellow-400 text-black font-bold hover:bg-yellow-300 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-xl bg-[#a37462] text-white font-bold hover:bg-[#a37462]/70 transition-colors flex items-center justify-center gap-2"
                 type="submit"
               >
                 {isLogin ? <BiLogIn size={20} /> : <BiUserPlus size={20} />}
@@ -248,7 +235,7 @@ const AuthPage = () => {
             <div className="text-center mt-6">
               <button
                 onClick={() => setIsLogin(!isLogin)}
-                className="text-yellow-400 hover:text-yellow-300 transition-colors flex items-center justify-center gap-2 mx-auto"
+                className="text-[#a37462] hover:text-[#a37462]/70 transition-colors flex items-center justify-center gap-2 mx-auto"
               >
                 {isLogin ? "ثبت نام نکرده‌اید؟" : "قبلاً ثبت نام کرده‌اید؟"}
                 {isLogin ? <BiUserPlus size={20} /> : <BiLogIn size={20} />}

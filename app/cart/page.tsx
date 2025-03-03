@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { FiMinus, FiPlus, FiTrash2, FiShoppingBag } from "react-icons/fi";
+import {
+  FiMinus,
+  FiPlus,
+  FiTrash2,
+  FiShoppingBag,
+  FiShoppingCart,
+} from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
 interface CartItem {
@@ -110,22 +116,24 @@ export default function CartPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-500"></div>
+      <div className="min-h-screen bg-[#e5d8d0] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#a37462]"></div>
       </div>
     );
   }
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] flex flex-col items-center justify-center p-4">
-        <FiShoppingBag className="w-24 h-24 text-yellow-500 mb-4" />
-        <h2 className="text-2xl text-white mb-4">سبد خرید شما خالی است</h2>
+      <div className="min-h-screen bg-[#e5d8d0] flex flex-col items-center justify-center p-4">
+        <FiShoppingBag className="w-24 h-24 text-[#a37462] mb-4" />
+        <h2 className="text-2xl text-[#a37462] font-bold mb-4">
+          سبد خرید شما خالی است
+        </h2>
         <Link href="/store">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-yellow-500 text-white px-6 py-3 rounded-xl hover:bg-yellow-600 transition-colors"
+            className="bg-[#a37462] text-white px-6 py-3 rounded-xl hover:bg-[#8a6352] transition-colors shadow-md"
           >
             مشاهده محصولات
           </motion.button>
@@ -135,12 +143,9 @@ export default function CartPage() {
   }
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] p-4 md:p-8"
-      dir="rtl"
-    >
+    <div className="min-h-screen bg-[#e5d8d0] p-4 md:p-8" dir="rtl">
       <div className="max-w-7xl mx-auto mt-24">
-        <h1 className="text-3xl font-bold text-yellow-500 mb-8">سبد خرید</h1>
+        <h1 className="text-3xl font-bold text-[#a37462] mb-8">سبد خرید</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (
@@ -148,10 +153,10 @@ export default function CartPage() {
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white/10 rounded-xl p-4 backdrop-blur-sm"
+                className="bg-white rounded-xl p-4 shadow-md border border-[#e5d8d0]/50"
               >
                 <div className="flex items-center gap-4">
-                  <div className="relative w-24 h-24 rounded-lg overflow-hidden">
+                  <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-[#e5d8d0]">
                     <Image
                       src={item.images[0]}
                       alt={item.title}
@@ -160,39 +165,39 @@ export default function CartPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl text-white font-bold">
+                    <h3 className="text-xl text-[#a37462] font-bold">
                       {item.title}
                     </h3>
-                    <p className="text-yellow-500">
+                    <p className="text-[#a37462]/80 font-medium">
                       {item.price.toLocaleString()} تومان
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 bg-yellow-500 rounded-xl p-2">
+                  <div className="flex items-center gap-2 bg-[#e5d8d0] rounded-xl p-2">
                     <motion.button
                       whileTap={{ scale: 0.95 }}
                       onClick={() => updateQuantity(item.id, "increase")}
-                      className="p-1 hover:bg-yellow-600 rounded-lg"
+                      className="p-1 hover:bg-[#d8c9be] rounded-lg transition-colors"
                     >
-                      <FiPlus className="text-white w-5 h-5" />
+                      <FiPlus className="text-[#a37462] w-5 h-5" />
                     </motion.button>
-                    <span className="text-white font-bold px-2">
+                    <span className="text-[#a37462] font-bold px-2">
                       {item.quantity}
                     </span>
                     {item.quantity === 1 ? (
                       <motion.button
                         whileTap={{ scale: 0.95 }}
                         onClick={() => updateQuantity(item.id, "remove")}
-                        className="p-1 hover:bg-yellow-600 rounded-lg"
+                        className="p-1 hover:bg-[#d8c9be] rounded-lg transition-colors"
                       >
-                        <FiTrash2 className="text-white w-5 h-5" />
+                        <FiTrash2 className="text-[#a37462] w-5 h-5" />
                       </motion.button>
                     ) : (
                       <motion.button
                         whileTap={{ scale: 0.95 }}
                         onClick={() => updateQuantity(item.id, "decrease")}
-                        className="p-1 hover:bg-yellow-600 rounded-lg"
+                        className="p-1 hover:bg-[#d8c9be] rounded-lg transition-colors"
                       >
-                        <FiMinus className="text-white w-5 h-5" />
+                        <FiMinus className="text-[#a37462] w-5 h-5" />
                       </motion.button>
                     )}
                   </div>
@@ -200,14 +205,17 @@ export default function CartPage() {
               </motion.div>
             ))}
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 h-fit">
-            <h2 className="text-2xl font-bold text-white mb-4">خلاصه سفارش</h2>
-            <div className="space-y-2 mb-6">
-              <div className="flex justify-between text-gray-300">
+          <div className="bg-white rounded-xl p-6 h-fit shadow-md border border-[#e5d8d0]/50">
+            <h2 className="text-2xl font-bold text-[#a37462] mb-4">
+              خلاصه سفارش
+            </h2>
+            <div className="space-y-3 mb-6">
+              <div className="flex justify-between text-[#a37462]/70">
                 <span>تعداد اقلام:</span>
                 <span>{cartItems.length} عدد</span>
               </div>
-              <div className="flex justify-between text-white font-bold">
+              <div className="h-px bg-[#e5d8d0]"></div>
+              <div className="flex justify-between text-[#a37462] font-bold">
                 <span>مجموع:</span>
                 <span>{totalPrice.toLocaleString()} تومان</span>
               </div>
@@ -215,9 +223,10 @@ export default function CartPage() {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full bg-yellow-500 text-white py-3 rounded-xl hover:bg-yellow-600 transition-colors font-bold"
+              className="w-full bg-[#a37462] text-white py-3 rounded-xl hover:bg-[#8a6352] transition-colors font-bold shadow-md flex items-center justify-center gap-2"
             >
               ادامه فرآیند خرید
+              <FiShoppingCart className="w-5 h-5" />
             </motion.button>
           </div>
         </div>

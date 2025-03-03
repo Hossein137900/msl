@@ -3,14 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BsCart3 } from "react-icons/bs";
 
-import {
-  BiSearch,
-  // BiSun,
-  // BiMoon,
-  BiMenu,
-  BiX,
-  BiChevronDown,
-} from "react-icons/bi";
+import { BiSearch, BiMenu, BiX, BiChevronDown } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
 import { megaMenuCategories, navItems } from "@/lib/navbarData";
@@ -18,7 +11,6 @@ import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [isDark, setIsDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
@@ -27,7 +19,7 @@ const Navbar = () => {
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 20);
+    setIsScrolled(window.scrollY > 40);
   }, []);
 
   useEffect(() => {
@@ -36,7 +28,6 @@ const Navbar = () => {
   }, [handleScroll]);
 
   // Toggle functions
-  // const toggleDarkMode = () => setIsDark((prev) => !prev);
   const toggleMobileMenu = () => setIsOpen((prev) => !prev);
   const toggleMobileDropdown = (title: string) => {
     setMobileDropdown((prev) => (prev === title ? null : title));
@@ -78,7 +69,9 @@ const Navbar = () => {
       }}
       dir="rtl"
       className={`fixed z-[9999] top-4 right-2 left-2 lg:right-20 lg:left-20 rounded-3xl px-6 py-4 transition-all duration-300 ${
-        isScrolled ? "bg-white/10 backdrop-blur-md shadow-lg" : "bg-transparent"
+        isScrolled
+          ? "bg-white/10 backdrop-blur-md shadow-lg"
+          : "bg-[#a37462]/40 backdrop-blur-sm"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -88,7 +81,7 @@ const Navbar = () => {
           alt="Logo"
           width={50}
           height={50}
-          className="my-auto "
+          className="my-auto"
         />
 
         {/* Desktop Nav Items */}
@@ -101,7 +94,9 @@ const Navbar = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link href={item.href}>
-                <span className="text-[#e5d8d0] hover:text-gray-50 relative  transition-colors duration-300 flex items-center gap-1">
+                <span
+                  className={`  hover:text-gray-50  ${isScrolled ? "text-[#a37462]" : "text-[#e5d8d0]"}  relative transition-colors duration-300 flex items-center gap-1`}
+                >
                   {item.title}
                   {item.title === "محصولات" && (
                     <motion.div

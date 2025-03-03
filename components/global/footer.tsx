@@ -12,7 +12,7 @@ const Footer = () => {
   }
   return (
     <footer
-      className="bg-gradient-to-l border-t border-gray-500 from-[#16222A] to-[#3A6073] text-white"
+      className="bg-[#1a1a1a]/70 border-t border-[#a37462] text-white"
       dir="rtl"
     >
       {/* Main Footer Content */}
@@ -31,7 +31,7 @@ const Footer = () => {
               height={60}
               className="mb-4"
             />
-            <p className="text-gray-400 leading-relaxed">
+            <p className="text-[#e5d8d0] leading-relaxed">
               برترین تولید کننده لوستر و چراغ‌های تزئینی با بیش از ۳۰ سال تجربه
               در ارائه محصولات لوکس و سفارشی
             </p>
@@ -40,7 +40,7 @@ const Footer = () => {
                 <Link
                   key={social.name}
                   href={social.href}
-                  className="hover:text-yellow-500 transform hover:scale-110 transition-all duration-300"
+                  className="hover:text-[#e5d8d0] transform hover:scale-110 transition-all duration-300"
                 >
                   <social.icon className="w-6 h-6" />
                 </Link>
@@ -54,18 +54,18 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-bold mb-6 relative">
+            <h3 className="text-xl font-bold mb-6 relative text-[#e5d8d0]">
               دسترسی سریع
-              <span className="absolute bottom-0 top-8 right-0 w-12 h-0.5 bg-yellow-500"></span>
+              <span className="absolute bottom-0 top-8 right-0 w-12 h-0.5 bg-[#e5d8d0]"></span>
             </h3>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-yellow-500 transition-colors duration-300 flex items-center group"
+                    className="text-[#e5d8d0] hover:text-[#a37462] transition-colors duration-300 flex items-center group"
                   >
-                    <span className="w-0 group-hover:w-2 h-0.5 bg-yellow-500 ml-2 transition-all duration-300"></span>
+                    <span className="w-0 group-hover:w-2 h-0.5 bg-[#e5d8d0] ml-2 transition-all duration-300"></span>
                     {link.name}
                   </Link>
                 </li>
@@ -79,9 +79,9 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-bold mb-6 relative">
+            <h3 className="text-xl font-bold mb-6 relative text-[#e5d8d0]">
               اطلاعات تماس
-              <span className="absolute bottom-0 top-8 right-0 w-12 h-0.5 bg-yellow-500"></span>
+              <span className="absolute bottom-0 top-8 right-0 w-12 h-0.5 bg-[#e5d8d0]"></span>
             </h3>
             <div className="space-y-4">
               {contactInfo.map((info) => (
@@ -89,10 +89,10 @@ const Footer = () => {
                   key={info.label}
                   className="flex items-start space-x-3 rtl:space-x-reverse"
                 >
-                  <info.icon className="w-5 h-5 text-yellow-500 mt-1" />
+                  <info.icon className="w-5 h-5 text-[#a37462] mt-1" />
                   <div>
-                    <p className="text-sm text-gray-400">{info.label}</p>
-                    <p className="text-white">{info.value}</p>
+                    <p className="text-sm text-[#e5d8d0]">{info.label}</p>
+                    <p className="text-gray-300">{info.value}</p>
                   </div>
                 </div>
               ))}
@@ -103,7 +103,7 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="w-full h-[200px] rounded-lg overflow-hidden"
+            className="w-full h-[200px] rounded-lg overflow-hidden shadow-md"
           >
             <iframe
               src="https://www.google.com/maps/embed?pb=YOUR_MAP_EMBED_URL"
@@ -120,7 +120,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-[#333]">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
@@ -129,13 +129,13 @@ const Footer = () => {
             <div className="flex space-x-4 rtl:space-x-reverse mt-4 md:mt-0">
               <Link
                 href="/privacy"
-                className="text-gray-400 hover:text-yellow-500 text-sm transition-colors duration-300"
+                className="text-gray-400 hover:text-[#e5d8d0] text-sm transition-colors duration-300"
               >
                 حریم خصوصی
               </Link>
               <Link
                 href="/terms"
-                className="text-gray-400 hover:text-yellow-500 text-sm transition-colors duration-300"
+                className="text-gray-400 hover:text-[#e5d8d0] text-sm transition-colors duration-300"
               >
                 قوانین و مقررات
               </Link>

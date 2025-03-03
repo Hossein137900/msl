@@ -61,10 +61,10 @@ const CardWithMouseBorder = ({
     >
       <div className="card-content">
         <div className="icon-container">
-          <card.icon className="w-12 h-12 text-yellow-400" />
+          <card.icon className="w-12 h-12 text-[#a37462]/80" />
         </div>
         <h3 className="text-xl font-semibold mb-3 text-white">{card.title}</h3>
-        <p className="text-gray-400">{card.description}</p>
+        <p className="text-stone-800">{card.description}</p>
       </div>
     </motion.div>
   );

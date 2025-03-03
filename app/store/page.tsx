@@ -46,18 +46,15 @@ const products: ProductProps[] = [
 
 const Store: FC<ProductListProps> = () => {
   return (
-    <div
-      className="px-4 py-8 bg-gradient-to-l from-[#16222A] to-[#3A6073]"
-      dir="rtl"
-    >
-      <h2 className="text-4xl mt-24 font-bold text-center text-yellow-500 mb-8">
+    <div className="px-4 py-8 " dir="rtl">
+      <h2 className="text-4xl mt-24 font-bold text-center text-white mb-8">
         محصولات ما
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {products.map((product) => (
           <motion.div
             key={product.id}
-            className="group bg-white/20 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden"
+            className="group bg-white  shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -66,36 +63,20 @@ const Store: FC<ProductListProps> = () => {
                 src={product.image}
                 alt={product.title}
                 fill
-                className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
-              <div className="absolute top-4 right-4 space-y-2">
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  className="bg-white p-2 rounded-full shadow-md hover:bg-red-400 relative"
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Add to favorites"
-                >
-                  <FiHeart className="text-gray-600 w-5 hover:text-white h-5 peer" />
-                  <div className="absolute -left-20 -bottom-6 hidden peer-hover:block">
-                    <div className="bg-black text-white text-xs py-1 px-2 rounded-md whitespace-nowrap">
-                      افزودن به علاقه‌مندی‌ها
-                    </div>
-                    <div className="absolute -bottom-1 right-0 w-2 h-2 bg-black transform rotate-45"></div>
-                  </div>
-                </motion.button>
-              </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-50 mb-2 line-clamp-1">
+            <div className="p-6 flex flex-col">
+              <h3 className="text-2xl font-bold text-[#a37462] mb-2 line-clamp-1">
                 {product.title}
               </h3>
-              <p className="text-gray-200 text-sm mb-4 line-clamp-2">
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                 {product.description.slice(0, 50)}...
               </p>
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-300">قیمت محصول</p>
-                  <span className="text-sm font-bold text-yellow-600">
+                  <p className="text-xs text-gray-500">قیمت محصول</p>
+                  <span className="text-sm font-bold text-[#a37462]">
                     {product.price} تومان
                   </span>
                 </div>
@@ -103,11 +84,9 @@ const Store: FC<ProductListProps> = () => {
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     aria-label="View product"
-                    className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
+                    className="flex items-center gap-2 bg-[#e5d8d0] hover:bg-[#a37462] text-[#a37462] hover:text-white px-6 py-3 font-medium transition-colors duration-200"
                   >
-                    <span className="text-xs text-nowrap font-semibold">
-                      مشاهده محصول
-                    </span>
+                    <span className="text-xs font-semibold">مشاهده محصول</span>
                     <FiEye className="w-4 h-4" />
                   </motion.button>
                 </Link>

@@ -1,230 +1,366 @@
-// "use client";
-// import { useParams } from "next/navigation";
-// import Image from "next/image";
-// import Link from "next/link";
-// import { useState, useEffect } from "react";
-// import { motion } from "framer-motion";
-// import { FiAlertCircle, FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
-// import { toast } from "react-hot-toast";
+"use client";
+import { useParams } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// interface ProductProps {
-//   id: string;
-//   title: string;
-//   description: string;
-//   price: number;
-//   images: string[];
-// }
+import {
+  FiAlertCircle,
+  FiMinus,
+  FiPlus,
+  FiTrash2,
+  FiInfo,
+  FiMessageSquare,
+  FiVideo,
+} from "react-icons/fi";
+import { toast } from "react-hot-toast";
+import DynamicTable from "@/components/global/Table";
 
-// const fakeProducts: ProductProps[] = [
-//   {
-//     id: "1",
-//     title: "محصول 1",
-//     description:
-//       "توضیحات محصول 1 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-//     price: 100000,
-//     images: [
-//       "/assets/images/fade3.jpg",
-//       "/assets/images/fade4.jpg",
-//       "/assets/images/fade3.jpg",
-//     ],
-//   },
-//   {
-//     id: "2",
-//     title: "محصول 2",
-//     description:
-//       "توضیحات محصول 2 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-//     price: 100000,
-//     images: [
-//       "/assets/images/fade4.jpg",
-//       "/assets/images/fade3.jpg",
-//       "/assets/images/fade4.jpg",
-//     ],
-//   },
-//   {
-//     id: "3",
-//     title: "محصول 3",
-//     description:
-//       "توضیحات محصول 3 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-//     price: 100000,
-//     images: [
-//       "/assets/images/fade3.jpg",
-//       "/assets/images/fade4.jpg",
-//       "/assets/images/fade3.jpg",
-//     ],
-//   },
-// ];
+interface ProductProps {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  images: string[];
+}
 
-// export default function ProductDetailPage() {
-//   const params = useParams();
-//   const product = fakeProducts.find((p) => p.id === params.id);
-//   const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
-//   const [quantity, setQuantity] = useState(0);
-//   useEffect(() => {
-//     if (!product) return;
-    
-//     const request = indexedDB.open("CartDB", 1);
-  
-//     request.onupgradeneeded = (event) => {
-//       const db = (event.target as IDBOpenDBRequest).result;
-//       if (!db.objectStoreNames.contains('cart')) {
-//         db.createObjectStore('cart', { keyPath: 'id' });
-//       }
-//     };
-  
-//     request.onsuccess = (event) => {
-//       const db = (event.target as IDBOpenDBRequest).result;
-//       try {
-//         const transaction = db.transaction(['cart'], 'readonly');
-//         const store = transaction.objectStore('cart');
-//         const getRequest = store.get(product.id);
-        
-//         getRequest.onsuccess = () => {
-//           if (getRequest.result) {
-//             setQuantity(getRequest.result.quantity);
-//           }
-//         };
-//       } catch (error) {
-//         console.log('Store access error:', error);
-//       }
-//     };
-//   }, [product?.id]);
-  
-  
-//   const handleQuantityChange = async (action: 'increase' | 'decrease' | 'remove') => {
-//     const request = indexedDB.open("CartDB", 1);
+const fakeProducts: ProductProps[] = [
+  {
+    id: "1",
+    title: "محصول 1",
+    description:
+      "توضیحات محصول 1 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
+    price: 100000,
+    images: [
+      "/assets/images/fade3.jpg",
+      "/assets/images/fade4.jpg",
+      "/assets/images/fade3.jpg",
+    ],
+  },
+  {
+    id: "2",
+    title: "محصول 2",
+    description:
+      "توضیحات محصول 2 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
+    price: 100000,
+    images: [
+      "/assets/images/fade4.jpg",
+      "/assets/images/fade3.jpg",
+      "/assets/images/fade4.jpg",
+    ],
+  },
+  {
+    id: "3",
+    title: "محصول 3",
+    description:
+      "توضیحات محصول 3 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
+    price: 100000,
+    images: [
+      "/assets/images/fade3.jpg",
+      "/assets/images/fade4.jpg",
+      "/assets/images/fade3.jpg",
+    ],
+  },
+];
 
-//     request.onsuccess = (event) => {
-//       const db = (event.target as IDBOpenDBRequest).result;
-//       const transaction = db.transaction(['cart'], 'readwrite');
-//       const store = transaction.objectStore('cart');
+export default function ProductDetailPage() {
+  const params = useParams();
+  const product = fakeProducts.find((p) => p.id === params.id);
+  const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
+  const [quantity, setQuantity] = useState(0);
 
-//       if (!product) return;
+  // Tab state: details, comments, video
+  const [activeTab, setActiveTab] = useState<"details" | "comments" | "video">(
+    "details"
+  );
 
-//       if (action === 'remove' || (action === 'decrease' && quantity === 1)) {
-//         store.delete(product.id);
-//         setQuantity(0);
-//         toast.success('محصول از سبد خرید حذف شد');
-//         return;
-//       }
+  useEffect(() => {
+    if (!product) return;
+    const request = indexedDB.open("CartDB", 1);
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains("cart")) {
+        db.createObjectStore("cart", { keyPath: "id" });
+      }
+    };
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      try {
+        const transaction = db.transaction(["cart"], "readonly");
+        const store = transaction.objectStore("cart");
+        const getRequest = store.get(product.id);
+        getRequest.onsuccess = () => {
+          if (getRequest.result) {
+            setQuantity(getRequest.result.quantity);
+          }
+        };
+      } catch (error) {
+        console.log("Store access error:", error);
+      }
+    };
+  }, [product?.id]);
 
-//       const newQuantity = action === 'increase' ? quantity + 1 : quantity - 1;
-//       setQuantity(newQuantity);
+  const handleQuantityChange = async (
+    action: "increase" | "decrease" | "remove"
+  ) => {
+    const request = indexedDB.open("CartDB", 1);
+    request.onsuccess = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      const transaction = db.transaction(["cart"], "readwrite");
+      const store = transaction.objectStore("cart");
 
-//       store.put({
-//         ...product,
-//         quantity: newQuantity
-//       });
+      if (!product) return;
 
-//       toast.success(action === 'increase' ? 'محصول به سبد خرید اضافه شد' : 'تعداد محصول کاهش یافت');
-//     };
-//   };
+      if (action === "remove" || (action === "decrease" && quantity === 1)) {
+        store.delete(product.id);
+        setQuantity(0);
+        toast.success("محصول از سبد خرید حذف شد");
+        return;
+      }
 
-//   if (!product) {
-//     return (
-//       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073]">
-//         <FiAlertCircle className="w-16 h-16 text-red-500 mb-4" />
-//         <p className="text-xl text-gray-200">محصولی یافت نشد</p>
-//       </div>
-//     );
-//   }
+      const newQuantity = action === "increase" ? quantity + 1 : quantity - 1;
+      setQuantity(newQuantity);
+      store.put({
+        ...product,
+        quantity: newQuantity,
+      });
+      toast.success(
+        action === "increase"
+          ? "محصول به سبد خرید اضافه شد"
+          : "تعداد محصول کاهش یافت"
+      );
+    };
+  };
 
-//   return (
-//     <div
-//       className="bg-gradient-to-l from-[#16222A] to-[#3A6073] px-4 py-8"
-//       dir="rtl"
-//     >
-//       <div className="flex mt-24 flex-col md:flex-row gap-8">
-//         <div className="flex-1">
-//           <div className="relative w-full h-96 rounded-lg overflow-hidden">
-//             <Image
-//               src={product.images[currentImgIndex]}
-//               alt={`${product.title} - تصویر ${currentImgIndex + 1}`}
-//               fill
-//               className="object-cover"
-//             />
-//           </div>
-//           <div className="mt-4 flex gap-4 overflow-x-auto">
-//             {product.images.map((img, index) => (
-//               <div
-//                 key={index}
-//                 className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${index === currentImgIndex
-//                     ? "border-yellow-500"
-//                     : "border-transparent"
-//                   }`}
-//                 onClick={() => setCurrentImgIndex(index)}
-//               >
-//                 <Image
-//                   src={img}
-//                   alt={`${product.title} - تصویر ${index + 1}`}
-//                   fill
-//                   className="object-cover"
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//         <div className="flex-1 flex flex-col justify-between">
-//           <div>
-//             <h2 className="text-3xl font-bold mb-4">{product.title}</h2>
-//             <p className="mb-4">{product.description}</p>
-//             <p className="font-bold text-xl mb-4">
-//               قیمت: {product.price} تومان
-//             </p>
-//           </div>
-          
+  if (!product) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-l from-[#e5d8d0] to-[#a37462]">
+        <FiAlertCircle className="w-16 h-16 text-red-500 mb-4" />
+        <p className="text-xl text-white">محصولی یافت نشد</p>
+      </div>
+    );
+  }
 
-//           <div className="flex flex-col gap-4">
-//             {quantity === 0 ? (
-//               <motion.button
-//                 whileTap={{ scale: 0.95 }}
-//                 onClick={() => handleQuantityChange('increase')}
-//                 className="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-colors duration-200"
-//               >
-//                 افزودن به سبد خرید
-//               </motion.button>
-//             ) : (
-//               <div className="flex items-center justify-between bg-yellow-500 rounded-xl p-2">
-//                 <motion.button
-//                   whileTap={{ scale: 0.95 }}
-//                   onClick={() => handleQuantityChange('increase')}
-//                   className="p-2 hover:bg-yellow-600 rounded-lg"
-//                 >
-//                   <FiPlus className="text-white w-6 h-6" />
-//                 </motion.button>
+  const tableRows = [
+    { property: "عنوان محصول", value: product.title },
+    { property: "قیمت", value: `${product.price} تومان` },
+    { property: "توضیحات", value: product.description },
+  ];
 
-//                 <span className="text-white font-bold text-xl">{quantity}</span>
+  return (
+    <div
+      className="min-h-screen px-4 py-8 bg-gradient-to-br from-[#e5d8d0] to-[#a37462]"
+      dir="rtl"
+    >
+      <div className="max-w-6xl mx-auto bg-white mt-24 rounded-2xl shadow-xl p-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Image Section */}
+          <div className="flex-1">
+            <div className="relative w-full h-96 rounded-sm overflow-hidden">
+              <Image
+                src={product.images[currentImgIndex]}
+                alt={`${product.title} - تصویر ${currentImgIndex + 1}`}
+                fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+              />
+            </div>
+            <div className="mt-4 flex gap-4 overflow-x-auto">
+              {product.images.map((img, index) => (
+                <div
+                  key={index}
+                  onClick={() => setCurrentImgIndex(index)}
+                  className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${
+                    index === currentImgIndex
+                      ? "border-[#a37462]"
+                      : "border-transparent"
+                  }`}
+                >
+                  <Image
+                    src={img}
+                    alt={`${product.title} - تصویر ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
 
-//                 {quantity === 1 ? (
-//                   <motion.button
-//                     whileTap={{ scale: 0.95 }}
-//                     onClick={() => handleQuantityChange('remove')}
-//                     className="p-2 hover:bg-yellow-600 rounded-lg"
-//                   >
-//                     <FiTrash2 className="text-white w-6 h-6" />
-//                   </motion.button>
-//                 ) : (
-//                   <motion.button
-//                     whileTap={{ scale: 0.95 }}
-//                     onClick={() => handleQuantityChange('decrease')}
-//                     className="p-2 hover:bg-yellow-600 rounded-lg"
-//                   >
-//                     <FiMinus className="text-white w-6 h-6" />
-//                   </motion.button>
-//                 )}
-//               </div>
-//             )}
+          {/* Details & Tabs Section */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div>
+              <h2 className="text-3xl font-bold mb-4 text-[#a37462]">
+                {product.title}
+              </h2>
+              <p className="mb-4 text-gray-900">{product.description}</p>
+              <p className="text-xl mb-4 text-[#a37462]">
+                قیمت: {product.price} تومان
+              </p>
 
-//             <Link href="/cart">
-//               <motion.button
-//                 whileTap={{ scale: 0.95 }}
-//                 className="w-full flex items-center justify-center border border-yellow-500 hover:bg-yellow-500 hover:text-white text-yellow-500 px-6 py-3 rounded-xl font-medium transition-colors duration-200"
-//               >
-//                 مشاهده سبد خرید
-//               </motion.button>
-//             </Link>
-//           </div>
-//           </div>
-//         </div>
-//       </div>
-//       );
-// }
+              {/* Tab Component */}
+
+              <div className="mt-6">
+                <div className="flex border-b border-gray-200">
+                  <button
+                    onClick={() => setActiveTab("details")}
+                    className={`flex items-center px-4 py-2 relative font-bold transition-colors duration-300 ${
+                      activeTab === "details"
+                        ? "text-[#a37462]"
+                        : "text-gray-500 hover:text-[#a37462]"
+                    }`}
+                  >
+                    <FiInfo className="ml-1 text-base" />
+                    جزئیات
+                    {activeTab === "details" && (
+                      <motion.div
+                        layoutId="underline"
+                        className="absolute -bottom-px left-0 right-0 h-1 bg-[#a37462]"
+                      />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("comments")}
+                    className={`flex items-center px-4 py-2 relative font-bold transition-colors duration-300 ${
+                      activeTab === "comments"
+                        ? "text-[#a37462]"
+                        : "text-gray-500 hover:text-[#a37462]"
+                    }`}
+                  >
+                    <FiMessageSquare className="ml-1 text-base" />
+                    کامنت ها
+                    {activeTab === "comments" && (
+                      <motion.div
+                        layoutId="underline"
+                        className="absolute -bottom-px left-0 right-0 h-1 bg-[#a37462]"
+                      />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("video")}
+                    className={`flex items-center px-4 py-2 relative font-bold transition-colors duration-300 ${
+                      activeTab === "video"
+                        ? "text-[#a37462]"
+                        : "text-gray-500 hover:text-[#a37462]"
+                    }`}
+                  >
+                    <FiVideo className="ml-1 text-base" />
+                    ویدیو
+                    {activeTab === "video" && (
+                      <motion.div
+                        layoutId="underline"
+                        className="absolute -bottom-px left-0 right-0 h-1 bg-[#a37462]"
+                      />
+                    )}
+                  </button>
+                </div>
+                <div className="mt-4">
+                  <AnimatePresence mode="wait">
+                    {activeTab === "details" && (
+                      <motion.div
+                        key="details"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <DynamicTable rows={tableRows} />
+                      </motion.div>
+                    )}
+                    {activeTab === "comments" && (
+                      <motion.div
+                        key="comments"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="space-y-4">
+                          <p className="text-gray-700">
+                            کامنتی یافت نشد. منتظر کامنت کاربران باشید...
+                          </p>
+                          {/* Integration point for a comments API or comments form */}
+                        </div>
+                      </motion.div>
+                    )}
+                    {activeTab === "video" && (
+                      <motion.div
+                        key="video"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="relative pb-[56.25%]">
+                          <iframe
+                            className="absolute inset-0 w-full h-full rounded-lg shadow-md"
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            title="Video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+
+            {/* Cart Controls */}
+            <div className="flex flex-col gap-6 mt-10">
+              {quantity === 0 ? (
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleQuantityChange("increase")}
+                  className="w-full flex items-center justify-center bg-[#a37462] hover:bg-[#8a5a50] text-white px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
+                >
+                  افزودن به سبد خرید
+                </motion.button>
+              ) : (
+                <div className="flex items-center justify-between bg-[#a37462] rounded-xl p-3 shadow-inner">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleQuantityChange("increase")}
+                    className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                  >
+                    <FiPlus className="text-white w-6 h-6" />
+                  </motion.button>
+                  <span className="text-white font-extrabold text-2xl mx-4">
+                    {quantity}
+                  </span>
+                  {quantity === 1 ? (
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleQuantityChange("remove")}
+                      className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                    >
+                      <FiTrash2 className="text-white w-6 h-6" />
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleQuantityChange("decrease")}
+                      className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                    >
+                      <FiMinus className="text-white w-6 h-6" />
+                    </motion.button>
+                  )}
+                </div>
+              )}
+              <Link href="/cart">
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full flex items-center justify-center border-2 border-[#a37462] hover:bg-[#a37462] hover:text-white text-[#a37462] px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
+                >
+                  مشاهده سبد خرید
+                </motion.button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
