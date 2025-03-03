@@ -14,8 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 import { addBlog } from "@/lib/action";
 
-
-
 const MenuButton = ({
   onClick,
   active,
@@ -215,14 +213,14 @@ const token = localStorage.getItem("token");
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-3xl font-bold mb-4 text-center text-white text-transparent bg-clip-text"
+        className="text-2xl md:text-4xl font-black my-4 text-center bg-gradient-to-r from-[#a37462] to-[#e5d8d0] text-transparent bg-clip-text"
       >
         افزودن بلاگ جدید
       </motion.h2>
       <motion.p
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-base font-thin mb-8 text-center text-white/70"
+        className="text-base md:text-xl font-medium mb-8 text-center text-[#a37462]"
       >
         در این قسمت می‌توانید بلاگ جدید خود را ایجاد کنید
       </motion.p>
@@ -233,22 +231,22 @@ const token = localStorage.getItem("token");
       />
 
       <form onSubmit={handleSubmit} className="space-y-6" dir="rtl">
-        <div className="bg-blue-50/20 rounded-xl p-6 border border-blue-100">
+        <div className="bg-[#a37462]/10 backdrop-blur-sm  p-8 border border-[#e5d8d0]/20 shadow-lg">
           <label className="block mb-4 text-xl text-center text-gray-100">
-            <span className="text-gray-100 font-bold">قسمت سئو</span>
+            <span className="text-[#fff] font-bold">قسمت سئو</span>
           </label>
           <input
             type="text"
             value={seoTitle}
             onChange={(e) => setSeoTitle(e.target.value)}
-            className="w-full px-4 py-3 text-black rounded-xl border"
+            className="w-full px-6 py-4 mb-1 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="عنوان سئو"
             required
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 text-black rounded-xl border mt-4"
+            className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="توضیحات کوتاه"
             required
           />
@@ -259,13 +257,13 @@ const token = localStorage.getItem("token");
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
-                className="w-full px-4 py-3 text-black rounded-xl border border-blue-200 outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 outline-none focus:border-[#a37462]"
                 placeholder="برچسب‌ها را وارد کنید..."
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="bg-emerald-500 text-white px-4 text-center rounded-xl hover:bg-emerald-600"
+                className="bg-[#a37462] text-white px-6 rounded-xl hover:bg-[#8a5a50] transition-all duration-300"
               >
                 <i className="fas fa-plus mt-1.5"></i>
               </button>
@@ -277,7 +275,7 @@ const token = localStorage.getItem("token");
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   key={index}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center gap-2"
+                  className="bg-[#e5d8d0] text-[#a37462] px-4 py-2 rounded-full flex items-center gap-2 font-medium"
                 >
                   {tag}
                   <button
@@ -292,24 +290,24 @@ const token = localStorage.getItem("token");
             </div>
           </div>
         </div>
-        <div className="bg-blue-50/20 rounded-xl p-6 border border-blue-100">
-          <label className="block text-xl font-bold text-gray-100 text-center mb-4">
+        <div className="bg-[#a37462]/10 backdrop-blur-sm  p-8 border border-[#e5d8d0]/20 shadow-lg">
+          <label className="block text-2xl font-bold text-[#fff] text-center mb-6">
             عنوان بلاگ
           </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 text-black py-3 rounded-xl border"
+            className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="عنوان بلاگ"
           />
 
           <div>
-            <label className="block text-xl font-bold text-gray-100 text-center my-4">
+            <label className="block text-2xl font-bold text-[#fff] text-center my-6">
               محتوای بلاگ
             </label>
-            <div className="border border-gray-300 rounded-lg">
-              <div className="bg-gray-50 text-black p-2 border-b border-gray-300 flex flex-wrap gap-2">
+            <div className="border border-[#e5d8d0] rounded-2xl overflow-hidden shadow-lg">
+              <div className="bg-[#e5d8d0]/30 p-4 border-b border-[#e5d8d0] flex flex-wrap gap-3">
                 <MenuButton
                   onClick={() => editor?.chain().focus().toggleBold().run()}
                   active={editor?.isActive("bold")}
@@ -429,21 +427,21 @@ const token = localStorage.getItem("token");
                 </MenuButton>
               </div>
 
-              <div className="p-4 bg-white text-black">
+              <div className="p-6 text-black bg-white/90">
                 <EditorContent editor={editor} />
               </div>
 
-              <div className="mt-2 text-sm text-gray-200 text-right border-t p-2">
+              <div className="mt-2 text-sm text-[#a37462] text-right border-t border-[#e5d8d0] p-4">
                 تعداد کلمات: {wordCount}
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-right pt-4">
+        <div className="text-right pt-6">
           <button
             type="submit"
-            className="bg-emerald-500 text-white px-8 py-3 w-full rounded-lg hover:bg-emerald-600 transition-colors font-medium shadow-sm hover:shadow-md"
+            className="bg-gradient-to-r from-[#a37462] to-[#8a5a50] text-white px-8 py-4 w-full rounded-sm hover:shadow-lg transition-all duration-300 font-bold text-lg"
           >
             انتشار بلاگ
           </button>
