@@ -32,6 +32,7 @@ model Product {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   image       String?
+  categoryChildren  String
   categoryId  String    
   category    Category  @relation(fields: [categoryId], references: [id])
   cart        Cart[]
