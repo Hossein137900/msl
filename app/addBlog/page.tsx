@@ -172,32 +172,43 @@ export default function AddBlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (tags.length < 1) {
-      toast.warning("لطفا حداقل یک برچسب اضافه کنید");
-      return;
+    
+    // Validate required fields
+    if (!title || !description || !seoTitle || !editor?.getHTML()) {
+        toast.error("لطفا تمام فیلدها را پر کنید");
+        return;
+    }
+const token = localStorage.getItem("token");
+    if (!token) {
+        toast.error("لطفا مجددا وارد شوید");
+        return;
     }
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("seoTitle", seoTitle);
-    formData.append("content", editor?.getHTML() || "");
-    formData.append("userId", "3d1ad2d5-04a1-4b31-b92a-0c46c75e2953");
+    formData.append("content", editor?.getHTML());
     formData.append("image", "default-image.jpg");
     formData.append("tags", JSON.stringify(tags));
-    formData.append("readTime", "5");
+    formData.append("readTime", String(Math.ceil(wordCount / 200))); // Estimate read time based on word count
 
     try {
-      await addBlog(formData);
-      toast.success("بلاگ با موفقیت ایجاد شد");
-      setTitle("");
-      setDescription("");
-      setSeoTitle("");
-      editor?.commands.clearContent();
+        const response = await addBlog(formData,token);
+        if (response) {
+            toast.success("بلاگ با موفقیت ایجاد شد");
+            // Reset form
+            setTitle("");
+            setDescription("");
+            setSeoTitle("");
+            setTags([]);
+            editor?.commands.clearContent();
+        }
     } catch (error) {
-      console.log(error);
-      toast.error("خطا در ایجاد بلاگ");
+        console.error(error);
+        toast.error("خطا در ایجاد بلاگ");
     }
-  };
+};
+
 
   return (
     <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
