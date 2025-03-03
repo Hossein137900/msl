@@ -7,6 +7,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { megaMenuCategories, navItems } from "@/lib/navbarData";
 import { usePathname } from "next/navigation";
+import 
+export interface Product {
+  id: string;
+  name: string;
+}
+
+export interface Category {
+  id: number;
+  title: string;
+  image: string;
+  products: Product[];
+}
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,8 +26,12 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
-
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
+
+
+
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -123,22 +139,22 @@ const Navbar = () => {
 
               {item.title === "محصولات" && (
                 <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{
-                  opacity: activeDropdown === "محصولات" ? 1 : 0,
-                  y: activeDropdown === "محصولات" ? 0 : 30,
-                }}
-                transition={{ duration: 0.3 }}
-                className="absolute top-12 -right-10 w-[800px]
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{
+                    opacity: activeDropdown === "محصولات" ? 1 : 0,
+                    y: activeDropdown === "محصولات" ? 0 : 30,
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute top-12 -right-10 w-[800px]
                   shadow-2xl
                   bg-[#a37462]/80
                   border border-white/10 rounded-2xl
                   overflow-hidden z-50"
-                style={{
-                  pointerEvents:
-                    activeDropdown === "محصولات" ? "auto" : "none",
-                }}
-              >
+                  style={{
+                    pointerEvents:
+                      activeDropdown === "محصولات" ? "auto" : "none",
+                  }}
+                >
                   <div className="flex h-[400px]">
                     <div className="w-1/3 border-l border-white/20 bg-white/5">
                       {megaMenuCategories.map((category) => (
