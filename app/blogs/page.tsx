@@ -13,6 +13,7 @@ interface BlogPost {
   user: {
     name: string;
   };
+  slug: string;
   date: Date;
   readTime: number;
   tags: string[];
@@ -27,15 +28,17 @@ export default function BlogGrid() {
       const mappedBlogs = fetchedBlogs.map((blog) => ({
         id: blog.id,
         title: blog.title,
+        slug: generateSlug(blog.title),
         excerpt: blog.description,
         coverImage: "/assets/images/fade3.jpg",
         user: {
           name: blog.user.name || "Admin",
         },
         date: blog.createdAt,
-        readTime: blog.readTime,
-        tags: blog.tags,
+        readTime: blog.readTime || 5,
+        tags: blog.tags || [],
       }));
+
       setBlogs(mappedBlogs);
     }
     fetchBlogs();
@@ -46,6 +49,15 @@ export default function BlogGrid() {
       blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+  function generateSlug(title: string) {
+    return title
+      .trim()
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/[^آ-یa-z0-9\-]/g, "") // Keep Persian and English letters, numbers, and hyphens
+      .replace(/\-\-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-+/, "") // Trim hyphens from start
+      .replace(/-+$/, ""); // Trim hyphens from end
+  }
 
   return (
     <div
@@ -101,9 +113,13 @@ export default function BlogGrid() {
       {/* Product (Blog) Grid */}
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredBlogs.map((blog) => (
-          <Link target="_blank" href={`/blogs/${blog.id}`} key={blog.id}>
-            <article className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-shadow duration-300 flex flex-col overflow-hidden">
-              <div className="relative h-56 overflow-hidden group">
+          <Link
+            target="_blank"
+            href={`/blogs/${blog.id}:${blog.slug}`}
+            key={blog.id}
+          >
+            <article className="bg-white/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="relative h-48 group overflow-hidden">
                 <Image
                   src={blog.coverImage}
                   alt={blog.title}
