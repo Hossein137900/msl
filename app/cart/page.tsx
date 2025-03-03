@@ -24,31 +24,31 @@ export default function CartPage() {
 
   const loadCartItems = () => {
     const request = indexedDB.open("CartDB", 1);
-    
+
     request.onupgradeneeded = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
       if (!db.objectStoreNames.contains("cart")) {
         db.createObjectStore("cart", { keyPath: "id" });
       }
     };
-  
+
     request.onerror = () => {
       setCartItems([]);
       setLoading(false);
     };
-  
+
     request.onsuccess = (event) => {
       try {
         const db = (event.target as IDBOpenDBRequest).result;
         const transaction = db.transaction(["cart"], "readonly");
         const store = transaction.objectStore("cart");
         const getAllRequest = store.getAll();
-  
+
         getAllRequest.onsuccess = () => {
           setCartItems(getAllRequest.result || []);
           setLoading(false);
         };
-  
+
         getAllRequest.onerror = () => {
           setCartItems([]);
           setLoading(false);
@@ -59,10 +59,16 @@ export default function CartPage() {
       }
     };
   };
-  
-  
 
-  const updateQuantity = (itemId: string, action: "increase" | "decrease" | "remove") => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/auth";
+  }
+
+  const updateQuantity = (
+    itemId: string,
+    action: "increase" | "decrease" | "remove"
+  ) => {
     const request = indexedDB.open("CartDB", 1);
     request.onsuccess = (event) => {
       const db = (event.target as IDBOpenDBRequest).result;
@@ -72,21 +78,27 @@ export default function CartPage() {
       const item = cartItems.find((item) => item.id === itemId);
       if (!item) return;
 
-      if (action === "remove" || (action === "decrease" && item.quantity === 1)) {
+      if (
+        action === "remove" ||
+        (action === "decrease" && item.quantity === 1)
+      ) {
         store.delete(itemId);
         setCartItems(cartItems.filter((item) => item.id !== itemId));
         toast.success("محصول از سبد خرید حذف شد");
         return;
       }
 
-      const newQuantity = action === "increase" ? item.quantity + 1 : item.quantity - 1;
+      const newQuantity =
+        action === "increase" ? item.quantity + 1 : item.quantity - 1;
       const updatedItem = { ...item, quantity: newQuantity };
       store.put(updatedItem);
       setCartItems(
         cartItems.map((item) => (item.id === itemId ? updatedItem : item))
       );
       toast.success(
-        action === "increase" ? "تعداد محصول افزایش یافت" : "تعداد محصول کاهش یافت"
+        action === "increase"
+          ? "تعداد محصول افزایش یافت"
+          : "تعداد محصول کاهش یافت"
       );
     };
   };
@@ -123,7 +135,10 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] p-4 md:p-8" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] p-4 md:p-8"
+      dir="rtl"
+    >
       <div className="max-w-7xl mx-auto mt-24">
         <h1 className="text-3xl font-bold text-yellow-500 mb-8">سبد خرید</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -145,7 +160,9 @@ export default function CartPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl text-white font-bold">{item.title}</h3>
+                    <h3 className="text-xl text-white font-bold">
+                      {item.title}
+                    </h3>
                     <p className="text-yellow-500">
                       {item.price.toLocaleString()} تومان
                     </p>

@@ -37,6 +37,11 @@ const Sidebar: React.FC<{
     },
   ];
 
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/auth";
+  }
+
   return (
     <motion.div
       variants={sidebarVariants}
