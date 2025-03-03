@@ -60,4 +60,6 @@ model Blog {
   tags        String[]
   readTime    Int
   user        User      @relation(fields: [userId], references: [id])
+
+  @@index([userId, id], name: "userId_id_idx")
 }
