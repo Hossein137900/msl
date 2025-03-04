@@ -1,9 +1,7 @@
-'use client';
-import { addCategory } from '@/lib/category';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-
-
+"use client";
+import { addCategory } from "@/lib/category";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function AddCategory() {
   const [title, setTitle] = useState("");
@@ -22,25 +20,25 @@ export default function AddCategory() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('children', JSON.stringify(children))
+    e.preventDefault();
 
-    const response = await addCategory(formData)
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("children", JSON.stringify(children));
+
+    const response = await addCategory(formData);
     if (response.success) {
-      toast.success('دسته‌بندی با موفقیت افزوده شد')
+      toast.success("دسته‌بندی با موفقیت افزوده شد");
     } else {
-      console.error('Failed to add category:', response.error)
-      toast.error('خطا در افزودن دسته‌بندی')
+      console.error("Failed to add category:", response.error);
+      toast.error("خطا در افزودن دسته‌بندی");
     }
-}
+  };
 
   return (
     <div className="min-h-screen py-12 pt-28 px-4 sm:px-6 lg:px-8" dir="rtl">
-      <div className="max-w-md mx-auto mt-12 md:mt-24 bg-[#a37462]/20 rounded-xl shadow-lg p-8 border border-[#a37462]/30">
-        <h2 className="text-2xl font-bold text-center text-[#a37462] mb-8">
+      <div className="max-w-md mx-auto mt-12 md:mt-24 bg-[#a37462]/5 rounded-xl shadow-lg p-8 border border-[#a37462]/30">
+        <h2 className="text-2xl font-bold text-center text-[#fff] mb-8">
           افزودن دسته‌بندی جدید
         </h2>
 
@@ -80,7 +78,7 @@ export default function AddCategory() {
               <button
                 type="button"
                 onClick={handleAddChild}
-                className="px-4 py-2 bg-[#a37462] text-[#e5d8d0] rounded-md hover:bg-[#a37462]/80 transition-colors duration-200"
+                className="px-4 py-2 bg-[#e5d8d0] text-xl font-bold text-[#a37462] rounded-md hover:bg-[#a37462]/80 hover:text-white transition-colors duration-200"
               >
                 +
               </button>

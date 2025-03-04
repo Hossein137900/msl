@@ -33,17 +33,12 @@ const Navbar = () => {
   // Fetch categories on component mount
   const fetchCategories = async () => {
     const data = await getCategories();
-
     setIsLoading(true);
-
     if (data.success && data.data) {
       setIsLoading(false);
       setCategories(data.data);
     }
   };
-
-  console.log(categories);
-
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -172,25 +167,28 @@ const Navbar = () => {
                 >
                   <div className="flex h-[400px]">
                     <div className="w-1/3 border-l border-white/20 bg-white/5">
-                      {categories.map((category) => (
-                        <motion.div
-                          key={category.id}
-                          onMouseEnter={() => handleCategoryHover(category.id)}
-                          whileHover={{
-                            backgroundColor: "rgba(255,255,255,0.15)",
-                          }}
-                          className={`px-6 py-4 cursor-pointer transition-all duration-300
+                      {!isLoading &&
+                        categories.map((category) => (
+                          <motion.div
+                            key={category.id}
+                            onMouseEnter={() =>
+                              handleCategoryHover(category.id)
+                            }
+                            whileHover={{
+                              backgroundColor: "rgba(255,255,255,0.15)",
+                            }}
+                            className={`px-6 py-4 cursor-pointer transition-all duration-300
         ${
           activeCategory === category.id
             ? "bg-white/20 border-r-4 border-[#a37462]"
             : ""
         }`}
-                        >
-                          <h3 className="text-[#fff] font-medium text-lg">
-                            {category.title}
-                          </h3>
-                        </motion.div>
-                      ))}
+                          >
+                            <h3 className="text-[#fff] font-medium text-lg">
+                              {category.title}
+                            </h3>
+                          </motion.div>
+                        ))}
                     </div>
 
                     <div className="w-2/3 p-8">
@@ -213,26 +211,22 @@ const Navbar = () => {
                                 }
                               </h4>
                               <div className="space-y-3">
-                                {categories
-                                  .find((c) => c.id === activeCategory)
-                                  ?.children.map(
-                                    (child, idx) => (
-                                      console.log(child, "ccccccccccccccccc"),
-                                      (
-                                        <motion.div
-                                          key={idx}
-                                          initial={{ opacity: 0, x: -10 }}
-                                          animate={{ opacity: 1, x: 0 }}
-                                          transition={{ delay: idx * 0.1 }}
-                                          className="text-gray-900 hover:text-white 
+                                {!isLoading &&
+                                  categories
+                                    .find((c) => c.id === activeCategory)
+                                    ?.children.map((child, idx) => (
+                                      <motion.div
+                                        key={idx}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: idx * 0.1 }}
+                                        className="text-gray-50 hover:text-white 
                                 cursor-pointer py-1 px-2 rounded
                                 hover:bg-white/10 transition-all duration-200"
-                                        >
-                                          {child}
-                                        </motion.div>
-                                      )
-                                    )
-                                  )}
+                                      >
+                                        {child}
+                                      </motion.div>
+                                    ))}
                               </div>
                             </div>
 
@@ -358,31 +352,32 @@ const Navbar = () => {
                         className="overflow-hidden"
                       >
                         <div className="mt-2 space-y-1 border-r-2 border-[#a37462] touch-pan-y">
-                          {categories.map((category) => (
-                            <div key={category.id}>
-                              <motion.div
-                                whileHover={{
-                                  backgroundColor: "rgba(255,255,255,0.1)",
-                                }}
-                                className="pr-4 py-3 text-[#a37462] text-sm hover:text-white font-semibold"
-                              >
-                                {category.title}
-                              </motion.div>
-                              <div className="pr-8 space-y-2">
-                                {category.children.map((child, idx) => (
-                                  <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: idx * 0.05 }}
-                                    className="text-[#e5d8d0] text-xs hover:text-white cursor-pointer py-1"
-                                  >
-                                    {child}
-                                  </motion.div>
-                                ))}
+                          {!isLoading &&
+                            categories.map((category) => (
+                              <div key={category.id}>
+                                <motion.div
+                                  whileHover={{
+                                    backgroundColor: "rgba(255,255,255,0.1)",
+                                  }}
+                                  className="pr-4 py-3 text-[#a37462] text-sm hover:text-white font-semibold"
+                                >
+                                  {category.title}
+                                </motion.div>
+                                <div className="pr-8 space-y-2">
+                                  {category.children.map((child, idx) => (
+                                    <motion.div
+                                      key={idx}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: idx * 0.05 }}
+                                      className="text-[#e5d8d0] text-xs hover:text-white cursor-pointer py-1"
+                                    >
+                                      {child}
+                                    </motion.div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
                         </div>
                       </motion.div>
                     )}

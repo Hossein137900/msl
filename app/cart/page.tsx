@@ -11,6 +11,7 @@ import {
   FiShoppingCart,
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
+import PaymentModal from "@/components/static/PaymentModal";
 
 interface CartItem {
   id: string;
@@ -23,6 +24,7 @@ interface CartItem {
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   useEffect(() => {
     loadCartItems();
@@ -66,10 +68,19 @@ export default function CartPage() {
     };
   };
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    window.location.href = "/auth";
-  }
+  const handlePurchaseClick = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/auth";
+      return;
+    }
+    setIsPaymentModalOpen(true);
+  };
+
+  // const token = localStorage.getItem("token");
+  // if (!token) {
+  //   window.location.href = "/auth";
+  // }
 
   const updateQuantity = (
     itemId: string,
@@ -113,6 +124,13 @@ export default function CartPage() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/auth";
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -224,7 +242,9 @@ export default function CartPage() {
             </div>
             <motion.button
               whileHover={{ scale: 1.02 }}
+              aria-label="phrchase"
               whileTap={{ scale: 0.98 }}
+              onClick={handlePurchaseClick}
               className="w-full bg-[#a37462] text-white py-3 rounded-xl hover:bg-[#8a6352] transition-colors font-bold shadow-md flex items-center justify-center gap-2"
             >
               ادامه فرآیند خرید
@@ -233,6 +253,12 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        cartItems={cartItems}
+        totalPrice={totalPrice}
+      />
     </div>
   );
 }
