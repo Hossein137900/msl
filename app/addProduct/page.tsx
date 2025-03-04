@@ -50,8 +50,6 @@ export default function AddProductPage() {
   const [currentThumbnail, setCurrentThumbnail] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedParentId, setSelectedParentId] = useState<string>("");
-  const [selectedChildName, setSelectedChildName] = useState<string>("");
   const addProperty = () => {
     if (currentProperty.key && currentProperty.value) {
       setFormData((prev) => ({

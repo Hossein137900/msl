@@ -114,5 +114,29 @@ body {
 
 
 /* Alternative mega menu background */
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+}
 
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a37462;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8a6253;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a37462 #f1f1f1;
+}
 
