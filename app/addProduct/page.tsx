@@ -1,6 +1,18 @@
 "use client";
+import { getCategories } from "@/lib/category";
 import { addProduct } from "@/lib/productActions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+export interface Category {
+  id: string;
+  title: string;
+  children: string[];
+}
+
+export interface CategoryResponse {
+  success: boolean;
+  data: Category[];
+}
 
 interface ProductFormData {
   title: string;
@@ -12,6 +24,7 @@ interface ProductFormData {
   colors: Record<string, any>;
   videoes: string[];
   thumbnails: string[];
+  categoryChildren: string;
 }
 
 export default function AddProductPage() {
@@ -21,6 +34,7 @@ export default function AddProductPage() {
     description: "",
     image: "",
     categoryId: "",
+    categoryChildren: "",
     properties: {},
     colors: {},
     videoes: [],
@@ -34,7 +48,10 @@ export default function AddProductPage() {
   const [currentColor, setCurrentColor] = useState({ name: "", code: "" });
   const [currentVideo, setCurrentVideo] = useState("");
   const [currentThumbnail, setCurrentThumbnail] = useState("");
-
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedParentId, setSelectedParentId] = useState<string>("");
+  const [selectedChildName, setSelectedChildName] = useState<string>("");
   const addProperty = () => {
     if (currentProperty.key && currentProperty.value) {
       setFormData((prev) => ({
@@ -82,7 +99,9 @@ export default function AddProductPage() {
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -102,12 +121,14 @@ export default function AddProductPage() {
     submitFormData.append("description", formData.description);
     submitFormData.append("image", formData.image);
     submitFormData.append("categoryId", formData.categoryId);
+    submitFormData.append("categoryChildren", formData.categoryChildren);
 
     // Add complex fields as JSON strings
     submitFormData.append("properties", JSON.stringify(formData.properties));
     submitFormData.append("colors", JSON.stringify(formData.colors));
     submitFormData.append("videoes", JSON.stringify(formData.videoes));
     submitFormData.append("thumbnails", JSON.stringify(formData.thumbnails));
+    console.log(submitFormData);
 
     try {
       const result = await addProduct(submitFormData);
@@ -117,6 +138,21 @@ export default function AddProductPage() {
       console.error("Error adding product:", error);
     }
   };
+
+  const fetchCategories = async () => {
+    const data = await getCategories();
+
+    setIsLoading(true);
+
+    if (data.success && data.data) {
+      setIsLoading(false);
+      setCategories(data.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   return (
     <div
       className="max-w-4xl mx-auto mt-36 p-8  rounded-xl shadow-lg"
@@ -163,14 +199,39 @@ export default function AddProductPage() {
 
           <div>
             <label className="block mb-2 text-[#a37462]">دسته‌بندی</label>
-            <input
-              type="text"
-              name="categoryId"
+
+            <select
               value={formData.categoryId}
+              name="categoryId"
               onChange={handleInputChange}
-              className="w-full p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-              required
-            />
+              className="w-full p-2 mb-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+            >
+              <option value="">انتخاب دسته‌بندی اصلی</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.title}
+                </option>
+              ))}
+            </select>
+
+            {formData.categoryId && (
+              <select
+                value={formData.categoryChildren}
+                name="categoryChildren"
+                onChange={handleInputChange}
+                className="w-full p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+                required
+              >
+                <option value="">انتخاب زیر دسته</option>
+                {categories
+                  .find((cat) => cat.id === formData.categoryId)
+                  ?.children.map((child, index) => (
+                    <option key={index} value={child}>
+                      {child}
+                    </option>
+                  ))}
+              </select>
+            )}
           </div>
         </div>
 
