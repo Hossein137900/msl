@@ -89,48 +89,48 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     }
   };
 
-  const handleTelegramSubmit = async () => {
-    setFormData((prev) => ({
-      ...prev,
-      paymentMethod: "telegram",
-    }));
+  // const handleTelegramSubmit = async () => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     paymentMethod: "telegram",
+  //   }));
 
-    const submitFormData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      if (key === "items") {
-        submitFormData.append(
-          key,
-          JSON.stringify(formData[key as keyof PaymentFormData])
-        );
-      } else if (key !== "receiptImage") {
-        submitFormData.append(
-          key,
-          String(formData[key as keyof PaymentFormData])
-        );
-      }
-    });
+  //   const submitFormData = new FormData();
+  //   Object.keys(formData).forEach((key) => {
+  //     if (key === "items") {
+  //       submitFormData.append(
+  //         key,
+  //         JSON.stringify(formData[key as keyof PaymentFormData])
+  //       );
+  //     } else if (key !== "receiptImage") {
+  //       submitFormData.append(
+  //         key,
+  //         String(formData[key as keyof PaymentFormData])
+  //       );
+  //     }
+  //   });
 
-    try {
-      const response = await fetch("/api/orders/create", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${formData.token}`,
-        },
-        body: submitFormData,
-      });
+  //   try {
+  //     const response = await fetch("/api/orders/create", {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${formData.token}`,
+  //       },
+  //       body: submitFormData,
+  //     });
 
-      if (response.ok) {
-        toast.success("سفارش شما با موفقیت ثبت شد");
-        // clearCart();
-        onClose();
-      } else {
-        const data = await response.json();
-        toast.error(data.error || "خطا در ثبت سفارش");
-      }
-    } catch (error) {
-      toast.error("خطا در ارسال اطلاعات");
-    }
-  };
+  //     if (response.ok) {
+  //       toast.success("سفارش شما با موفقیت ثبت شد");
+  //       // clearCart();
+  //       onClose();
+  //     } else {
+  //       const data = await response.json();
+  //       toast.error(data.error || "خطا در ثبت سفارش");
+  //     }
+  //   } catch (error) {
+  //     toast.error("خطا در ارسال اطلاعات");
+  //   }
+  // };
 
   const fetch = async () => {
     const token = localStorage.getItem("token") || "";
@@ -267,7 +267,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   whileTap={{ scale: 0.98 }}
                   aria-label="send-telegram"
                   className="w-full bg-[#229ED9] text-white py-4 rounded-xl hover:bg-[#1e8dc2] transition-colors shadow-lg shadow-blue-200 flex items-center justify-center gap-2"
-                  onClick={handleTelegramSubmit}
+                  // onClick={handleTelegramSubmit}
                 >
                   <FaTelegram className="text-xl" />
                   ارسال به تلگرام
