@@ -23,6 +23,7 @@ export async function addProduct(formData: FormData) {
             videoes,
             thumbnails,
             categoryId,
+            
         },
     });
     return newProduct;
