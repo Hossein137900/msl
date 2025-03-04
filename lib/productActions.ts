@@ -33,13 +33,15 @@ export async function addProduct(formData: FormData) {
   });
   return newProduct;
 }
-export async function getProduct(id: string) {
-  const product = await prisma.product.findUnique({
-    where: {
-      id,
-    },
-  });
-  return product;
+export async function getProduct(Id: string) {
+    const id = decodeURIComponent(Id).split(':')[0];
+    const product = await prisma.product.findUnique({
+        where: {
+           id ,
+        },
+    });
+    return product;
+   
 }
 
 export async function getProducts() {

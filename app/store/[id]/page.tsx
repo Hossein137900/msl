@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 import {
   FiAlertCircle,
   FiMinus,
@@ -16,64 +15,52 @@ import {
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import DynamicTable from "@/components/global/Table";
+import { getProduct } from "@/lib/productActions";
+import { JsonValue } from "@prisma/client/runtime/library";
 
 interface ProductProps {
   id: string;
+  createdAt: Date;
+  updatedAt: Date;
   title: string;
+  image: string | null;
   description: string;
-  price: number;
-  images: string[];
+  price: string;
+  categoryId: string;
+  categoryChildren: string;
+  properties: JsonValue;
+  videoes: string[];
+  colors: JsonValue;
+  thumbnails: string[];
 }
-
-const fakeProducts: ProductProps[] = [
-  {
-    id: "1",
-    title: "محصول 1",
-    description:
-      "توضیحات محصول 1 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-    price: 100000,
-    images: [
-      "/assets/images/fade3.jpg",
-      "/assets/images/fade4.jpg",
-      "/assets/images/fade3.jpg",
-    ],
-  },
-  {
-    id: "2",
-    title: "محصول 2",
-    description:
-      "توضیحات محصول 2 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-    price: 100000,
-    images: [
-      "/assets/images/fade4.jpg",
-      "/assets/images/fade3.jpg",
-      "/assets/images/fade4.jpg",
-    ],
-  },
-  {
-    id: "3",
-    title: "محصول 3",
-    description:
-      "توضیحات محصول 3 در اینجا قرار می گیرد. این توضیحات می تواند شامل جزئیات بیشتری در مورد محصول باشد.",
-    price: 100000,
-    images: [
-      "/assets/images/fade3.jpg",
-      "/assets/images/fade4.jpg",
-      "/assets/images/fade3.jpg",
-    ],
-  },
-];
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const product = fakeProducts.find((p) => p.id === params.id);
   const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
   const [quantity, setQuantity] = useState(0);
-
+  const [loading, setLoading] = useState(true);
+  const id = params.id as string;
+  console.log(id);
+  
   // Tab state: details, comments, video
   const [activeTab, setActiveTab] = useState<"details" | "comments" | "video">(
     "details"
   );
+  const [product, setProduct] = useState<ProductProps | null>(null);
+  useEffect(()=>{
+    const fetchProduct = async () => {
+      try {
+       const response = await getProduct(id);
+        setProduct(response);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  },[])
+
 
   useEffect(() => {
     if (!product) return;
@@ -132,6 +119,60 @@ export default function ProductDetailPage() {
       );
     };
   };
+  if(loading){
+    return   (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-l from-[#e5d8d0] to-[#a37462]">
+        <motion.div
+          className="flex space-x-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="w-4 h-4 bg-white rounded-full"
+            animate={{
+              y: [-10, 0, -10],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: 0,
+            }}
+          />
+          <motion.div
+            className="w-4 h-4 bg-white rounded-full"
+            animate={{
+              y: [-10, 0, -10],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: 0.2,
+            }}
+          />
+          <motion.div
+            className="w-4 h-4 bg-white rounded-full"
+            animate={{
+              y: [-10, 0, -10],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              delay: 0.4,
+            }}
+          />
+        </motion.div>
+        <motion.p 
+          className="text-xl text-white mt-4 font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          در حال بارگذاری...
+        </motion.p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -159,14 +200,15 @@ export default function ProductDetailPage() {
           <div className="flex-1">
             <div className="relative w-full h-96 rounded-sm overflow-hidden">
               <Image
-                src={product.images[currentImgIndex]}
+                // src={product.images[currentImgIndex]}
+                src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
                 alt={`${product.title} - تصویر ${currentImgIndex + 1}`}
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
             <div className="mt-4 flex gap-4 overflow-x-auto">
-              {product.images.map((img, index) => (
+              {product.thumbnails.map((img, index) => (
                 <div
                   key={index}
                   onClick={() => setCurrentImgIndex(index)}
@@ -177,7 +219,7 @@ export default function ProductDetailPage() {
                   }`}
                 >
                   <Image
-                    src={img}
+                src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
                     alt={`${product.title} - تصویر ${index + 1}`}
                     fill
                     className="object-cover"
