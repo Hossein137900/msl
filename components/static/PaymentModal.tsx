@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCreditCard, FaTelegram } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { addToCart, getAllCarts, getUserCart } from "@/lib/cartActions";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -60,13 +61,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     }
 
     const submitFormData = new FormData();
-    const token = localStorage.getItem("token");
-    if (token) {
-      submitFormData.append("token", token);
-    } else {
-      toast.error("لطفا وارد حساب کاربری خود شوید");
-      return;
-    }
+    const token = localStorage.getItem("token") || "";
+
+    // Send items as a single JSON string
     submitFormData.append(
       "items",
       JSON.stringify(
@@ -76,14 +73,17 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         }))
       )
     );
+
     submitFormData.append("paymentMethod", "card");
     submitFormData.append("totalPrice", totalPrice.toString());
-    submitFormData.append("receiptImage", receipt);
-
-    console.log("Form Data:", Object.fromEntries(submitFormData.entries()));
+    submitFormData.append("receiptImage", receipt.name);
 
     try {
-      //   const result = await addProduct(submitFormData);
+      const result = await addToCart(submitFormData, token);
+      if (result) {
+        toast.success("رسید با موفقیت ارسال شد");
+        onClose();
+      }
     } catch (error) {
       toast.error("خطا در ارسال اطلاعات");
     }
@@ -131,6 +131,21 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       toast.error("خطا در ارسال اطلاعات");
     }
   };
+
+  const fetch = async () => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      try {
+        const response = await getAllCarts();
+        console.log(response, "response");
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    }
+  };
+  useEffect(() => {
+    fetch();
+  }, []);
 
   const CARD_NUMBER = "6037-9974-1234-5678";
 
