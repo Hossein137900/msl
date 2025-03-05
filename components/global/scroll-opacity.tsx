@@ -44,16 +44,16 @@ const ScrollOpacity = () => {
         className="min-h-screen w-full relative flex items-center justify-center"
       >
         <div className="w-full h-[1000px] relative">
-        <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
-      >
-        <source src="/assets/video/vid.mp4" type="video/mp4" />
-      </video>
-          <div className="absolute inset-0  bg-gradient-to-b from-black to-transparent" />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-0 left-0 w-full h-full object-cover  brightness-75"
+          >
+            <source src="/assets/video/vid.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0  bg-gradient-to-b from-black via-transparent to-[#000]" />
           {/* Light Glow Effect */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -92,8 +92,10 @@ const ScrollOpacity = () => {
               transition={{ delay: 0.5 }}
               className="text-left space-y-8 text-white px-4 max-w-4xl"
             >
-              <h2 className={`text-5xl md:text-7xl  ${doranthin.className} tracking-tight `}>
-              Discover The World Of Light With Us
+              <h2
+                className={`text-5xl md:text-7xl  ${doranthin.className} tracking-tight `}
+              >
+                Discover The World Of Light With Us
               </h2>
               {/* <p className="text-xl md:text-2xl text-gray-200">
                 طراحی مدرن، کیفیت برتر

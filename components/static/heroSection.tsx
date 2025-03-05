@@ -17,7 +17,7 @@ const HeroSection = () => {
       </video>
 
       {/* Content Overlay */}
-      <div className="relative h-full flex w-full flex-col items-end mr-24 md:justify-center md:items-center justify-end  text-center px-4 z-50">
+      <div className="relative h-full flex w-full flex-col items-center mr-24 md:justify-center md:items-center justify-center  text-center px-4 z-50">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,7 +28,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`text-2xl mb-8 mt-12 md:text-nowrap md:text-7xl border-b border-[#a37462] sm:border-none text-right sm:text-center pb-2 md:pb-0 text-white ${doranthin.className}`}
+            className={`text-2xl mb-8 mt-12 md:text-nowrap sm:text-4xl lg:text-7xl border-b border-[#a37462] sm:border-none text-right sm:text-center pb-2 md:pb-0 text-white ${doranthin.className}`}
           >
             . نوری که آرامش می بخشد
           </motion.h1>
@@ -37,12 +37,12 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="lg:flex flex-col hidden md:flex-row gap-4 md:justify-center md:mr-8 md:items-center"
+            className="sm:flex flex-col hidden md:flex-row gap-4 md:justify-center md:mr-8 md:items-center"
           >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border-b border-[#a37462] text-[#e5d8d0]  hover:border hover:bg-[#a37462] font-bold text-lg  transition-colors duration-300"
+              className="px-8 py-4 border-b w-fit mx-auto border-[#a37462] text-[#e5d8d0]  hover:border hover:bg-[#a37462] font-bold text-lg  transition-colors duration-300"
             >
               مشاهده محصولات
             </motion.button>
@@ -64,7 +64,7 @@ const HeroSection = () => {
       </div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#e5d8d0]/10 to-black z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t brightness-50 from-black via-[#e5d8d0]/10 to-black z-10" />
     </div>
   );
 };
