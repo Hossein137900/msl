@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
         className={` ${doranregular.className} bg-[#e5d8d0] antialiased relative`}
       >
-        <Navbar />
+        {/* <Navbar /> */}
         <ToastContainer position="top-center" rtl={true} />
         {children}
         <Footer />
