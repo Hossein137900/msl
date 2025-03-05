@@ -5,7 +5,11 @@ import Product from "@/models/product";
 export async function GET() {
   try {
     await connect();
-    const products = await Product.find().populate('categoryId');
+    const products = await Product.find().populate({
+      path: "categoryId",
+      model: "Category",
+      select: "title",
+    });
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
