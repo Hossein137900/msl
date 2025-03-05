@@ -41,7 +41,7 @@ const Footer = () => {
   }
   return (
     <footer
-      className="bg-[#1a1a1a]/70 border-t border-[#a37462] text-white"
+      className="bg-gradient-to-b from-transparent via-black/70 to-black border-t border-[#a37462] text-white"
       dir="rtl"
     >
       <div className="container mx-auto px-4 pt-16 pb-8">

@@ -139,7 +139,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         const response = await getUserCart(token);
         console.log(response, "response");
       } catch (error) {
-        console.error("Error fetching cart:", error);
+        console.log("Error fetching cart:", error);
       }
     }
   };

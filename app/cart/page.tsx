@@ -176,8 +176,7 @@ export default function CartPage() {
                 <div className="flex items-center gap-4">
                   <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-[#e5d8d0]">
                     <Image
-                         src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-
+                      src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                       // src={item.images[0]}
                       alt={item.title}
                       fill

@@ -94,10 +94,10 @@ const Navbar = () => {
         borderWidth: { duration: 0.3 },
       }}
       dir="rtl"
-      className={`fixed z-[9999] top-4 right-2 left-2 lg:right-20 lg:left-20 rounded-3xl px-6 py-4 transition-all duration-300 ${
+      className={`fixed z-[9999] top-4 right-2 left-2 backdrop-blur-md lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/10 backdrop-blur-md shadow-lg"
-          : "bg-[#a37462]/40 backdrop-blur-sm"
+          ? "bg-white/10"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -123,7 +123,7 @@ const Navbar = () => {
                 <span
                   className={`
           relative py-2 px-3 rounded-lg
-          ${isScrolled ? "text-[#a37462]" : "text-[#e5d8d0]"}
+          ${isScrolled ? "text-[#a37462]" : "text-[#a37462]"}
           hover:bg-white/10 hover:text-white
           transition-all duration-300 
           flex items-center gap-2
@@ -148,109 +148,109 @@ const Navbar = () => {
               </Link>
 
               {item.title === "محصولات" && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{
-                    opacity: activeDropdown === "محصولات" ? 1 : 0,
-                    y: activeDropdown === "محصولات" ? 0 : 30,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute top-12 -right-10 w-[800px]
-                  shadow-2xl
-                  bg-[#a37462]/80
-                  border border-white/10 rounded-2xl
-                  overflow-hidden z-50"
-                  style={{
-                    pointerEvents:
-                      activeDropdown === "محصولات" ? "auto" : "none",
-                  }}
-                >
-                  <div className="flex h-[400px]">
-                    <div className="w-1/3 border-l border-white/20 bg-white/5">
-                      {!isLoading &&
-                        categories.map((category) => (
-                          <motion.div
-                            key={category.id}
-                            onMouseEnter={() =>
-                              handleCategoryHover(category.id)
-                            }
-                            whileHover={{
-                              backgroundColor: "rgba(255,255,255,0.15)",
-                            }}
-                            className={`px-6 py-4 cursor-pointer transition-all duration-300
+                <>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: activeDropdown === "محصولات" ? 1 : 0,
+                      y: activeDropdown === "محصولات" ? 0 : 30,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute top-12 -right-10 w-[800px] bg-[#fff]/10 backdrop-blur-md z-[9999] border border-[#a37462] rounded-lg shadow-2xl"
+                    style={{
+                      pointerEvents:
+                        activeDropdown === "محصولات" ? "auto" : "none",
+                    }}
+                  >
+                    
+                    <div className="flex h-[400px]">
+                      <div className="w-1/3 border-l border-white/20 bg-white/5">
+                        {!isLoading &&
+                          categories.map((category) => (
+                            <motion.div
+                              key={category.id}
+                              onMouseEnter={() =>
+                                handleCategoryHover(category.id)
+                              }
+                              whileHover={{
+                                backgroundColor: "rgba(255,255,255,0.15)",
+                              }}
+                              className={`px-6 py-4 cursor-pointer transition-all duration-300
         ${
           activeCategory === category.id
-            ? "bg-white/20 border-r-4 border-[#a37462]"
+            ? "bg-white/10 border-r-4 border-[#a37462]"
             : ""
         }`}
-                          >
-                            <h3 className="text-[#fff] font-medium text-lg">
-                              {category.title}
-                            </h3>
-                          </motion.div>
-                        ))}
-                    </div>
+                            >
+                              <h3 className="text-[#a37462] font-bold text-lg">
+                                {category.title}
+                              </h3>
+                            </motion.div>
+                          ))}
+                      </div>
 
-                    <div className="w-2/3 p-8">
-                      <AnimatePresence mode="wait">
-                        {activeCategory && (
-                          <motion.div
-                            key={activeCategory}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.2 }}
-                            className="flex h-full gap-8"
-                          >
-                            <div className="w-1/2">
-                              <h4 className="text-[#fff] text-xl font-bold mb-6">
-                                {
-                                  categories.find(
-                                    (c) => c.id === activeCategory
-                                  )?.title
-                                }
-                              </h4>
-                              <div className="space-y-3">
-                                {!isLoading &&
-                                  categories
-                                    .find((c) => c.id === activeCategory)
-                                    ?.children.map((child, idx) => (
-                                      <motion.div
-                                        key={idx}
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: idx * 0.1 }}
-                                        className="text-gray-50 hover:text-white 
+                      <div className="w-2/3 p-8">
+                        <AnimatePresence mode="wait">
+                          {activeCategory && (
+                            <motion.div
+                              key={activeCategory}
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ duration: 0.2 }}
+                              className="flex h-full gap-8"
+                            >
+                              <div className="w-1/2">
+                                <h4 className="text-[#fff] text-xl font-bold mb-6">
+                                  {
+                                    categories.find(
+                                      (c) => c.id === activeCategory
+                                    )?.title
+                                  }
+                                </h4>
+                                <div className="space-y-3">
+                                  {!isLoading &&
+                                    categories
+                                      .find((c) => c.id === activeCategory)
+                                      ?.children.map((child, idx) => (
+                                        <motion.div
+                                          key={idx}
+                                          initial={{ opacity: 0, x: -10 }}
+                                          animate={{ opacity: 1, x: 0 }}
+                                          transition={{ delay: idx * 0.1 }}
+                                          className="text-gray-50 hover:text-white 
                                 cursor-pointer py-1 px-2 rounded
                                 hover:bg-white/10 transition-all duration-200"
-                                      >
-                                        {child}
-                                      </motion.div>
-                                    ))}
+                                        >
+                                          {child}
+                                        </motion.div>
+                                      ))}
+                                </div>
                               </div>
-                            </div>
 
-                            <div className="w-1/2">
-                              <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="relative h-48 w-full rounded-xl overflow-hidden
+                              <div className="w-1/2">
+                                <motion.div
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  className="relative h-48 w-full rounded-xl overflow-hidden
                           shadow-lg transform hover:scale-105 transition-transform duration-300"
-                              >
-                                <Image
-                                  src="/assets/images/fade3.jpg"
-                                  alt="Category"
-                                  fill
-                                  className="object-cover"
-                                />
-                              </motion.div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                                >
+                                  <Image
+                                    src="/assets/images/fade3.jpg"
+                                    alt="Category"
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </motion.div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </>
               )}
             </motion.div>
           ))}
@@ -262,14 +262,14 @@ const Navbar = () => {
               type="text"
               placeholder="جستجو ..."
               className="w-64 px-4 py-2.5 rounded-full
-        backdrop-blur-sm placeholder:text-[#e5d8d0]/70
-        border-2 border-[#e5d8d0]/30 
-        bg-white/5 text-[#e5d8d0]
+        backdrop-blur-sm placeholder:text-[#a37462]
+        border-2 border-[#a37462]/30 
+        bg-white/5 text-[#a37462]
         focus:outline-none focus:border-[#a37462]
         transition-all duration-300"
             />
             <BiSearch
-              className="absolute text-[#e5d8d0] left-3 top-1/2 
+              className="absolute text-[#a37462] left-3 top-1/2 
         transform -translate-y-1/2 group-hover:scale-110
         transition-transform duration-200"
               size={20}
@@ -281,7 +281,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="p-2.5 rounded-full bg-white/10
-        text-[#e5d8d0] hover:bg-[#a37462] 
+        text-[#a37462]/70 hover:bg-[#a37462] 
         hover:text-white transition-all duration-300
         hover:shadow-lg"
             >

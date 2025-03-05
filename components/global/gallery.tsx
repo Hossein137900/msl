@@ -5,7 +5,10 @@ import { galleryItems } from "../../lib/galleryData";
 
 const GalleryGrid = () => {
   return (
-    <div className="px-4 mt-24 py-8" dir="rtl">
+    <div
+      className="px-4  py-8 bg-gradient-to-b from-black via-stone-500 to-transparent"
+      dir="rtl"
+    >
       <h2 className="text-center text-4xl text-[#a37462] font-bold mb-16">
         گالری ساخته شده توسط ما
       </h2>
@@ -20,9 +23,9 @@ const GalleryGrid = () => {
             <Image
               src={item.image}
               alt={item.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              width={2000}
+              height={1000}
+              className="object-cover transition-transform h-full duration-700 group-hover:scale-105"
             />
 
             {/* Improved Overlay Design */}
