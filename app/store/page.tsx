@@ -7,7 +7,7 @@ import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
 
 interface ProductProps {
-  id: string;
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
   title: string;
@@ -54,7 +54,7 @@ const Store: FC<ProductListProps> = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {products.map((product) => (
           <motion.div
-            key={product.id}
+            key={product._id}
             className="group bg-white  shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ const Store: FC<ProductListProps> = () => {
                     {product.price} تومان
                   </span>
                 </div>
-                <Link href={`/store/${product.id}:${product.title}`}>
+                <Link href={`/store/${product._id}:${product.title}`}>
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     aria-label="View product"
