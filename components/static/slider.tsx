@@ -100,7 +100,7 @@ function SlideCard({
           />
         </div>
         <div
-          className="lg:w-1/2 w-full flex flex-col justify-center items-center md:items-start p-12 cursor-move"
+          className="lg:w-1/2 w-full bg-white/40 flex flex-col justify-center items-center md:items-start p-12 cursor-move"
           dir="rtl"
         >
           <h2 className="md:text-3xl text-lg font-bold text-gray-800 mb-2 md:mb-6">

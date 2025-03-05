@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import {  FiEye } from "react-icons/fi";
-import { getProducts } from "@/lib/productActions";
+import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
 
 interface ProductProps {
@@ -26,21 +25,27 @@ interface ProductListProps {
   products: ProductProps[];
 }
 
-
 const Store: FC<ProductListProps> = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getProducts();
-        setProducts(data);
+        const response = await fetch("/api/products", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        console.log(data, "data");
+        setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
     fetchProducts();
   }, []);
-  console.log(products);
   return (
     <div className="px-4 py-8 " dir="rtl">
       <h2 className="text-4xl mt-24 font-bold text-center text-white mb-8">
@@ -57,7 +62,7 @@ const Store: FC<ProductListProps> = () => {
             <div className="relative h-64 w-full overflow-hidden">
               <Image
                 // src={product.image}
-                src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                 alt={product.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
