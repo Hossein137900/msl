@@ -1,11 +1,12 @@
 "use server";
 import { prisma } from "./prisma";
 import * as jwt from "jsonwebtoken";
+import { getProduct, getProducts } from "./productActions";
 
 export async function addToCart(formData: FormData, token: string) {
-  const JWT_SECRET = process.env.JWT_SECRET || "msl";
+  const JWT_SECRET =  "msl";
 
-  const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
+  const decodedToken = jwt.verify(token, 'msl') as { userId: string };
   const userId = decodedToken.userId;
 
   // Get the file name instead of the File object
@@ -49,21 +50,50 @@ export async function addToCart(formData: FormData, token: string) {
 }
 
 export async function getUserCart(token: string) {
-  const JWT_SECRET = process.env.JWT_SECRET || "msl";
-  const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
-  const userId = decodedToken.userId;
+  try {
+    const JWT_SECRET = "msl";
+    const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const userId = decodedToken.userId;
+console.log(userId);
 
-  const cart = await prisma.cart.findFirst({
-    where: {
-      userId: userId,
-    },
-    include: {
-      products: true,
-    },
-  });
+    // First get the cart
+    const cart = await prisma.cart.findMany({
+      where: {
+        userId: userId,
+      },
+      
+    });
 
-  return cart;
+    if (!cart) {
+      return null;
+    }
+    const allProducts = await getProducts();
+
+    // Map through each cart and replace productIds with full product details
+    const cartsWithProducts = await Promise.all(carts.map(async (cart) => {
+      const itemsWithProducts = await Promise.all(cart.items.map(async (item) => {
+        const product = allProducts.find(p => p.id === item.productId);
+        return {
+          ...item,
+          product
+        };
+      }));
+
+      return {
+        ...cart,
+        items: itemsWithProducts
+      };
+    }));
+
+    return cartsWithProducts;
+
+  } catch (error) {
+    console.error("Error fetching user cart:", error);
+    throw new Error("Failed to fetch user cart");
+  }
 }
+
+
 
 export async function getAllCarts() {
   const cart = await prisma.cart.findMany({

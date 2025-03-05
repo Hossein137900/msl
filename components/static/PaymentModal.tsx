@@ -136,7 +136,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     const token = localStorage.getItem("token") || "";
     if (token) {
       try {
-        const response = await getAllCarts();
+        const response = await getUserCart(token);
         console.log(response, "response");
       } catch (error) {
         console.error("Error fetching cart:", error);
