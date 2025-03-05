@@ -10,6 +10,7 @@ export async function GET() {
       model: "Category",
       select: "title",
     });
+    console.log(products, "products");
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
