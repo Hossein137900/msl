@@ -4,7 +4,6 @@ import User from "@/models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-
 export async function POST(request: Request) {
   const { name, phoneNumber, password } = await request.json();
   try {
@@ -29,7 +28,7 @@ export async function POST(request: Request) {
         pass: hashedPassword,
         phoneNumber: newUser.phoneNumber,
       },
-      process.env.JWT_SECRET!||"msl",
+      process.env.JWT_SECRET! || "msl",
       { expiresIn: "12h" }
     );
 

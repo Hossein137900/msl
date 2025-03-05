@@ -38,7 +38,6 @@ const Store: FC<ProductListProps> = () => {
           },
         });
         const data = await response.json();
-        console.log(data, "data");
         setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
