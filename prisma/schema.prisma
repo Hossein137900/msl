@@ -28,8 +28,7 @@ model Cart {
   id         String     @id @default(uuid())
   userId     String
   user       User       @relation(fields: [userId], references: [id])
-
-  products   Product[]  @relation(fields: [items],  references: [id]) 
+  products   Product[]  
   items      Json       // Stores array of {productId: String, quantity: Int}
   path       String
   image      String
@@ -43,15 +42,13 @@ model Product {
   title       String
   price       String
   description String
-
-  
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   image       String?
   categoryChildren  String
   categoryId  String    
   category    Category  @relation(fields: [categoryId], references: [id])
-  carts      Cart[]    // Add this line for the relation
+  carts       Cart[]    
   properties  Json      
   videoes     String[]  
   colors      Json  
