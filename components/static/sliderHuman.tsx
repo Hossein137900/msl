@@ -10,11 +10,11 @@ import {
 } from "framer-motion";
 
 const speakers = [
-  { name: " حجت", image: "/assets/images/fade1.jpg" },
-  { name: "افشین ", image: "/assets/images/fade1.jpg" },
-  { name: " حجت", image: "/assets/images/fade1.jpg" },
-  { name: "افشین حجت", image: "/assets/images/fade1.jpg" },
-  { name: "افشین ", image: "/assets/images/fade1.jpg" },
+  { name: " حجت", image: "/assets/images/human/1.webp" },
+  { name: "افشین ", image: "/assets/images/human/2.webp" },
+  { name: " حجت", image: "/assets/images/human/4.webp" },
+  { name: "افشین حجت", image: "/assets/images/human/4.webp" },
+  { name: "افشین ", image: "/assets/images/human/5.webp" },
 ];
 
 function SpeakerCard({
@@ -68,7 +68,7 @@ function SpeakerCard({
       initial="enter"
       animate="center"
       transition={{
-        x: { type: "spring", stiffness: 300, damping: 30 },
+        x: { type: "spring", stiffness: 150, damping: 30 },
         opacity: { duration: 0.2 },
       }}
     >
@@ -85,7 +85,7 @@ function SpeakerCard({
             whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="w-40 h-40 rounded-full border-2 border-gray-300 overflow-hidden">
+            <div className="md:w-40 md:h-40 w-28 h-28 rounded-lg border-2 p-1  border-[#a37462] overflow-hidden">
               <Image
                 src={s.image}
                 alt={s.name}
@@ -133,14 +133,14 @@ export default function SpeakersSlider() {
 
         <button
           onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full shadow-lg z-10"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600  p-3 rounded-full shadow-lg z-10"
           aria-label="Previous"
         >
           ←
         </button>
         <button
           onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full shadow-lg z-10"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600  p-3 rounded-full shadow-lg z-10"
           aria-label="Next"
         >
           →
