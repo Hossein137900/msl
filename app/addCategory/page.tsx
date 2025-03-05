@@ -1,5 +1,4 @@
 "use client";
-import { addCategory } from "@/lib/category";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -22,16 +21,29 @@ export default function AddCategory() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("children", JSON.stringify(children));
+    try {
+      const response = await fetch('/api/category', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          children
+        })
+      });
 
-    const response = await addCategory(formData);
-    if (response.success) {
-      toast.success("دسته‌بندی با موفقیت افزوده شد");
-    } else {
-      console.error("Failed to add category:", response.error);
-      toast.error("خطا در افزودن دسته‌بندی");
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("دسته‌بندی با موفقیت افزوده شد");
+        setTitle("");
+        setChildren([]);
+      } else {
+        toast.error(data.message || "خطا در افزودن دسته‌بندی");
+      }
+    } catch (error) {
+      toast.error("خطا در ارتباط با سرور");
     }
   };
 

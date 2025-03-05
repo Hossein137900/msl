@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { login, signUp } from "@/lib/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -48,27 +47,59 @@ const AuthPage = () => {
 
   const handleLogin = async (phoneNumber: string, password: string) => {
     try {
-      const data = await login(phoneNumber, password);
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ phoneNumber, password }),
+      });
+  
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+  
       localStorage.setItem("token", data.token);
-      return data;
+      return {
+        token: data.token,
+        user: {
+          id: data.userId,
+          name: formData.name // You may want to get this from the response
+        }
+      };
     } catch (error) {
       console.log(error);
       throw new Error("Login failed");
     }
   };
 
-  const handleSignup = async (
-    name: string,
-    phoneNumber: string,
-    password: string
-  ) => {
+  const handleSignup = async (name: string, phoneNumber: string, password: string) => {
     try {
-      const data = await signUp(name, phoneNumber, password);
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, phoneNumber, password }),
+      });
+      
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || 'Signup failed');
+      }
+  
       localStorage.setItem("token", data.token);
-      return data;
+      return {
+        token: data.token,
+        user: {
+          name: data.name
+        }
+      };
     } catch (error) {
       console.log(error);
-
       throw new Error("خطا در ثبت نام");
     }
   };

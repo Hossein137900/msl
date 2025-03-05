@@ -2,21 +2,7 @@
 import { prisma } from "./prisma";
 import * as jwt from 'jsonwebtoken';
 
-export default async function createNewUser(formData: FormData) {
-    const username = formData.get('username') as string;
-    const password = formData.get('password') as string;
-    const phoneNumber = formData.get('phoneNumber') as string;
-    
-    const newUser = await prisma.user.create({
-        data: {
-            name: username,
-            password: password,
-            phoneNumber: phoneNumber,
-        },
-    });
 
-    return newUser;
-}
 export async function addBlog(formData: FormData, token: string) {
     const secret = process.env.JWT_SECRET;
     if (!secret) {

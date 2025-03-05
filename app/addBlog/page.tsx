@@ -181,32 +181,41 @@ const token = localStorage.getItem("token");
         toast.error("لطفا مجددا وارد شوید");
         return;
     }
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("seoTitle", seoTitle);
-    formData.append("content", editor?.getHTML());
-    formData.append("image", "default-image.jpg");
-    formData.append("tags", JSON.stringify(tags));
-    formData.append("readTime", String(Math.ceil(wordCount / 200))); // Estimate read time based on word count
-
+    const blogData = {
+      title,
+      description,
+      seoTitle,
+      content: editor?.getHTML(),
+      image:'https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // You'll need to handle image upload
+      tags,
+    }
+    
     try {
-        const response = await addBlog(formData,token);
-        if (response) {
-            toast.success("بلاگ با موفقیت ایجاد شد");
-            // Reset form
+      const response = await fetch('/api/blog', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'token': token // The API expects token in headers
+          },
+          body: JSON.stringify(blogData)
+      });
+  
+      if (response.ok) {
+          toast.success("بلاگ با موفقیت ایجاد شد");
             setTitle("");
             setDescription("");
             setSeoTitle("");
             setTags([]);
             editor?.commands.clearContent();
-        }
-    } catch (error) {
-        console.error(error);
-        toast.error("خطا در ایجاد بلاگ");
-    }
+      }
+  } catch (error) {
+      console.error(error);
+      toast.error("خطا در ایجاد بلاگ");
+  }
+  
 };
-
+  // Reset form
+            
 
   return (
     <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
