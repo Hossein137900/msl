@@ -7,7 +7,11 @@ export async function GET(request: Request) {
     const id = request.url.split("/").pop();
     await connect();
     
-    const product = await Product.findById(id).populate('categoryId');
+    const product = await Product.findById(id).populate({
+      path: "categoryId",
+      model: "Category",
+      select: "title",
+    });
     
     if (!product) {
       return NextResponse.json(
