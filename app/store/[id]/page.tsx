@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -15,8 +15,6 @@ import {
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import DynamicTable from "@/components/global/Table";
-import { getProduct } from "@/lib/productActions";
-import { JsonValue } from "@prisma/client/runtime/library";
 
 interface ProductProps {
   id: string;
@@ -26,32 +24,37 @@ interface ProductProps {
   image: string | null;
   description: string;
   price: string;
-  categoryId: string;
+  categoryId: { title: string };
   categoryChildren: string;
-  properties: JsonValue;
+  properties: Record<string, string>;
   videoes: string[];
-  colors: JsonValue;
+  colors: Record<string, string>;
   thumbnails: string[];
 }
 
 export default function ProductDetailPage() {
-  const params = useParams();
+  const params = usePathname();
   const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(true);
-  const id = params.id as string;
-  console.log(id);
-  
+  const id = params.split(":")[0].split("/")[2];
+
   // Tab state: details, comments, video
   const [activeTab, setActiveTab] = useState<"details" | "comments" | "video">(
     "details"
   );
   const [product, setProduct] = useState<ProductProps | null>(null);
-  useEffect(()=>{
+  useEffect(() => {
     const fetchProduct = async () => {
       try {
-       const response = await getProduct(id);
-        setProduct(response);
+        const response = await fetch(`/api/products/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        setProduct(data.product);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -59,8 +62,7 @@ export default function ProductDetailPage() {
       }
     };
     fetchProduct();
-  },[])
-
+  }, []);
 
   useEffect(() => {
     if (!product) return;
@@ -119,8 +121,8 @@ export default function ProductDetailPage() {
       );
     };
   };
-  if(loading){
-    return   (
+  if (loading) {
+    return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-l from-[#e5d8d0] to-[#a37462]">
         <motion.div
           className="flex space-x-2"
@@ -162,7 +164,7 @@ export default function ProductDetailPage() {
             }}
           />
         </motion.div>
-        <motion.p 
+        <motion.p
           className="text-xl text-white mt-4 font-medium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -184,9 +186,15 @@ export default function ProductDetailPage() {
   }
 
   const tableRows = [
-    { property: "عنوان محصول", value: product.title },
-    { property: "قیمت", value: `${product.price} تومان` },
-    { property: "توضیحات", value: product.description },
+    { property: "دسته بندی", value: product.categoryChildren },
+    ...Object.entries(product.properties || {}).map(([key, value]) => ({
+      property: key,
+      value: value,
+    })),
+    {
+      property: "رنگ ها",
+      value: Object.values(product.colors || {}).join(", "),
+    },
   ];
 
   return (
@@ -201,7 +209,7 @@ export default function ProductDetailPage() {
             <div className="relative w-full h-96 rounded-sm overflow-hidden">
               <Image
                 // src={product.images[currentImgIndex]}
-                src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                 alt={`${product.title} - تصویر ${currentImgIndex + 1}`}
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-105"
@@ -219,7 +227,7 @@ export default function ProductDetailPage() {
                   }`}
                 >
                   <Image
-                src='https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+                    src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                     alt={`${product.title} - تصویر ${index + 1}`}
                     fill
                     className="object-cover"
