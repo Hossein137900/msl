@@ -1,14 +1,13 @@
 import connect from "@/lib/data";
 import { NextResponse } from "next/server";
 import Product from "@/models/product";
-
+import category from "@/models/category";
 export async function GET() {
   try {
     await connect();
     const products = await Product.find().populate({
       path: "categoryId",
-      model: "Category",
-      select: "title",
+      model: category,
     });
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
