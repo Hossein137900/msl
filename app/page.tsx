@@ -2,6 +2,7 @@ import ScrollOpacity from "@/components/global/scroll-opacity";
 import HeroSection from "../components/static/heroSection";
 import CategoryGrid from "@/components/static/categoryGrid";
 import Slider from "@/components/static/slider";
+import SpeakersSlider from "@/components/static/sliderHuman";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       </div>
       <CategoryGrid />
       <Slider />
+      <SpeakersSlider />
     </div>
   );
 };

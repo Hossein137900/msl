@@ -7,15 +7,8 @@ const categorySchema = new mongoose.Schema({
     },
     children: [{
         type: String
-    }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+    }]
+}, { timestamps: true })
+
 
 export default mongoose.models.Category || mongoose.model("Category", categorySchema);
