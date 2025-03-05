@@ -1,10 +1,8 @@
 "use client";
-import { getCategories } from "@/lib/category";
-import { addProduct } from "@/lib/productActions";
 import { useEffect, useState } from "react";
 
 export interface Category {
-  id: string;
+  _id: string;
   title: string;
   children: string[];
 }
@@ -20,11 +18,11 @@ interface ProductFormData {
   description: string;
   image: string;
   categoryId: string;
+  categoryChildren: string;
   properties: Record<string, any>;
   colors: Record<string, any>;
   videoes: string[];
   thumbnails: string[];
-  categoryChildren: string;
 }
 
 export default function AddProductPage() {
@@ -49,7 +47,6 @@ export default function AddProductPage() {
   const [currentVideo, setCurrentVideo] = useState("");
   const [currentThumbnail, setCurrentThumbnail] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const addProperty = () => {
     if (currentProperty.key && currentProperty.value) {
       setFormData((prev) => ({
@@ -110,43 +107,55 @@ export default function AddProductPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    
     const submitFormData = new FormData();
-
-    // Add basic fields
+    
+    // Add all required fields from the model
     submitFormData.append("title", formData.title);
     submitFormData.append("price", formData.price);
     submitFormData.append("description", formData.description);
     submitFormData.append("image", formData.image);
     submitFormData.append("categoryId", formData.categoryId);
     submitFormData.append("categoryChildren", formData.categoryChildren);
-
-    // Add complex fields as JSON strings
+    
+    // Convert complex objects to JSON strings as expected by the endpoint
     submitFormData.append("properties", JSON.stringify(formData.properties));
     submitFormData.append("colors", JSON.stringify(formData.colors));
     submitFormData.append("videoes", JSON.stringify(formData.videoes));
     submitFormData.append("thumbnails", JSON.stringify(formData.thumbnails));
-    console.log(submitFormData);
-
+  
     try {
-      const result = await addProduct(submitFormData);
-      // Handle successful submission (e.g., show success message, redirect)
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        body: submitFormData
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        // Handle success - maybe clear form or show success message
+        console.log("Product created successfully:", result);
+      } else {
+        throw new Error('Failed to create product');
+      }
     } catch (error) {
-      // Handle error (e.g., show error message)
-      console.error("Error adding product:", error);
+      console.error("Error creating product:", error);
+      // Handle error - show error message to user
     }
   };
+  
+const fetchCategories = async () => {
+  try {
+    const response = await fetch('api/category');
+    const data = await response.json();
 
-  const fetchCategories = async () => {
-    const data = await getCategories();
-
-    setIsLoading(true);
-
-    if (data.success && data.data) {
-      setIsLoading(false);
-      setCategories(data.data);
+    if (data) {
+      setCategories(data.categories);
+      console.log(data.categories);
     }
-  };
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  } 
+}
 
   useEffect(() => {
     fetchCategories();
@@ -206,7 +215,7 @@ export default function AddProductPage() {
             >
               <option value="">انتخاب دسته‌بندی اصلی</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option key={category._id} value={category._id}>
                   {category.title}
                 </option>
               ))}
@@ -222,7 +231,7 @@ export default function AddProductPage() {
               >
                 <option value="">انتخاب زیر دسته</option>
                 {categories
-                  .find((cat) => cat.id === formData.categoryId)
+                  .find((cat) => cat._id === formData.categoryId)
                   ?.children.map((child, index) => (
                     <option key={index} value={child}>
                       {child}

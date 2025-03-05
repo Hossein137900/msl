@@ -1,34 +1,28 @@
 import mongoose from 'mongoose';
 
-const blogSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    image: {
-        type: String
-    },
+const cartSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
-    description: {
-        type: String,
-        required: true
-    },
-    seoTitle: {
-        type: String,
-        required: true
-    },
-    tags: [{
-        type: String
+    products: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
     }],
-    readTime: {
+    items: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true
+    },
+    path: {
+        type: String,
+        required: true
+    },
+    image: {
+        type: String,
+        required: true
+    },
+    totalPrice: {
         type: Number,
         required: true
     },
@@ -42,4 +36,4 @@ const blogSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);
+export default mongoose.models.Cart || mongoose.model("Cart", cartSchema);

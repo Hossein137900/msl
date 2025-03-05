@@ -1,7 +1,7 @@
 "use server";
 import { prisma } from "./prisma";
 import * as jwt from "jsonwebtoken";
-import { getProduct, getProducts } from "./productActions";
+// import { getProduct, getProducts } from "./productActions";
 
 export async function addToCart(formData: FormData, token: string) {
   const JWT_SECRET =  "msl";
@@ -49,49 +49,49 @@ export async function addToCart(formData: FormData, token: string) {
   }
 }
 
-export async function getUserCart(token: string) {
-  try {
-    const JWT_SECRET = "msl";
-    const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
-    const userId = decodedToken.userId;
-console.log(userId);
+// export async function getUserCart(token: string) {
+//   try {
+//     const JWT_SECRET = "msl";
+//     const decodedToken = jwt.verify(token, JWT_SECRET) as { userId: string };
+//     const userId = decodedToken.userId;
+// console.log(userId);
 
-    // First get the cart
-    const cart = await prisma.cart.findMany({
-      where: {
-        userId: userId,
-      },
+//     // First get the cart
+//     const cart = await prisma.cart.findMany({
+//       where: {
+//         userId: userId,
+//       },
       
-    });
+//     });
 
-    if (!cart) {
-      return null;
-    }
-    const allProducts = await getProducts();
+//     if (!cart) {
+//       return null;
+//     }
+//     const allProducts = await getProducts();
 
-    // Map through each cart and replace productIds with full product details
-    const cartsWithProducts = await Promise.all(carts.map(async (cart) => {
-      const itemsWithProducts = await Promise.all(cart.items.map(async (item) => {
-        const product = allProducts.find(p => p.id === item.productId);
-        return {
-          ...item,
-          product
-        };
-      }));
+//     // Map through each cart and replace productIds with full product details
+//     const cartsWithProducts = await Promise.all(carts.map(async (cart) => {
+//       const itemsWithProducts = await Promise.all(cart.items.map(async (item) => {
+//         const product = allProducts.find(p => p.id === item.productId);
+//         return {
+//           ...item,
+//           product
+//         };
+//       }));
 
-      return {
-        ...cart,
-        items: itemsWithProducts
-      };
-    }));
+//       return {
+//         ...cart,
+//         items: itemsWithProducts
+//       };
+//     }));
 
-    return cartsWithProducts;
+//     return cartsWithProducts;
 
-  } catch (error) {
-    console.error("Error fetching user cart:", error);
-    throw new Error("Failed to fetch user cart");
-  }
-}
+//   } catch (error) {
+//     console.error("Error fetching user cart:", error);
+//     throw new Error("Failed to fetch user cart");
+//   }
+// }
 
 
 
