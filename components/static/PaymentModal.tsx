@@ -58,35 +58,44 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       toast.error("لطفا تصویر رسید را انتخاب کنید");
       return;
     }
-
+  
     const submitFormData = new FormData();
     const token = localStorage.getItem("token") || "";
-
-    // Send items as a single JSON string
-    submitFormData.append(
-      "items",
-      JSON.stringify(
-        cartItems.map((item) => ({
-          productId: item.id,
-          quantity: item.quantity,
-        }))
-      )
-    );
-
+  
+    // Match the cart model structure
+    submitFormData.append("items", JSON.stringify(cartItems.map(item => ({
+      productId: item.id,
+      quantity: item.quantity
+    }))));
+    
+    // Add products array for the cart model
+    submitFormData.append("products", JSON.stringify(cartItems.map(item => item.id)));
+    
     submitFormData.append("paymentMethod", "card");
     submitFormData.append("totalPrice", totalPrice.toString());
-    submitFormData.append("receiptImage", receipt.name);
-
+    submitFormData.append("receiptImage", receipt);
+    submitFormData.append("path", "card"); // Required by cart model
+  
     try {
-      const result = await addToCart(submitFormData, token);
-      if (result) {
-        toast.success("رسید با موفقیت ارسال شد");
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'token': token
+        },
+        body: submitFormData
+      });
+  
+      if (response.ok) {
+        toast.success("سفارش با موفقیت ثبت شد");
         onClose();
+      } else {
+        toast.error("خطا در ثبت سفارش");
       }
     } catch (error) {
       toast.error("خطا در ارسال اطلاعات");
     }
   };
+  
 
   // const handleTelegramSubmit = async () => {
   //   setFormData((prev) => ({
