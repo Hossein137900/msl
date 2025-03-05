@@ -1,37 +1,66 @@
+"use client";
 import BlogPost from "@/components/global/blog-post";
-import { getBlogById } from "@/lib/blogActions";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  // Await params to get an object that includes "id"
-  const { id } = await params;
-  const blogId= id.split(":")[0];
-  console.log(blogId);
-  
-  const blog = await getBlogById(id);
-  if (!blog || !blog.title || !blog.content || !blog.createdAt) {
-    return {
-      title: "Blog Not Found",
-      description: "The requested blog post could not be found.",
-    };
-  }
-  return {
-    title: blog.seoTitle,
-    description: blog.description,
+interface BlogPost {
+  title: string;
+  content: string;
+  author: string;
+  date: Date;
+  readTime: number;
+  image: string;
+  tags: string[];
+  createdAt: Date;
+  user: {
+    name: string;
   };
 }
 
-export default async function BlogDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  // Await params to safely access "id"
-  const { id } = await params;
-  const blog = await getBlogById(id);
+// export async function generateMetadata() {
+//   // Await params to get an object that includes "id"
+//   const params = usePathname();
+
+//   const id = params.split(":")[0].split("/")[2];
+
+//   const response = await fetch(`/api/blog/${id}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+//   const blog = await response.json();
+//   if (!blog || !blog.title || !blog.content || !blog.createdAt) {
+//     return {
+//       title: "Blog Not Found",
+//       description: "The requested blog post could not be found.",
+//     };
+//   }
+//   return {
+//     title: blog.seoTitle,
+//     description: blog.description,
+//   };
+// }
+
+export default function BlogDetailPage() {
+  const [blog, setBlog] = useState<BlogPost | null>(null);
+  const params = usePathname();
+
+  const id = params.split(":")[0].split("/")[2];
+  const fetchDetails = async () => {
+    const response = await fetch(`/api/blog/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const blogs = await response.json();
+    console.log(blogs);
+    setBlog(blogs.blog);
+  };
+  useEffect(() => {
+    fetchDetails();
+  }, []);
 
   if (!blog) {
     return (
@@ -44,8 +73,8 @@ export default async function BlogDetailPage({
   const blogPostData = {
     title: blog.title,
     content: blog.content,
-    author: blog.user?.name || "Admin",
-    date: blog.createdAt,
+    author: blog?.user?.name || "Admin",
+    date: blog?.createdAt,
     readTime: 5,
     image: blog.image || "/assets/images/fade3.jpg",
     tags: blog.tags || ["لوستر", "دکوراسیون"],

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { contactInfo, quickLinks, socialLinks } from "../../lib/footerData";
 import { usePathname } from "next/navigation";
-import { getCategories } from "@/lib/category";
 import { useEffect, useState } from "react";
 
 export interface Category {
@@ -21,20 +20,20 @@ const Footer = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   // Fetch categories on component mount
-  const fetchCategories = async () => {
-    const data = await getCategories();
+  // const fetchCategories = async () => {
+  //   // const data = await getCategories();
 
-    setIsLoading(true);
+  //   setIsLoading(true);
 
-    if (data.success && data.data) {
-      setIsLoading(false);
-      setCategories(data.data);
-    }
-  };
+  //   if (data.success && data.data) {
+  //     setIsLoading(false);
+  //     setCategories(data.data);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   fetchCategories();
+  // }, []);
   const pathname = usePathname();
   if (pathname === "/dashboard") {
     return null;

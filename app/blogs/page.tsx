@@ -3,61 +3,71 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
-import { getBlogs } from "@/lib/blogActions";
 
 interface BlogPost {
-  id: string;
+  _id: string;
   title: string;
-  excerpt: string;
-  coverImage: string;
-  user: {
-    name: string;
+  description: string;
+  image: string;
+  userId: {
+    _id: string;
+    username: string;
   };
-  slug: string;
-  date: Date;
-  readTime: number;
+  user: string;
+  content: string;
+  seoTitle: string;
   tags: string[];
+  readTime: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function BlogGrid() {
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [isblog, setBlogs] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  function generateSlug(title: string) {
+    return title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   useEffect(() => {
     async function fetchBlogs() {
-      const fetchedBlogs = await getBlogs();
-      const mappedBlogs = fetchedBlogs.map((blog) => ({
-        id: blog.id,
+      const fetchedBlogs = await fetch("/api/blog", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await fetchedBlogs.json();
+      const mappedBlogs = data.blogs.map((blog: BlogPost) => ({
+        _id: blog._id,
         title: blog.title,
         slug: generateSlug(blog.title),
-        excerpt: blog.description,
+        description: blog.description,
         coverImage: "/assets/images/fade3.jpg",
-        user: {
-          name: blog.user.name || "Admin",
-        },
-        date: blog.createdAt,
-        readTime: blog.readTime || 5,
-        tags: blog.tags || [],
+        user: blog.userId.username,
+        date: new Date(blog.createdAt),
+        readTime: blog.readTime,
+        tags: blog.tags,
+        seoTitle: blog.seoTitle,
       }));
 
       setBlogs(mappedBlogs);
     }
     fetchBlogs();
   }, []);
-  const filteredBlogs = blogs.filter((blog) => {
+  const filteredBlogs = isblog.filter((blog) => {
     return (
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      blog.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+      blog.description.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
-  function generateSlug(title: string) {
-    return title
-      .trim()
-      .replace(/\s+/g, "-") // Replace spaces with hyphens
-      .replace(/[^آ-یa-z0-9\-]/g, "") // Keep Persian and English letters, numbers, and hyphens
-      .replace(/\-\-+/g, "-") // Replace multiple hyphens with single hyphen
-      .replace(/^-+/, "") // Trim hyphens from start
-      .replace(/-+$/, ""); // Trim hyphens from end
-  }
 
   return (
     <div
@@ -111,17 +121,17 @@ export default function BlogGrid() {
       </div>
 
       {/* Product (Blog) Grid */}
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredBlogs.map((blog) => (
           <Link
             target="_blank"
-            href={`/blogs/${blog.id}:${blog.slug}`}
-            key={blog.id}
+            href={`/blogs/${blog._id}:${blog.title}`}
+            key={blog._id}
           >
             <article className="bg-white/30  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
                 <Image
-                  src={blog.coverImage}
+                  src={"/assets/images/fade3.jpg"}
                   alt={blog.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-110"
@@ -138,7 +148,7 @@ export default function BlogGrid() {
                   {blog.title}
                 </h2>
                 <p className="text-stone-600 flex-grow line-clamp-3 mb-4">
-                  {blog.excerpt.slice(0, 25)}...
+                  {blog.description.slice(0, 30)} ...
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {blog.tags.map((tag, index) => (
@@ -153,9 +163,9 @@ export default function BlogGrid() {
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-full bg-[#e5d8d0] flex items-center justify-center text-[#a37462] font-bold">
-                      {blog.user.name.slice(0, 1)}
+                      {blog?.user.slice(0, 1)}
                     </div>
-                    <span className="text-[#a37462]">{blog.user.name}</span>
+                    <span className="text-[#a37462]">{blog?.user}</span>
                   </div>
                   <span className="text-stone-500">
                     {blog.readTime} دقیقه مطالعه

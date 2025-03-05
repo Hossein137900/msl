@@ -7,7 +7,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { navItems } from "@/lib/navbarData";
 import { usePathname } from "next/navigation";
-import { getCategories } from "@/lib/category";
 
 export interface Category {
   id: string;
@@ -31,17 +30,17 @@ const Navbar = () => {
   const pathname = usePathname();
 
   // Fetch categories on component mount
-  const fetchCategories = async () => {
-    const data = await getCategories();
-    setIsLoading(true);
-    if (data.success && data.data) {
-      setIsLoading(false);
-      setCategories(data.data);
-    }
-  };
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  // const fetchCategories = async () => {
+  //   const data = await getCategories();
+  //   setIsLoading(true);
+  //   if (data.success && data.data) {
+  //     setIsLoading(false);
+  //     setCategories(data.data);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchCategories();
+  // }, []);
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {

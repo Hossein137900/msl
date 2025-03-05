@@ -1,4 +1,3 @@
-import { getAllCarts } from "@/lib/cartActions";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -95,36 +94,36 @@ const Payments: React.FC = () => {
   const [cartData, setCartData] = useState<Cart[]>([]);
   const [selectedCart, setSelectedCart] = useState<Cart | null>(null);
 
-  const fetch = async () => {
-    const token = localStorage.getItem("token") || "";
-    if (token) {
-      try {
-        const data = await getAllCarts();
-        console.log(data);
-        setCartData(
-          data.map((cart) => ({
-            ...cart,
-            items: {
-              create: cart?.items?.create || [],
-            },
-            user: {
-              ...cart.user,
-              createdAt: cart.user.createdAt.toString(),
-              updatedAt: cart.user.updatedAt.toString(),
-            },
-            createdAt: cart.createdAt.toString(),
-            updatedAt: cart.updatedAt.toString(),
-          }))
-        );
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      }
-    }
-  };
+  // const fetch = async () => {
+  //   const token = localStorage.getItem("token") || "";
+  //   if (token) {
+  //     try {
+  //       const data = await getAllCarts();
+  //       console.log(data);
+  //       setCartData(
+  //         data.map((cart) => ({
+  //           ...cart,
+  //           items: {
+  //             create: cart?.items?.create || [],
+  //           },
+  //           user: {
+  //             ...cart.user,
+  //             createdAt: cart.user.createdAt.toString(),
+  //             updatedAt: cart.user.updatedAt.toString(),
+  //           },
+  //           createdAt: cart.createdAt.toString(),
+  //           updatedAt: cart.updatedAt.toString(),
+  //         }))
+  //       );
+  //     } catch (error) {
+  //       console.error("Error fetching cart:", error);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    fetch();
-  }, []);
+  // useEffect(() => {
+  //   fetch();
+  // }, []);
 
   const formatDateToPersian = (dateStr: string) => {
     const date = new Date(dateStr);
