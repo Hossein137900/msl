@@ -17,7 +17,7 @@ import { toast } from "react-hot-toast";
 import DynamicTable from "@/components/global/Table";
 
 interface ProductProps {
-  id: string;
+  _id: string;
   createdAt: Date;
   updatedAt: Date;
   title: string;
@@ -78,7 +78,7 @@ export default function ProductDetailPage() {
       try {
         const transaction = db.transaction(["cart"], "readonly");
         const store = transaction.objectStore("cart");
-        const getRequest = store.get(product.id);
+        const getRequest = store.get(product._id);
         getRequest.onsuccess = () => {
           if (getRequest.result) {
             setQuantity(getRequest.result.quantity);
@@ -88,7 +88,7 @@ export default function ProductDetailPage() {
         console.log("Store access error:", error);
       }
     };
-  }, [product?.id]);
+  }, [product?._id]);
 
   const handleQuantityChange = async (
     action: "increase" | "decrease" | "remove"
@@ -102,7 +102,7 @@ export default function ProductDetailPage() {
       if (!product) return;
 
       if (action === "remove" || (action === "decrease" && quantity === 1)) {
-        store.delete(product.id);
+        store.delete(product._id);
         setQuantity(0);
         toast.success("محصول از سبد خرید حذف شد");
         return;
@@ -111,9 +111,11 @@ export default function ProductDetailPage() {
       const newQuantity = action === "increase" ? quantity + 1 : quantity - 1;
       setQuantity(newQuantity);
       store.put({
+        id: product._id,  // Explicitly include the id
         ...product,
         quantity: newQuantity,
       });
+      
       toast.success(
         action === "increase"
           ? "محصول به سبد خرید اضافه شد"

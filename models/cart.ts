@@ -6,10 +6,7 @@ const cartSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    products: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
-    }],
+    
     items: {
         type: mongoose.Schema.Types.Mixed,
         required: true

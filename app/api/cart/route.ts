@@ -2,27 +2,27 @@ import connect from "@/lib/data";
 import { NextResponse } from "next/server";
 import Cart from "@/models/cart";
 import * as jwt from "jsonwebtoken";
-
-export async function GET(request: Request) {
+import User from "@/models/user";
+import Product from "@/models/product";
+export async function GET() {
   try {
     await connect();
-    const token = request.headers.get('authorization')?.split(' ')[1];
-    
-    if (!token) {
-      return NextResponse.json({ message: "No token provided" }, { status: 401 });
-    }
-
-    const decodedToken = jwt.verify(token, 'msl') as { userId: string };
-    const userId = decodedToken.userId;
-
-    const carts = await Cart.find({ userId })
-      .populate('userId')
-      .populate('products');
-
+    const carts = await Cart.find()
+      .populate({
+        path: 'userId',
+        model: User,
+        select: 'username'
+      })
+      .populate({
+        path:'items.productId',
+        model: Product,
+        select: 'title'
+      });
+      
     return NextResponse.json({ carts }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Error fetching cart" },
+      { message: "Error fetching all carts" },
       { status: 500 }
     );
   }
@@ -33,23 +33,25 @@ export async function POST(request: Request) {
     await connect();
     const formData = await request.formData();
     const token = request.headers.get('token')
-
+    console.log(token)
     if (!token) {
       return NextResponse.json({ message: "No token provided" }, { status: 401 });
     }
 
-    const decodedToken = jwt.verify(token, 'msl') as { userId: string };
-    const userId = decodedToken.userId;
-
+    const decodedToken = jwt.verify(token, 'msl') as { id: string };
+    console.log(decodedToken)
+    const userId = decodedToken.id;
+    if (!userId) {
+      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+    }
     const newCart = new Cart({
-      userId,
-      products: JSON.parse(formData.get("items") as string),
+    userId:userId,
       items: JSON.parse(formData.get("items") as string),
       path: formData.get("paymentMethod"),
-      image: formData.get("receiptImage"),
+      image: 'image.name',
       totalPrice: parseInt(formData.get("totalPrice") as string)
     });
-
+    console.log(newCart)
     await newCart.save();
 
     return NextResponse.json(
@@ -58,8 +60,8 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error creating cart" },
-      { status: 500 }
+      { message: "Error creating cart"},
+      { status: 500 } 
     );
   }
 }
