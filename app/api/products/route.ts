@@ -1,14 +1,15 @@
 import connect from "@/lib/data";
 import { NextResponse } from "next/server";
 import Product from "@/models/product";
+import Category from "@/models/category";
 
 export async function GET() {
   try {
     await connect();
     const products = await Product.find().populate({
-      path: "categoryId",
-      model: "Category",
-      select: "title",
+      path: 'categoryId',
+      model: Category,
+      select: 'title'
     });
     console.log(products, "products");
     return NextResponse.json({ products }, { status: 200 });
@@ -19,7 +20,6 @@ export async function GET() {
     );
   }
 }
-
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
