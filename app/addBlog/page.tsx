@@ -144,7 +144,7 @@ export default function AddBlogPage() {
         class: "prose prose-lg max-w-none focus:outline-none min-h-[200px] rtl",
       },
     },
-    //@ts-expect-error 7031
+    //@ts-ignore 7031
     onUpdate: ({ editor }) => {
       const text = editor.getText();
       const words: string[] = text
