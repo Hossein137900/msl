@@ -44,3 +44,20 @@ export async function GET(request: Request) {
     );
   }
 }
+export async function PATCH (request: Request) {
+  try {
+    await connect();
+   const body = await request.json();
+    
+    const cart = await Cart.findOneAndUpdate({ _id: body.id }, { path: body.path }, { new: true });
+    if (!cart) {
+      return NextResponse.json({ message: "Cart not found" }, { status: 404 });
+    }
+    return NextResponse.json({ cart }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error updating cart" },
+      { status: 500 }
+    );
+  }
+}

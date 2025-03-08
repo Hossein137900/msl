@@ -32,7 +32,7 @@ interface Cart {
 
 const DashboardReport: React.FC = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchCartData = async () => {
     const token = localStorage.getItem("token") || "";
@@ -49,6 +49,7 @@ const DashboardReport: React.FC = () => {
         }
         const data = await response.json();
         setCarts(data.carts);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching cart:", error);
       }

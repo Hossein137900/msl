@@ -90,6 +90,7 @@ const DetailModal = ({
 const Payments: React.FC = () => {
   const [cartData, setCartData] = useState<Cart[]>([]);
   const [selectedCart, setSelectedCart] = useState<Cart | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchCartData = async () => {
     const token = localStorage.getItem("token") || "";
@@ -106,6 +107,7 @@ const Payments: React.FC = () => {
         }
         const data = await response.json();
         setCartData(data.carts);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching cart:", error);
       }
@@ -130,7 +132,16 @@ const Payments: React.FC = () => {
       currency: "IRR",
     }).format(price);
   };
-
+  if (loading) {
+    return   <div className="fixed inset-0 bg-black/5 z-50">
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-600 border-t-transparent" />
+        <p className="text-gray-50 animate-pulse">
+          در حال بارگذاری سفارشات...
+        </p>
+      </div>
+    </div>
+  }
   return (
     <>
       <div className="shadow-md sm:rounded-lg">

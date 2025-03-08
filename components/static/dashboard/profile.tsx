@@ -1,15 +1,66 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Profile: React.FC = () => {
-  const [username, setUsername] = useState<string>("نام_کاربری_فعلی");
-  const [phoneNumber, setPhoneNumber] = useState<string>("123-456-7890");
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({
+    username: "",
+    phoneNumber: "",
+    id: "",
+  });
+ const fetchUser = async () => {
+    const response = await fetch(`/api/auth/id`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token")!,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+    if (response.ok) {
+      const data = await response.json();
+      setUser(data);
+      setLoading(false);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    console.log("اطلاعات به‌روز شده:", { username, phoneNumber });
-    alert("پروفایل با موفقیت به‌روز شد!");
+    }
   };
-
+  useEffect(() => {
+    fetchUser();
+  }, []);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/auth/id`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token")!,
+        },
+        body: JSON.stringify({
+          username: user.username,
+          phoneNumber: user.phoneNumber,
+        }),
+      });
+      response.json();
+      toast.success("پروفایل با موفقیت بروزرسانی شد");
+    } catch (error) {
+      toast.error("خطا در بروزرسانی پروفایل");
+      console.error(error);
+    }
+  };
+  if (loading) {
+    return  <div className="fixed inset-0 bg-black/5 z-50">
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-600 border-t-transparent" />
+        <p className="text-gray-50 animate-pulse">
+          در حال بارگذاری پروفایل...
+        </p>
+      </div>
+    </div>
+  }
+if (!loading) {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-4">بروزرسانی پروفایل</h2>
@@ -24,9 +75,9 @@ const Profile: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={username}
+            value={user.username}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
+              setUser({ ...user, username: e.target.value })
             }
             className="w-full border px-3 py-2 text-black/70 rounded focus:outline-none focus:ring focus:border-blue-300"
           />
@@ -38,9 +89,9 @@ const Profile: React.FC = () => {
           <input
             type="text"
             id="phoneNumber"
-            value={phoneNumber}
+            value={user.phoneNumber}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPhoneNumber(e.target.value)
+              setUser({...user,phoneNumber:e.target.value})
             }
             className="w-full border px-3 py-2 rounded text-black/70 focus:outline-none focus:ring focus:border-blue-300"
           />
@@ -54,6 +105,8 @@ const Profile: React.FC = () => {
       </form>
     </div>
   );
+}
+
 };
 
 export default Profile;
