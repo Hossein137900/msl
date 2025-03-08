@@ -17,6 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+     
+
       <body
         className={` ${doranregular.className} bg-[#e5d8d0] antialiased relative`}
       >

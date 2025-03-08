@@ -31,13 +31,15 @@ const ItemsModal = ({
   items, 
   status, 
   cartId, 
-  onStatusChange 
+  onStatusChange ,
+  cartImage
 }: { 
   isOpen: boolean; 
   onClose: () => void; 
   items: CartItem[]; 
   status: string;
   cartId: string;
+  cartImage: string;
   onStatusChange: (cartId: string, status: string) => void;
 }) => {
   const [newStatus, setNewStatus] = useState(status);
@@ -62,16 +64,11 @@ const ItemsModal = ({
             initial={{ opacity: 0, scale: 0.75 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.75 }}
-            className="fixed top-1/3 md:right-1/4 right-0 lg:right-1/3 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-md"
+            className="fixed top-1/4 md:right-1/4 right-0 lg:right-1/3 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-md"
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold text-yellow-400">جزئیات سفارش</h3>
-              <button onClick={onClose} className="text-gray-400 hover:text-white">
-                <FaTimes size={24} />
-              </button>
-            </div>
             
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            
+            <div className="space-y-4 max-h-[50vh] overflow-y-auto">
               {items.map((item, index) => (
                 <div key={index} className="bg-gray-700 p-4 rounded-lg flex items-center gap-4">
                   <Image
@@ -89,7 +86,7 @@ const ItemsModal = ({
               ))}
             </div>
 
-            <div className="mt-6 space-y-4">
+            <div className="mt-1 space-y-2">
               <div className="flex items-center gap-4">
                 <label className="text-white">وضعیت سفارش:</label>
                 <select
@@ -102,7 +99,13 @@ const ItemsModal = ({
                   <option value="denied">رد شده</option>
                 </select>
               </div>
-
+              <Image
+                    src='https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1600'
+                    alt="Cart Image"
+              width={50}
+              height={50}
+              className="w-full h-auto object-cover rounded"
+              />
               <button
                 onClick={handleSubmit}
                 className="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-bold hover:bg-yellow-500 transition-colors"
@@ -185,7 +188,6 @@ export const Carts = () => {
               <th className="px-6 py-3 text-right">مبلغ کل</th>
               <th className="px-6 py-3 text-right">تاریخ</th>
               <th className="px-6 py-3 text-right">وضعیت</th>
-              <th className="px-6 py-3 text-right">تصویر رسید</th>
               <th className="px-6 py-3 text-right">اقلام</th>
             </tr>
           </thead>
@@ -219,15 +221,7 @@ export const Carts = () => {
                 }
                </span>
                 </td>
-                <td className="px-6 py-4">
-                  <Image
-                    src={cart.image}
-                    alt="receipt"
-                    layout="fill"
-                    objectFit="cover"
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                </td>
+                
                 <td className="px-6 py-4">
                   <button
                     onClick={() => handleShowItems(cart)}
@@ -250,6 +244,7 @@ export const Carts = () => {
           status={selectedCart.status}
           cartId={selectedCart._id}
           onStatusChange={handleStatusChange}
+          cartImage={selectedCart.image}
         />
       )}
     </div>
