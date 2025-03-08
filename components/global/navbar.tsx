@@ -9,9 +9,12 @@ import { navItems } from "@/lib/navbarData";
 import { usePathname } from "next/navigation";
 
 export interface Category {
-  id: string;
+  _id: string;
   title: string;
   children: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface CategoryResponse {
@@ -29,18 +32,31 @@ const Navbar = () => {
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
 
-  // Fetch categories on component mount
-  // const fetchCategories = async () => {
-  //   const data = await getCategories();
-  //   setIsLoading(true);
-  //   if (data.success && data.data) {
-  //     setIsLoading(false);
-  //     setCategories(data.data);
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
+  const fetchCategories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/category", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+
+      if (data) {
+        setCategories(data.categories);
+      }
+    } catch (error) {
+      console.log("Error fetching categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // Optimize scroll handler with useCallback
   const handleScroll = useCallback(() => {
@@ -67,8 +83,8 @@ const Navbar = () => {
     setActiveDropdown(null);
   }, []);
 
-  const handleCategoryHover = useCallback((id: string) => {
-    setActiveCategory(id);
+  const handleCategoryHover = useCallback((_id: string) => {
+    setActiveCategory(_id); // Use _id instead of id
   }, []);
 
   if (pathname === "/dashboard") {
@@ -94,9 +110,7 @@ const Navbar = () => {
       }}
       dir="rtl"
       className={`fixed z-[9999] top-4 right-2 left-2 backdrop-blur-md lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/10"
-          : "bg-transparent"
+        isScrolled ? "bg-white/10" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -148,7 +162,6 @@ const Navbar = () => {
 
               {item.title === "محصولات" && (
                 <>
-                  
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{
@@ -162,25 +175,24 @@ const Navbar = () => {
                         activeDropdown === "محصولات" ? "auto" : "none",
                     }}
                   >
-                    
                     <div className="flex h-[400px]">
                       <div className="w-1/3 border-l border-white/20 bg-white/5">
                         {!isLoading &&
-                          categories.map((category) => (
+                          categories.map((category, idx) => (
                             <motion.div
-                              key={category.id}
+                              key={idx}
                               onMouseEnter={() =>
-                                handleCategoryHover(category.id)
+                                handleCategoryHover(category._id)
                               }
                               whileHover={{
                                 backgroundColor: "rgba(255,255,255,0.15)",
                               }}
                               className={`px-6 py-4 cursor-pointer transition-all duration-300
-        ${
-          activeCategory === category.id
-            ? "bg-white/10 border-r-4 border-[#a37462]"
-            : ""
-        }`}
+      ${
+        activeCategory === category._id
+          ? "bg-white/10 border-r-4 border-[#a37462]"
+          : ""
+      }`}
                             >
                               <h3 className="text-[#a37462] font-bold text-lg">
                                 {category.title}
@@ -204,14 +216,14 @@ const Navbar = () => {
                                 <h4 className="text-[#fff] text-xl font-bold mb-6">
                                   {
                                     categories.find(
-                                      (c) => c.id === activeCategory
+                                      (c) => c._id === activeCategory
                                     )?.title
                                   }
                                 </h4>
                                 <div className="space-y-3">
                                   {!isLoading &&
                                     categories
-                                      .find((c) => c.id === activeCategory)
+                                      .find((c) => c._id === activeCategory)
                                       ?.children.map((child, idx) => (
                                         <motion.div
                                           key={idx}
@@ -219,8 +231,8 @@ const Navbar = () => {
                                           animate={{ opacity: 1, x: 0 }}
                                           transition={{ delay: idx * 0.1 }}
                                           className="text-gray-50 hover:text-white 
-                                cursor-pointer py-1 px-2 rounded
-                                hover:bg-white/10 transition-all duration-200"
+          cursor-pointer py-1 px-2 rounded
+          hover:bg-white/10 transition-all duration-200"
                                         >
                                           {child}
                                         </motion.div>
@@ -260,7 +272,7 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="جستجو ..."
-              className="w-64 px-4 py-2.5 rounded-full
+              className="w-64 px-4 py-2.5 rounded-lg
         backdrop-blur-sm placeholder:text-[#a37462]
         border-2 border-[#a37462]/30 
         bg-white/5 text-[#a37462]
@@ -352,8 +364,8 @@ const Navbar = () => {
                       >
                         <div className="mt-2 space-y-1 border-r-2 border-[#a37462] touch-pan-y">
                           {!isLoading &&
-                            categories.map((category) => (
-                              <div key={category.id}>
+                            categories.map((category, idx) => (
+                              <div key={idx}>
                                 <motion.div
                                   whileHover={{
                                     backgroundColor: "rgba(255,255,255,0.1)",

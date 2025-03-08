@@ -82,7 +82,7 @@ function SpeakerCard({
             key={idx}
             className="flex flex-col items-center"
             initial={{ scale: 0.9 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
             <div className="md:w-40 md:h-40 w-28 h-28 rounded-lg border-2 p-1  border-[#a37462] overflow-hidden">
@@ -117,7 +117,7 @@ export default function SpeakersSlider() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-4 text-center py-12 ">
+    <div className="w-full max-w-4xl mx-auto text-center py-12 ">
       <h2 className="text-lg font-bold text-gray-800 mb-4">همراهان ما </h2>
       <div className="border-t-2 border-[#a37462] w-16 mx-auto mb-6"></div>
 
@@ -137,12 +137,24 @@ export default function SpeakersSlider() {
             whileTap={{ scale: 0.95 }}
             onClick={handlePrev}
             aria-label="prev"
-            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full 
+            className="w-10 h-10 sm:w-12 text-[#a37462] sm:h-12 flex items-center justify-center rounded-full 
              bg-gradient-to-br from-white/30 to-white/10 backdrop-blur 
              border border-[#a37462] shadow-lg hover:shadow-xl 
              transition-all duration-300"
           >
-            {/* Previous arrow SVG remains the same */}
+            <svg
+              className="w-5 h-5 sm:w-6 rotate-180 sm:h-6 text-[#a37462] "
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </motion.button>
 
           <motion.button
@@ -150,12 +162,24 @@ export default function SpeakersSlider() {
             whileTap={{ scale: 0.95 }}
             onClick={handleNext}
             aria-label="next"
-            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full 
+            className="w-10 h-10 sm:w-12 text-[#a37462] sm:h-12 flex items-center justify-center rounded-full 
              bg-gradient-to-br from-white/30 to-white/10 backdrop-blur 
              border border-[#a37462] shadow-lg hover:shadow-xl 
              transition-all duration-300"
           >
-            {/* Next arrow SVG remains the same */}
+            <svg
+              className="w-5 h-5 sm:w-6 sm:h-6 text-[#a37462] "
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>{" "}
           </motion.button>
         </div>
       </div>
