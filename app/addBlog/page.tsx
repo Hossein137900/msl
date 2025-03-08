@@ -12,6 +12,7 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
+import { CustomEditor } from "../types/editor";
 
 const MenuButton = ({
   onClick,
@@ -144,8 +145,8 @@ export default function AddBlogPage() {
         class: "prose prose-lg max-w-none focus:outline-none min-h-[200px] rtl",
       },
     },
-    //@ts-ignore 7031
-    onUpdate: ({ editor }) => {
+
+    onUpdate: ({ editor }: { editor: CustomEditor }) => {
       const text = editor.getText();
       const words: string[] = text
         .trim()
@@ -153,7 +154,7 @@ export default function AddBlogPage() {
         .filter((word: string) => word !== "");
       setWordCount(words.length);
     },
-  });
+  }) as CustomEditor;
 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;
@@ -169,52 +170,51 @@ export default function AddBlogPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate required fields
     if (!title || !description || !seoTitle || !editor?.getHTML()) {
-        toast.error("لطفا تمام فیلدها را پر کنید");
-        return;
+      toast.error("لطفا تمام فیلدها را پر کنید");
+      return;
     }
-const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (!token) {
-        toast.error("لطفا مجددا وارد شوید");
-        return;
+      toast.error("لطفا مجددا وارد شوید");
+      return;
     }
     const blogData = {
       title,
       description,
       seoTitle,
       content: editor?.getHTML(),
-      image:'https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', // You'll need to handle image upload
+      image:
+        "https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", // You'll need to handle image upload
       tags,
-    }
-    
+    };
+
     try {
-      const response = await fetch('/api/blog', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'token': token // The API expects token in headers
-          },
-          body: JSON.stringify(blogData)
+      const response = await fetch("/api/blog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: token, // The API expects token in headers
+        },
+        body: JSON.stringify(blogData),
       });
-  
+
       if (response.ok) {
-          toast.success("بلاگ با موفقیت ایجاد شد");
-            setTitle("");
-            setDescription("");
-            setSeoTitle("");
-            setTags([]);
-            editor?.commands.clearContent();
+        toast.success("بلاگ با موفقیت ایجاد شد");
+        setTitle("");
+        setDescription("");
+        setSeoTitle("");
+        setTags([]);
+        editor?.commands.clearContent();
       }
-  } catch (error) {
+    } catch (error) {
       console.error(error);
       toast.error("خطا در ایجاد بلاگ");
-  }
-  
-};
+    }
+  };
   // Reset form
-            
 
   return (
     <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
