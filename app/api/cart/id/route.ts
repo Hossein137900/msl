@@ -2,6 +2,8 @@ import connect from "@/lib/data";
 import { NextResponse } from "next/server";
 import Cart from "@/models/cart";
 import * as jwt from "jsonwebtoken";
+import User from "@/models/user";
+import Product from "@/models/product";
 
 
 export async function GET(request: Request) {
@@ -16,7 +18,18 @@ export async function GET(request: Request) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET||'msl') as { id: string };
     const userId = decodedToken.id;
  console.log(userId)
-    const carts = await Cart.find({ userId: userId });
+    const carts = await Cart.find({ userId:userId })
+      .populate({
+      path: "userId",
+      model: User,
+      select: "username  phoneNumber",
+    })
+    .populate({
+      path: "items.productId",
+      model: Product,
+      select: "title price",
+    })
+    .exec();
    
 
     return NextResponse.json({ carts }, { status: 200 });

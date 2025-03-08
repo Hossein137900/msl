@@ -47,10 +47,11 @@ const DashboardReport: React.FC = () => {
           }
         );
         if (!response.ok) {
+          console.log(response.body)
           throw new Error("Failed to fetch cart data");
         }
         const data = await response.json();
-        setCarts(data.data);
+        setCarts(data.carts);
       } catch (error) {
         console.error("Error fetching cart:", error);
       }
