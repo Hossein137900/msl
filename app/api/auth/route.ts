@@ -49,16 +49,55 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     await connect();
+      const token = request.headers.get("token");
+      if (!token) {
+        return NextResponse.json(
+          { message: "No token provided" },
+          { status: 401 }
+        );
+      }
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET || "msl") as {
+        id: string;
+        role: string;
+      };
+      console.log(decodedToken);
+      if (decodedToken.role !== "admin") {
+          console.log(decodedToken.role);
+          return NextResponse.json(
+            { message: "Unauthorized" },
+            { status: 401 }
+        );}
 
+     
     const users = await User.find();
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(
       { message: "Error fetching users" },
+      { status: 500 }
+    );
+  }
+}
+export async function PATCH(request: Request) {
+  try {
+    await connect();
+    const id = request.headers.get("id");
+    const body = await request.json();
+const user = await User.findByIdAndUpdate(id, {
+  role: body.role
+}, { new: true });
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    return NextResponse.json({ user }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { message: "Error updating user" },
       { status: 500 }
     );
   }
