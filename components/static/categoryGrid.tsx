@@ -55,7 +55,7 @@ const CategoryGrid = () => {
             <div className="relative h-full group cursor-pointer">
               <Image
                 src={category.imageUrl}
-                alt={category.title}
+                alt={`تصویر دسته‌بندی ${category.title}`}
                 fill
                 className="object-bottom group-hover:scale-105 transition-transform duration-300"
               />
@@ -78,7 +78,7 @@ const CategoryGrid = () => {
           <div className="relative h-full group cursor-pointer">
             <Image
               src={luxuryLightingCategories[0].imageUrl}
-              alt={luxuryLightingCategories[0].title}
+              alt={`تصویر ویژه دسته‌بندی ${luxuryLightingCategories[0].title}`}
               width={2000}
               height={2000}
               className="object-cover border-2 border-[#fff]/50 h-full transition-transform duration-300"
@@ -105,7 +105,7 @@ const CategoryGrid = () => {
             <div className="relative h-full group cursor-pointer">
               <Image
                 src={category.imageUrl}
-                alt={category.title}
+                alt={`تصویر دسته‌بندی ${category.title}`}
                 fill
                 className="object-bottom group-hover:scale-105 transition-transform duration-300"
               />

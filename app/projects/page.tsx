@@ -103,9 +103,9 @@ const ProjectsPage = () => {
             />
             <motion.div className="p-4 flex flex-row justify-between bg-white">
               <div>
-                <h3 className="text-xl font-bold text-black">
+                <h2 className="text-xl font-bold text-black">
                   {project.title}
-                </h3>
+                </h2>
                 <p className="text-xs mt-4 mr-11 w-full text-black text-justify">
                   {project.description}
                 </p>
