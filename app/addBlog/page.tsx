@@ -154,8 +154,7 @@ export default function AddBlogPage() {
         .filter((word: string) => word !== "");
       setWordCount(words.length);
     },
-    
-  }) ;
+  }) as CustomEditor;
 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;

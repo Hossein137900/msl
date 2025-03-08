@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/core'
+import { Editor, JSONContent } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import TextStyle from '@tiptap/extension-text-style'
@@ -16,19 +16,4 @@ declare module '@tiptap/core' {
   }
 }
 
-type EditorExtensions = [
-  typeof StarterKit,
-  typeof Link,
-  typeof TextStyle,
-  typeof Color,
-  typeof Highlight,
-  typeof TextAlign,
-  typeof BulletList,
-  typeof OrderedList
-]
-
-export type CustomEditor = {
-  extensions: EditorExtensions
-  editor: Editor
-  getText: () => string
-}
+export type CustomEditor = Editor
