@@ -1,9 +1,10 @@
-import { Carts } from "@/components/static/adminComponent/carts";
+import { User } from "@/components/static/adminComponent/user";
 
 const Page = () => {
   return (
     // <Products />
-    <Carts />
+    // <Carts/>
+    <User />
   );
 };
 export default Page;

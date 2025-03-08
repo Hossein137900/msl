@@ -25,7 +25,28 @@ interface Cart {
   image: string;
 }
 
-const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () => void; items: CartItem[] }) => {
+const ItemsModal = ({ 
+  isOpen, 
+  onClose, 
+  items, 
+  status, 
+  cartId, 
+  onStatusChange 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  items: CartItem[]; 
+  status: string;
+  cartId: string;
+  onStatusChange: (cartId: string, status: string) => void;
+}) => {
+  const [newStatus, setNewStatus] = useState(status);
+
+  const handleSubmit = () => {
+    onStatusChange(cartId, newStatus);
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -34,14 +55,14 @@ const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () =
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className=" bg-black/50 z-50"
+            className="fixed inset-0 bg-black/50 z-50"
             onClick={onClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.75 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.75 }}
-            className=" absolute  bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-lg"
+            className="fixed top-1/3 md:right-1/4 right-0 lg:right-1/3 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-md"
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold text-yellow-400">جزئیات سفارش</h3>
@@ -49,6 +70,7 @@ const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () =
                 <FaTimes size={24} />
               </button>
             </div>
+            
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {items.map((item, index) => (
                 <div key={index} className="bg-gray-700 p-4 rounded-lg flex items-center gap-4">
@@ -66,6 +88,28 @@ const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () =
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center gap-4">
+                <label className="text-white">وضعیت سفارش:</label>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                  className="bg-gray-700 text-white border border-gray-600 rounded px-3 py-2"
+                >
+                  <option value="pending">در انتظار</option>
+                  <option value="accepte">تایید شده</option>
+                  <option value="denied">رد شده</option>
+                </select>
+              </div>
+
+              <button
+                onClick={handleSubmit}
+                className="w-full bg-yellow-400 text-gray-900 py-2 rounded-lg font-bold hover:bg-yellow-500 transition-colors"
+              >
+                ثبت تغییرات
+              </button>
+            </div>
           </motion.div>
         </>
       )}
@@ -76,7 +120,7 @@ const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () =
 export const Carts = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
+  const [selectedCart, setSelectedCart] = useState<Cart | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchCarts = async () => {
@@ -94,9 +138,10 @@ export const Carts = () => {
 
   const handleStatusChange = async (cartId: string, newStatus: string) => {
     try {
-      const response = await fetch(`/api/cart/${cartId}`, {
+      const response = await fetch(`/api/cart/id`, {
         method: 'PATCH',
         headers: {
+          id: cartId,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status: newStatus }),
@@ -104,7 +149,7 @@ export const Carts = () => {
 
       if (response.ok) {
         toast.success('وضعیت سفارش با موفقیت بروزرسانی شد');
-        fetchCarts(); // Refresh the carts list
+        fetchCarts();
       }
     } catch (error) {
       console.error('خطا در بروزرسانی وضعیت سفارش' , error);
@@ -112,8 +157,8 @@ export const Carts = () => {
     }
   };
 
-  const handleShowItems = (items: CartItem[]) => {
-    setSelectedItems(items);
+  const handleShowItems = (cart: Cart) => {
+    setSelectedCart(cart);
     setIsModalOpen(true);
   };
 
@@ -160,15 +205,19 @@ export const Carts = () => {
                   {new Date(cart.createdAt).toLocaleDateString('fa-IR')}
                 </td>
                 <td className="px-6 py-4">
-                  <select
-                    value={cart.status}
-                    onChange={(e) => handleStatusChange(cart._id, e.target.value)}
-                    className="bg-transparent border border-gray-600 rounded px-2 py-1 text-white"
-                  >
-                    <option value="pending">در انتظار</option>
-                    <option value="accepte">تایید شده</option>
-                    <option value="denied">رد شده</option>
-                  </select>
+               <span>
+                {cart.status === 'pending' && (
+                  <span className="text-blue-400">در انتظار</span>
+                )}
+                {cart.status === 'accepte' && (
+                  <span className="text-green-500">تایید شده</span>
+                )}
+                {
+                  cart.status === 'denied' && (
+                    <span className="text-red-500">رد شده</span>
+                  )
+                }
+               </span>
                 </td>
                 <td className="px-6 py-4">
                   <Image
@@ -181,7 +230,7 @@ export const Carts = () => {
                 </td>
                 <td className="px-6 py-4">
                   <button
-                    onClick={() => handleShowItems(cart.items)}
+                    onClick={() => handleShowItems(cart)}
                     className="flex items-center gap-2 bg-yellow-400 text-gray-900 px-3 py-1 rounded hover:bg-yellow-500"
                   >
                     <FaShoppingCart />
@@ -193,11 +242,16 @@ export const Carts = () => {
           </tbody>
         </table>
       </div>
-      <ItemsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        items={selectedItems}
-      />
+      {selectedCart && (
+        <ItemsModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          items={selectedCart.items}
+          status={selectedCart.status}
+          cartId={selectedCart._id}
+          onStatusChange={handleStatusChange}
+        />
+      )}
     </div>
   );
 };
