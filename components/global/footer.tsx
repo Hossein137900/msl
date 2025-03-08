@@ -69,6 +69,7 @@ const Footer = () => {
                   className="bg-[#252525]/5 p-6 border border-white/50 rounded-lg hover:bg-[#2a2a2a]/10 transition-all duration-300"
                 >
                   <Link
+                    aria-label={`Browse ${category.title} category`}
                     href={`/category/${category.id}`}
                     className="text-[#e5d8d0] hover:text-[#fff] font-bold text-lg mb-4 block border-b border-[#fff]/50 pb-2"
                   >
@@ -78,6 +79,7 @@ const Footer = () => {
                     {category.children.map((child, index) => (
                       <Link
                         key={index}
+                        aria-label={`View ${child} in ${category.title}`}
                         href={`/category/${category.id}/${child}`}
                         className="text-gray-200 hover:text-[#e5d8d0] text-sm block transition-all duration-300 hover:translate-x-2"
                       >
@@ -98,13 +100,15 @@ const Footer = () => {
             whileInView={{ opacity: 1, y: 0 }}
             className="space-y-4"
           >
-            <Image
-              src="/assets/images/logo.png"
-              alt="MSL Logo"
-              width={60}
-              height={60}
-              className="mb-4"
-            />
+            <Link href="/" aria-label="Return to homepage">
+              <Image
+                src="/assets/images/logo.png"
+                alt="MSL Logo - Luxury Lighting Solutions"
+                width={60}
+                height={60}
+                className="mb-4"
+              />
+            </Link>
             <p className="text-[#e5d8d0] leading-relaxed">
               برترین تولید کننده لوستر و چراغ‌های تزئینی با بیش از ۳۰ سال تجربه
               در ارائه محصولات لوکس و سفارشی
@@ -114,6 +118,7 @@ const Footer = () => {
                 <Link
                   key={social.name}
                   href={social.href}
+                  aria-label={`Visit our ${social.name} page`}
                   className="hover:text-[#e5d8d0] transform hover:scale-110 transition-all duration-300"
                 >
                   <social.icon className="w-6 h-6" />
@@ -173,7 +178,12 @@ const Footer = () => {
                     </p>
                     <div className="text-gray-300 hover:text-[#e5d8d0] transition-colors duration-300 mt-1">
                       {info.isLink ? (
-                        <Link href={info.href || "#"}>{info.value}</Link>
+                        <Link
+                          aria-label={`Contact us via ${info.label}: ${info.value}`}
+                          href={info.href || "#"}
+                        >
+                          {info.value}
+                        </Link>
                       ) : (
                         <p>{info.value}</p>
                       )}
@@ -194,6 +204,7 @@ const Footer = () => {
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.9627430847677!2d51.3847814!3d35.7007389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQyJzAyLjYiTiA1McKwMjMnMDUuMiJF!5e0!3m2!1sen!2s!4v1635000000000!5m2!1sen!2s"
               width="100%"
+              title="Google Map"
               height="100%"
               style={{ border: 0 }}
               allowFullScreen
