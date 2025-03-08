@@ -13,7 +13,7 @@ interface ProductProps {
   title: string;
   image: string | null;
   description: string;
-  slug: string; 
+  slug: string;
   price: string;
   categoryId: string;
   properties: JsonValue;
@@ -28,10 +28,10 @@ function generateSlug(title: string) {
   return title
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/\s+/g, "-")
+    .replace(/[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 const Store = ({ limit }: StoreProps) => {
@@ -71,7 +71,7 @@ const Store = ({ limit }: StoreProps) => {
             <div className="relative h-64 w-full overflow-hidden">
               <Image
                 // src={product.image}
-                src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                src={"/assets/images/products/prod10.jpg"}
                 alt={product.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -91,7 +91,9 @@ const Store = ({ limit }: StoreProps) => {
                     {product.price} تومان
                   </span>
                 </div>
-                <Link href={`/store/${product._id}:${generateSlug(product.title)}`}>
+                <Link
+                  href={`/store/${product._id}:${generateSlug(product.title)}`}
+                >
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     aria-label="View product"

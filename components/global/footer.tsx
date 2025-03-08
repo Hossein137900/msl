@@ -40,7 +40,6 @@ const Footer = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
   const pathname = usePathname();
   if (pathname === "/dashboard") {
     return null;
@@ -67,7 +66,7 @@ const Footer = () => {
               categories.map((category, idx) => (
                 <div
                   key={idx}
-                  className="bg-[#252525]/5 p-6 rounded-lg hover:bg-[#2a2a2a]/10 transition-all duration-300"
+                  className="bg-[#252525]/5 p-6 border border-white/50 rounded-lg hover:bg-[#2a2a2a]/10 transition-all duration-300"
                 >
                   <Link
                     href={`/category/${category.id}`}
@@ -92,7 +91,7 @@ const Footer = () => {
         </motion.div>
 
         {/* Other Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 border-t border-[#333] pt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 border-t border-[#fff]/50 pt-8">
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

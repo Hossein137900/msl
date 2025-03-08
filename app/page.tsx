@@ -4,6 +4,7 @@ import CategoryGrid from "@/components/static/categoryGrid";
 import Slider from "@/components/static/slider";
 import SpeakersSlider from "@/components/static/sliderHuman";
 import Store from "./store/page";
+import ProjectsCard from "@/components/global/project-card";
 
 const Home = () => {
   return (
@@ -21,6 +22,9 @@ const Home = () => {
       </div>
       <div className="relative ">
         <SpeakersSlider />
+      </div>
+      <div>
+        <ProjectsCard />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
+import { motion } from "framer-motion";
 
 interface BlogPost {
   slug: any;
@@ -74,32 +75,39 @@ export default function BlogGrid() {
   });
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-b from-[#e5d8d0]  to-white py-8"
-      dir="rtl"
-    >
+    <div className="min-h-screen" dir="rtl">
       {/* Store Banner */}
-      <div className="max-w-4xl mx-auto mt-24   pb-12 px-4">
-        <div className="bg-[#a37462] rounded-lg shadow-xl overflow-hidden relative">
-          <Image
-            src="/assets/images/fade3.jpg"
-            alt="بنر بلاگ"
-            fill
-            className="object-cover opacity-30"
-          />
-          <div className="relative z-10 p-8 text-center">
-            <h1 className="text-2xl md:text-5xl font-extrabold text-white mb-4">
-              وبلاگ ما
-            </h1>
-            <p className="text-base md:text-lg text-[#e5d8d0]">
-              مقالات و دنیای روشنایی و سیستم های انرژی
-            </p>
-          </div>
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="h-[60vh] relative overflow-hidden"
+      >
+        <Image
+          src="/assets/images/projects/project8.jpg"
+          alt="Chandelier Craftsmanship"
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center">
+          <motion.h1
+            initial={{ y: 50 }}
+            animate={{ y: 0 }}
+            className="text-5xl font-bold text-center text-white"
+          >
+            وبلاگ ما
+          </motion.h1>
+          <motion.p
+            initial={{ y: 50 }}
+            animate={{ y: 0 }}
+            className="text-gray-300 text-center text-lg mt-4"
+          >
+            همه چیز در مورد نورپردازی{" "}
+          </motion.p>
         </div>
-      </div>
+      </motion.section>
 
       {/* Search Section */}
-      <div className="max-w-xl mx-auto mb-12 px-4">
+      <div className="max-w-xl mx-auto my-12 px-4">
         <div className="relative">
           <input
             type="text"
@@ -125,7 +133,7 @@ export default function BlogGrid() {
       </div>
 
       {/* Product (Blog) Grid */}
-      <div className="max-w-7xl mx-auto  px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto mb-32 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredBlogs.map((blog) => (
           <Link
             target="_blank"
@@ -158,7 +166,7 @@ export default function BlogGrid() {
                   {blog.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="bg-[#a37462] text-white px-2 py-1 rounded-lg text-xs"
+                      className="border-[#a37462] border bg-[#e5d8d0] text-[#a37462] px-2 py-1 rounded-lg text-xs"
                     >
                       #{tag}
                     </span>
@@ -166,9 +174,6 @@ export default function BlogGrid() {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-full bg-[#e5d8d0] flex items-center justify-center text-[#a37462] font-bold">
-                      {blog?.user.slice(0, 1)}
-                    </div>
                     <span className="text-[#a37462]">{blog?.user}</span>
                   </div>
                   <span className="text-stone-500">
@@ -186,7 +191,7 @@ export default function BlogGrid() {
         <div className="max-w-xl mx-auto text-center py-12">
           <div className="text-[#a37462] text-6xl mb-4">🔍</div>
           <h3 className="text-2xl font-bold mb-2 text-[#a37462]">
-            محصولی یافت نشد
+            وبلاگی یافت نشد
           </h3>
           <p className="text-stone-600">لطفا با کلمات کلیدی دیگری جستجو کنید</p>
         </div>

@@ -12,13 +12,13 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    image: "/assets/images/fade1.jpg",
-    title: "مشاوره نورپردازی | شرکت نوران",
+    image: "/assets/images/projects/project7.jpg",
+    title: "مشاوره نورپردازی |  مدرن لایت",
     text: "علم و هنر نورپردازی با ایجاد نور و سایه...",
     buttonText: "درخواست مشاوره",
   },
   {
-    image: "/assets/images/fade4.jpg",
+    image: "/assets/images/projects/project6.jpg",
     title: "طراحی داخلی | دکوراسیون مدرن",
     text: "استفاده از متریال‌های خاص برای زیبایی بیشتر...",
     buttonText: "مشاهده نمونه کارها",

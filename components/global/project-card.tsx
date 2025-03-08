@@ -12,7 +12,7 @@ interface Project {
   location: string;
 }
 
-const ProjectsPage = () => {
+const ProjectsCard = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const projects: Project[] = [
@@ -54,36 +54,9 @@ const ProjectsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen" dir="rtl">
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="h-[100vh] relative mb-36 overflow-hidden"
-      >
-        <Image
-          src="/assets/images/projects/project5.jpg"
-          alt="Chandelier Craftsmanship"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center">
-          <motion.h1
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
-            className="text-5xl font-bold text-center text-white"
-          >
-            افتخارات همکاری
-          </motion.h1>
-
-          <motion.p
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
-            className="text-gray-300 text-center text-lg mt-4"
-          >
-            سابقه همکاری با مشتریان ما
-          </motion.p>
-        </div>
-      </motion.section>
+    <div className="mt-12" dir="rtl">
+      <h1 className="text-3xl text-[#a37462] font-bold mb-6 text-center">پروژه ها</h1>
+      <div className="border-t-2 border-[#a37462] w-16 mx-auto mb-6"></div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 mb-16 mx-16 lg:grid-cols-4 gap-6">
         {projects.map((project) => (
@@ -169,4 +142,4 @@ const ProjectsPage = () => {
   );
 };
 
-export default ProjectsPage;
+export default ProjectsCard;
