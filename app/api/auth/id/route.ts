@@ -2,22 +2,20 @@ import connect from "@/lib/data";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
-export async function POST(request: NextRequest) {
+import { use } from "react";
+export async function GET(request: NextRequest) {
   await connect();
   if (!connect) {
     return NextResponse.json({ error: "connection failed" });
   }
   try {
-    const body = await request.json();
-    const authToken = body.token;
-
-    if (!authToken) {
-      return NextResponse.json(
-        { error: "Token not provided" },
-        { status: 401 }
-      );
+    const token = await request.headers.get("token");
+    
+    if (!token) {
+      return NextResponse.json({ error: "Token not found" }, { status: 401 });
     }
-    const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET!);
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!||'msl');
     if (!decodedToken || typeof decodedToken !== "object") {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
@@ -28,9 +26,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      name: user.name,
+      username: user.username,
       phoneNumber: user.phoneNumber,
-      role: user.role,
       id: user._id,
     });
   } catch (error) {
@@ -54,9 +51,9 @@ export async function PATCH(request: NextRequest) {
     if (!decodedToken || typeof decodedToken !== "object") {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
-    const id = request.headers.get("id");
+    const id = decodedToken.id;
     const user = await User.findById(id);
-    const newUser = { ...user._doc, role: body.role };
+    const newUser = { username: body.username, phoneNumber: body.phoneNumber };
     await User.findByIdAndUpdate(id, newUser);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

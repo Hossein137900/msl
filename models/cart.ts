@@ -6,7 +6,11 @@ const cartSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    
+    status: {
+        type: String,
+        enum: ['pending', 'accepte', 'denied'],
+        default: 'pending'
+    },
     items: {
         type: mongoose.Schema.Types.Mixed,
         required: true
