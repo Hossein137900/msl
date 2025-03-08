@@ -27,6 +27,8 @@ type EditorExtensions = [
   typeof OrderedList
 ]
 
-export type CustomEditor = Editor & {
+export type CustomEditor = {
   extensions: EditorExtensions
+  editor: Editor
+  getText: () => string
 }
