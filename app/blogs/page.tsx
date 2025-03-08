@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 
 interface BlogPost {
+  slug: any;
   _id: string;
   title: string;
   description: string;
@@ -128,7 +129,7 @@ export default function BlogGrid() {
         {filteredBlogs.map((blog) => (
           <Link
             target="_blank"
-            href={`/blogs/${blog._id}:${blog.title}`}
+            href={`/blogs/${blog._id}:${blog.slug}`}
             key={blog._id}
           >
             <article className="bg-white/30 rounded-lg  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">

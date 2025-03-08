@@ -32,37 +32,34 @@ interface Cart {
 
 const DashboardReport: React.FC = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // const fetchCarts = async () => {
-  //   const token = localStorage.getItem("token") || "";
-  //   if (token) {
-  //     try {
-  //       setIsLoading(true);
-  //       const data = await getAllCarts();
-  //       setCarts(
-  //         data.map((cart) => ({
-  //           ...cart,
-  //           items: JSON.parse(JSON.stringify(cart.items)) as CartItem[],
-  //           user: {
-  //             ...cart.user,
-  //             createdAt: cart.user.createdAt.toString(),
-  //             updatedAt: cart.user.updatedAt.toString(),
-  //           },
-  //           createdAt: cart.createdAt.toString(),
-  //           updatedAt: cart.updatedAt.toString(),
-  //         }))
-  //       );
-  //     } catch (error) {
-  //       console.log("Error fetching cart:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchCarts();
-  // }, []);
+  
+  const fetchCartData = async () => {
+    const token = localStorage.getItem("token") || "";
+    if (token) {
+      try {
+      const response = await fetch("api/cart/id",
+          {
+            headers: {
+              token:token,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart data");
+        }
+        const data = await response.json();
+        setCarts(data.data);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchCartData();
+  }, []);
   // Fake report data which could later be fetched from an API
   const getDashboardMetrics = () => {
     const orderCount = carts.length;

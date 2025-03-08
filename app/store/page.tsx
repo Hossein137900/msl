@@ -13,6 +13,7 @@ interface ProductProps {
   title: string;
   image: string | null;
   description: string;
+  slug: string; 
   price: string;
   categoryId: string;
   properties: JsonValue;
@@ -22,6 +23,15 @@ interface ProductProps {
 }
 interface StoreProps {
   limit?: number;
+}
+function generateSlug(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 const Store = ({ limit }: StoreProps) => {
@@ -81,7 +91,7 @@ const Store = ({ limit }: StoreProps) => {
                     {product.price} تومان
                   </span>
                 </div>
-                <Link href={`/store/${product._id}:${product.title}`}>
+                <Link href={`/store/${product._id}:${generateSlug(product.title)}`}>
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     aria-label="View product"

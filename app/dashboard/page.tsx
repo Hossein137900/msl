@@ -34,11 +34,6 @@ const Sidebar: React.FC<{
     },
   ];
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return null;
-  }
-
   return (
     <motion.div
       variants={sidebarVariants}
