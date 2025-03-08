@@ -8,8 +8,6 @@ import CardWithMouseBorder from "@/components/global/card-hover-border";
 const ContactPage = () => {
   return (
     <div className="min-h-screen " dir="rtl">
-      {/* Hero Section with Parallax */}
-      {/* Hero Section with Parallax */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
