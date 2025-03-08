@@ -2,28 +2,25 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface CartItem {
-  create: {
-    quantity: number;
-    productId: string;
-  }[];
+  quantity: number;
+  productId: string;
 }
 
 interface Cart {
   id: string;
-  userId: string;
-  items: CartItem;
+  items: CartItem; // Changed from CartItem[]
   path: string;
   image: string;
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
-  user: User;
+  userId: User;
   products: any[];
 }
 
 interface User {
   id: string;
-  name: string;
+  username: string;
   createdAt: string;
   updatedAt: string;
   phoneNumber: string;
@@ -71,10 +68,10 @@ const DetailModal = ({
         <h3 className="text-xl font-bold text-gray-800">جزئیات سفارش</h3>
         <div className="space-y-2 text-gray-700">
           <p>شناسه سفارش: {cart.id}</p>
-          <p>نام مشتری: {cart.user.name}</p>
-          <p>شماره تماس: {cart.user.phoneNumber}</p>
+          <p>نام مشتری: {cart.userId.username}</p>
+          <p>شماره تماس: {cart.userId.phoneNumber}</p>
           <p>روش پرداخت: {cart.path === "card" ? "کارت به کارت" : "تلگرام"}</p>
-          <p>تعداد اقلام: {cart.items.create[0].quantity}</p>
+          <p>تعداد اقلام: {cart.items[0].quantity}</p>
 
           <p>مبلغ کل: {formatPrice(cart.totalPrice)}</p>
           <p>تاریخ: {formatDateToPersian(cart.createdAt)}</p>
@@ -108,8 +105,7 @@ const Payments: React.FC = () => {
           throw new Error("Failed to fetch cart data");
         }
         const data = await response.json();
-        setCartData(data.data);
-        console.log(data);
+        setCartData(data.carts);
       } catch (error) {
         console.log("Error fetching cart:", error);
       }
@@ -160,12 +156,12 @@ const Payments: React.FC = () => {
                   onClick={() => setSelectedCart(cart)}
                 >
                   <td className="px-4 py-2">{cart.id}</td>
-                  <td className="px-4 py-2">{cart.user.name}</td>
+                  <td className="px-4 py-2">{cart.userId.username}</td>
                   <td className="px-4 py-2">{cart.products}</td>
                   <td className="px-4 py-2">
                     {cart.path === "card" ? "کارت به کارت" : "تلگرام"}
                   </td>
-                  <td className="px-4 py-2">{cart.items.create[0].quantity}</td>
+                  <td className="px-4 py-2">{cart.items[0].quantity}</td>
 
                   <td className="px-4 py-2">{formatPrice(cart.totalPrice)}</td>
                   <td className="px-4 py-2">
