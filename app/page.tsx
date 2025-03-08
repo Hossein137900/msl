@@ -3,6 +3,7 @@ import HeroSection from "../components/static/heroSection";
 import CategoryGrid from "@/components/static/categoryGrid";
 import Slider from "@/components/static/slider";
 import SpeakersSlider from "@/components/static/sliderHuman";
+import Store from "./store/page";
 
 const Home = () => {
   return (
@@ -15,8 +16,12 @@ const Home = () => {
       </div>
       <CategoryGrid />
       <Slider />
-      <div className="relative "><SpeakersSlider /></div>
-      
+      <div>
+        <Store limit={4} />
+      </div>
+      <div className="relative ">
+        <SpeakersSlider />
+      </div>
     </div>
   );
 };

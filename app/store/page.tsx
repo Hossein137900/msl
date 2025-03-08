@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
@@ -21,9 +21,8 @@ interface ProductProps {
   colors: JsonValue;
   thumbnails: string[];
 }
-
-interface ProductListProps {
-  products: ProductProps[];
+interface StoreProps {
+  limit?: number;
 }
 function generateSlug(title: string) {
   return title
@@ -35,8 +34,9 @@ function generateSlug(title: string) {
     .replace(/^-+|-+$/g, '');
 }
 
-const Store: FC<ProductListProps> = () => {
+const Store = ({ limit }: StoreProps) => {
   const [products, setProducts] = useState<ProductProps[]>([]);
+  const displayedProducts = limit ? products.slice(0, limit) : products;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -50,21 +50,21 @@ const Store: FC<ProductListProps> = () => {
         const data = await response.json();
         setProducts(data.products);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.log("Error fetching products:", error);
       }
     };
     fetchProducts();
   }, []);
   return (
     <div className="px-4 py-8 " dir="rtl">
-      <h2 className="text-4xl mt-24 font-bold text-center text-white mb-8">
-        محصولات ما
+      <h2 className="md:text-3xl text-xl border-b pb-4 w-fit mx-auto border-[#a37462] mt-24 font-bold text-center text-black/70 mb-8">
+        {limit ? "محصولات پرفروش" : "محصولات ما"}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {products.map((product) => (
+        {displayedProducts.map((product) => (
           <motion.div
             key={product._id}
-            className="group bg-white  shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 overflow-hidden"
+            className="group bg-white rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -95,7 +95,7 @@ const Store: FC<ProductListProps> = () => {
                   <motion.button
                     whileTap={{ scale: 0.95 }}
                     aria-label="View product"
-                    className="flex items-center gap-2 bg-[#e5d8d0] hover:bg-[#a37462] text-[#a37462] hover:text-white px-6 py-3 font-medium transition-colors duration-200"
+                    className="flex items-center gap-2 bg-[#e5d8d0] rounded-lg hover:bg-[#a37462] text-[#a37462] hover:text-white px-6 py-3 font-medium transition-colors duration-200"
                   >
                     <span className="text-xs font-semibold">مشاهده محصول</span>
                     <FiEye className="w-4 h-4" />

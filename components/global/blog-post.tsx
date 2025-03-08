@@ -39,7 +39,7 @@ export default function BlogPost(blogPostData: BlogPost) {
       dir="rtl"
     >
       <div className="max-w-5xl mx-auto mt-24">
-        <div className="relative h-[300px] md:h-[400px] mb-8 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
+        <div className="relative h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
           <Image
             src="/assets/images/fade3.jpg"
             alt={sampleBlogPost.title}
@@ -71,7 +71,7 @@ export default function BlogPost(blogPostData: BlogPost) {
           {sampleBlogPost.tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-[#e5d8d0] text-[#a37462] px-4 py-1.5 rounded-full text-xs font-medium hover:bg-[#a37462] hover:text-[#e5d8d0] transition-colors duration-300 cursor-pointer"
+              className="bg-[#e5d8d0] text-[#a37462] px-4 py-1.5 rounded-xl text-xs font-medium hover:bg-[#a37462] hover:text-[#e5d8d0] transition-colors duration-300 cursor-pointer"
             >
               #{tag}
             </span>

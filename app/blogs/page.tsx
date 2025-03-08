@@ -31,10 +31,13 @@ export default function BlogGrid() {
     return title
       .toLowerCase()
       .trim()
-      .replace(/\s+/g, '-')
-      .replace(/[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g, '')
-      .replace(/-+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replace(/\s+/g, "-")
+      .replace(
+        /[^\u0600-\u06FF\uFB8A\u067E\u0686\u06AF\u200C\u200Fa-z0-9-]/g,
+        ""
+      )
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
   }
 
   useEffect(() => {
@@ -76,8 +79,8 @@ export default function BlogGrid() {
       dir="rtl"
     >
       {/* Store Banner */}
-      <div className="max-w-4xl mx-auto mt-24  pb-12 px-4">
-        <div className="bg-[#a37462] rounded-2xl shadow-xl overflow-hidden relative">
+      <div className="max-w-4xl mx-auto mt-24   pb-12 px-4">
+        <div className="bg-[#a37462] rounded-lg shadow-xl overflow-hidden relative">
           <Image
             src="/assets/images/fade3.jpg"
             alt="بنر بلاگ"
@@ -122,14 +125,14 @@ export default function BlogGrid() {
       </div>
 
       {/* Product (Blog) Grid */}
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto  px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredBlogs.map((blog) => (
           <Link
             target="_blank"
             href={`/blogs/${blog._id}:${blog.slug}`}
             key={blog._id}
           >
-            <article className="bg-white/30  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <article className="bg-white/30 rounded-lg  overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 group overflow-hidden">
                 <Image
                   src={"/assets/images/fade3.jpg"}

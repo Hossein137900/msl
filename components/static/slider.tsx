@@ -1,12 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 
 interface Slide {
   image: string;
@@ -40,7 +35,8 @@ function SlideCard({
   setIndex: (index: number | ((prev: number) => number)) => void;
 }) {
   const x = useMotionValue(0);
-  const opacity = useTransform(x, [-300, 0, 300], [0.1, 1, 0.1]);
+  // const opacity = useTransform(x, [-300, 0, 300], [0.1, 1, 0.1]);
+  console.log(setIndex);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -149,7 +145,7 @@ export default function Slider() {
         </AnimatePresence>
       </div>
 
-      <div className="absolute top-1/2  md:bottom-1/4 md:translate-y-1/2 w-full flex    md:flex-row flex-col items-center justify-center  md:justify-between md:px-8 z-20">
+      <div className="absolute top-2/3 md:bottom-1/4 md:translate-y-1/2 w-full flex items-center justify-between px-4 z-20">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -161,9 +157,8 @@ export default function Slider() {
                  transition-all duration-300"
         >
           <svg
-            className="w-5 h-5 sm:w-6 sm:h-6 text-[#a37462]"
-            viewBox="
-            4"
+            className="w-5 h-5 sm:w-6 rotate-180 sm:h-6 text-[#a37462] "
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
           >
@@ -171,7 +166,7 @@ export default function Slider() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M15 19l-7-7 7-7"
+              d="M9 5l7 7-7 7"
             />
           </svg>
         </motion.button>

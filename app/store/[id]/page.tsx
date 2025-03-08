@@ -111,11 +111,11 @@ export default function ProductDetailPage() {
       const newQuantity = action === "increase" ? quantity + 1 : quantity - 1;
       setQuantity(newQuantity);
       store.put({
-        id: product._id,  // Explicitly include the id
+        id: product._id, // Explicitly include the id
         ...product,
         quantity: newQuantity,
       });
-      
+
       toast.success(
         action === "increase"
           ? "محصول به سبد خرید اضافه شد"

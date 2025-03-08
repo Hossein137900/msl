@@ -12,35 +12,42 @@ export interface Category {
   children: string[];
 }
 
-export interface CategoryResponse {
-  success: boolean;
-  data: Category[];
-}
 const Footer = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // Fetch categories on component mount
-  // const fetchCategories = async () => {
-  //   // const data = await getCategories();
 
-  //   setIsLoading(true);
+  const fetchCategories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/category", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
 
-  //   if (data.success && data.data) {
-  //     setIsLoading(false);
-  //     setCategories(data.data);
-  //   }
-  // };
+      if (data) {
+        setCategories(data.categories);
+      }
+    } catch (error) {
+      console.log("Error fetching categories:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchCategories();
-  // }, []);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const pathname = usePathname();
   if (pathname === "/dashboard") {
     return null;
   }
   return (
     <footer
-      className="bg-gradient-to-b from-transparent via-black/70 to-black border-t border-[#a37462] text-white"
+      className="bg-gradient-to-b from-[#a37462] via-[#a37462] to-[#a37462] border-t border-[#a37462] text-white"
       dir="rtl"
     >
       <div className="container mx-auto px-4 pt-16 pb-8">
@@ -57,14 +64,14 @@ const Footer = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 justify-center gap-8">
             {!isLoading &&
-              categories.map((category) => (
+              categories.map((category, idx) => (
                 <div
-                  key={category.id}
-                  className="bg-[#252525]/5 p-6 rounded-lg hover:bg-[#2a2a2a]/50 transition-all duration-300"
+                  key={idx}
+                  className="bg-[#252525]/5 p-6 rounded-lg hover:bg-[#2a2a2a]/10 transition-all duration-300"
                 >
                   <Link
                     href={`/category/${category.id}`}
-                    className="text-[#e5d8d0] hover:text-[#a37462] font-bold text-lg mb-4 block border-b border-[#a37462]/50 pb-2"
+                    className="text-[#e5d8d0] hover:text-[#fff] font-bold text-lg mb-4 block border-b border-[#fff]/50 pb-2"
                   >
                     {category.title}
                   </Link>
@@ -73,7 +80,7 @@ const Footer = () => {
                       <Link
                         key={index}
                         href={`/category/${category.id}/${child}`}
-                        className="text-gray-300 hover:text-[#e5d8d0] text-sm block transition-all duration-300 hover:translate-x-2"
+                        className="text-gray-200 hover:text-[#e5d8d0] text-sm block transition-all duration-300 hover:translate-x-2"
                       >
                         {child}
                       </Link>
@@ -131,7 +138,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-[#e5d8d0] hover:text-[#a37462] transition-colors duration-300 flex items-center group"
+                    className="text-[#e5d8d0] hover:text-[#fff] transition-colors duration-300 flex items-center group"
                   >
                     <span className="w-0 group-hover:w-2 h-0.5 bg-[#e5d8d0] ml-2 transition-all duration-300"></span>
                     {link.name}
@@ -157,7 +164,7 @@ const Footer = () => {
                   key={info.label}
                   className="flex items-start space-x-3 rtl:space-x-reverse group"
                 >
-                  <span className="w-6 h-6 text-[#a37462] group-hover:text-[#e5d8d0] transition-colors duration-300">
+                  <span className="w-6 h-6 text-[#fff] group-hover:text-[#e5d8d0] transition-colors duration-300">
                     <info.icon />
                   </span>
 
