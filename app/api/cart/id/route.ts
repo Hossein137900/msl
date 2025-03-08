@@ -13,12 +13,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "No token provided" }, { status: 401 });
     }
 
-    const decodedToken = jwt.verify(token, 'msl') as { _id: string };
-    const userId = decodedToken._id;
-
-    const carts = await Cart.find({ userId })
-      .populate('userId')
-      .populate('products');
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET||'msl') as { id: string };
+    const userId = decodedToken.id;
+ console.log(userId)
+    const carts = await Cart.find({ userId: userId });
+   
 
     return NextResponse.json({ carts }, { status: 200 });
   } catch (error) {
