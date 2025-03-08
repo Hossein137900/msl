@@ -1,16 +1,34 @@
 "use client";
 import { motion } from "framer-motion";
 import { doranthin } from "@/next-persian-fonts/doran";
+import { useEffect, useRef } from "react";
 
 const HeroSection = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Optimize video loading
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, []);
+
+  // Overlay animation variants
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 0.6 },
+  };
+
   return (
     <div className=" h-screen w-full ">
       {/* Video Background */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
         className="absolute top-0 left-0 w-full h-full object-cover"
       >
         <source src="/assets/video/video.mp4" type="video/mp4" />
@@ -46,7 +64,6 @@ const HeroSection = () => {
             >
               مشاهده محصولات
             </motion.button>
-          
           </motion.div>
         </motion.div>
 
