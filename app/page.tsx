@@ -15,7 +15,8 @@ const Home = () => {
       </div>
       <CategoryGrid />
       <Slider />
-      <SpeakersSlider />
+      <div className="relative "><SpeakersSlider /></div>
+      
     </div>
   );
 };

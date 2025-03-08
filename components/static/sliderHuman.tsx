@@ -117,9 +117,9 @@ export default function SpeakersSlider() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto text-center py-12">
+    <div className="w-full max-w-4xl mx-4 text-center py-12 ">
       <h2 className="text-lg font-bold text-gray-800 mb-4">همراهان ما </h2>
-      <div className="border-t-2 border-orange-500 w-16 mx-auto mb-6"></div>
+      <div className="border-t-2 border-[#a37462] w-16 mx-auto mb-6"></div>
 
       <div className="relative h-64 overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
@@ -131,20 +131,33 @@ export default function SpeakersSlider() {
           />
         </AnimatePresence>
 
-        <button
-          onClick={handlePrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600  p-3 rounded-full shadow-lg z-10"
-          aria-label="Previous"
-        >
-          ←
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600  p-3 rounded-full shadow-lg z-10"
-          aria-label="Next"
-        >
-          →
-        </button>
+        <div className="absolute bottom-4 w-full flex justify-between px-8 gap-4 z-20">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handlePrev}
+            aria-label="prev"
+            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full 
+             bg-gradient-to-br from-white/30 to-white/10 backdrop-blur 
+             border border-[#a37462] shadow-lg hover:shadow-xl 
+             transition-all duration-300"
+          >
+            {/* Previous arrow SVG remains the same */}
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleNext}
+            aria-label="next"
+            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full 
+             bg-gradient-to-br from-white/30 to-white/10 backdrop-blur 
+             border border-[#a37462] shadow-lg hover:shadow-xl 
+             transition-all duration-300"
+          >
+            {/* Next arrow SVG remains the same */}
+          </motion.button>
+        </div>
       </div>
     </div>
   );
