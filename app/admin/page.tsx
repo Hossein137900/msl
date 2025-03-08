@@ -1,9 +1,9 @@
-import { Carts } from "@/components/static/adminComponent/carts"
+import { Carts } from "@/components/static/adminComponent/carts";
 
- const Page = () => {
+const Page = () => {
   return (
     // <Products />
-    <Carts/>
-  )
-}
-export default Page
+    <Carts />
+  );
+};
+export default Page;
