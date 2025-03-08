@@ -11,7 +11,7 @@ interface CartItem {
 interface Cart {
   id: string;
   userId: string;
-  items: CartItem; // Changed from CartItem[]
+  items: CartItem;
   path: string;
   image: string;
   totalPrice: number;
@@ -98,20 +98,20 @@ const Payments: React.FC = () => {
     const token = localStorage.getItem("token") || "";
     if (token) {
       try {
-      const response = await fetch("api/cart/id",
-          {
-            headers: {
-              token:token,
-            },
-          }
-        );
+        const response = await fetch("api/cart/id", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch cart data");
         }
         const data = await response.json();
         setCartData(data.data);
+        console.log(data);
       } catch (error) {
-        console.error("Error fetching cart:", error);
+        console.log("Error fetching cart:", error);
       }
     }
   };
@@ -153,7 +153,7 @@ const Payments: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {cartData.map((cart: Cart) => (
+              {cartData?.map((cart: Cart) => (
                 <tr
                   key={cart.id}
                   className="border-b text-black hover:bg-gray-50 cursor-pointer transition-colors"
