@@ -38,6 +38,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ carts }, { status: 200 });
   } catch (error) {
+    console.error("Error fetching cart:", error);
     return NextResponse.json(
       { message: "Error fetching cart" },
       { status: 500 }
@@ -55,6 +56,7 @@ export async function PATCH (request: Request) {
     }
     return NextResponse.json({ cart }, { status: 200 });
   } catch (error) {
+    console.error("Error updating cart:", error);
     return NextResponse.json(
       { message: "Error updating cart" },
       { status: 500 }

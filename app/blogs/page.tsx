@@ -6,7 +6,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 
 interface BlogPost {
-  slug: any;
+  slug: string;
   _id: string;
   title: string;
   description: string;

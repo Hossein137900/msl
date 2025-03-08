@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { FaShoppingCart, FaTimes } from 'react-icons/fa';
+import Image from 'next/image';
 
 interface CartItem {
   productId: {
@@ -51,9 +52,11 @@ const ItemsModal = ({ isOpen, onClose, items }: { isOpen: boolean; onClose: () =
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {items.map((item, index) => (
                 <div key={index} className="bg-gray-700 p-4 rounded-lg flex items-center gap-4">
-                  <img
+                  <Image
                     src='https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1600'
                     alt={item.productId.title}
+                    width={80}
+                    height={80}
                     className="w-20 h-20 object-cover rounded"
                   />
                   <div>
@@ -83,6 +86,7 @@ export const Carts = () => {
       setCarts(data.carts);
       setLoading(false);
     } catch (error) {
+      console.error('خطا در دریافت سفارشات' , error);
       toast.error('خطا در دریافت سفارشات');
       setLoading(false);
     }
@@ -103,6 +107,7 @@ export const Carts = () => {
         fetchCarts(); // Refresh the carts list
       }
     } catch (error) {
+      console.error('خطا در بروزرسانی وضعیت سفارش' , error);
       toast.error('خطا در بروزرسانی وضعیت سفارش');
     }
   };
@@ -166,9 +171,11 @@ export const Carts = () => {
                   </select>
                 </td>
                 <td className="px-6 py-4">
-                  <img
+                  <Image
                     src={cart.image}
                     alt="receipt"
+                    layout="fill"
+                    objectFit="cover"
                     className="w-16 h-16 object-cover rounded"
                   />
                 </td>

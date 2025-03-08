@@ -14,6 +14,7 @@ export async function GET(request: Request) {
     }
     return NextResponse.json({ category }, { status: 200 });
     }catch (error) {
+      console.error("Error fetching category:", error);
         return NextResponse.json(
           { message: "Error fetching category" },
           { status: 500 }
@@ -34,6 +35,7 @@ export async function DELETE(request: Request) {
       }
       return NextResponse.json({ message: "Category deleted successfully" }, { status: 200 });
     }catch (error) {
+      console.error("Error deleting category:", error);
       return NextResponse.json(
         { message: "Error deleting category" },
         { status: 500 }
@@ -56,6 +58,7 @@ export async function PATCH(request: Request) {
       return NextResponse .json({ message: "Category updated successfully" }, { status: 200 });
     }
     catch (error) {
+      console.error("Error updating category:", error);
       return NextResponse.json(
         { message: "Error updating category" },
         { status: 500 }

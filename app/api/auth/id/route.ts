@@ -2,7 +2,6 @@ import connect from "@/lib/data";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
-import { use } from "react";
 export async function GET(request: NextRequest) {
   await connect();
   if (!connect) {

@@ -34,7 +34,7 @@ function SlideCard({
   direction: number;
   setIndex: (index: number | ((prev: number) => number)) => void;
 }) {
-  const x = useMotionValue(0);
+  // const x = useMotionValue(0);
   // const opacity = useTransform(x, [-300, 0, 300], [0.1, 1, 0.1]);
   console.log(setIndex);
 

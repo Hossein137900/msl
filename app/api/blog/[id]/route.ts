@@ -15,6 +15,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ blog }, { status: 200 });
   } catch (error) {
+    console.error("Error fetching blog:", error);
+
     return NextResponse.json(
       { message: "Error fetching blog" },
       { status: 500 }
@@ -38,6 +40,7 @@ export async function DELETE(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error deleting blog:", error);
     return NextResponse.json(
       { message: "Error deleting blog" },
       { status: 500 }
@@ -66,6 +69,7 @@ export async function PATCH(request: Request) {
       { status: 200 }
     );
   } catch (error) {
+    console.error("Error updating blog:", error);
     return NextResponse.json(
       { message: "Error updating blog" },
       { status: 500 }

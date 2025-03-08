@@ -21,6 +21,7 @@ export async function GET() {
       
     return NextResponse.json({ carts }, { status: 200 });
   } catch (error) {
+    console.error("Error fetching all carts:", error);
     return NextResponse.json(
       { message: "Error fetching all carts" },
       { status: 500 }
@@ -59,6 +60,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error creating cart:", error);
     return NextResponse.json(
       { message: "Error creating cart"},
       { status: 500 } 

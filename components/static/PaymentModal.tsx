@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCreditCard, FaTelegram } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -16,16 +16,7 @@ interface CartItem {
   images: string[];
   quantity: number;
 }
-interface PaymentFormData {
-  token: string;
-  items: {
-    productId: string;
-    quantity: number;
-  }[];
-  paymentMethod: "card" | "telegram";
-  totalPrice: number;
-  receiptImage?: File;
-}
+
 
 const PaymentModal: React.FC<PaymentModalProps> = ({
   isOpen,
@@ -36,15 +27,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   const [activeTab, setActiveTab] = useState("");
   const [receipt, setReceipt] = useState<File | null>(null);
 
-  const [formData, setFormData] = useState<PaymentFormData>({
-    token: localStorage.getItem("token") || "",
-    items: cartItems.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    })),
-    paymentMethod: "card",
-    totalPrice: totalPrice,
-  });
+  // const [formData, setFormData] = useState<PaymentFormData>({
+  //   token: localStorage.getItem("token") || "",
+  //   items: cartItems.map((item) => ({
+  //     productId: item.id,
+  //     quantity: item.quantity,
+  //   })),
+  //   paymentMethod: "card",
+  //   totalPrice: totalPrice,
+  // });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -92,6 +83,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         toast.error("خطا در ثبت سفارش");
       }
     } catch (error) {
+      console.error("خطا در ارتبا�� با سرور" , error);
       toast.error("خطا در ارسال اطلاعات");
     }
   };

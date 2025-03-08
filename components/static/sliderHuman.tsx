@@ -44,7 +44,10 @@ function SpeakerCard({
     }),
   };
 
-  function handleDragEnd(_: any, info: { offset: { x: number } }) {
+  function handleDragEnd(
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number } }
+  ) {
     const threshold = 100;
     if (info.offset.x < -threshold) {
       setIndex((prev: number) => (prev + 1) % speakers.length);

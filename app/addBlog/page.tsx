@@ -12,7 +12,6 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
-import { addBlog } from "@/lib/action";
 
 const MenuButton = ({
   onClick,
