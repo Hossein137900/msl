@@ -43,6 +43,8 @@ export default function AddCategory() {
         toast.error(data.message || "خطا در افزودن دسته‌بندی");
       }
     } catch (error) {
+      console.log(error);
+      
       toast.error("خطا در ارتباط با سرور");
     }
   };

@@ -44,7 +44,10 @@ function SpeakerCard({
     }),
   };
 
-  function handleDragEnd(_: any, info: { offset: { x: number } }) {
+  function handleDragEnd(
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number } }
+  ) {
     const threshold = 100;
     if (info.offset.x < -threshold) {
       setIndex((prev: number) => (prev + 1) % speakers.length);
@@ -117,8 +120,8 @@ export default function SpeakersSlider() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto text-center py-12 ">
-      <h2 className="text-lg font-bold text-gray-800 mb-4">همراهان ما </h2>
+    <div className="w-full max-w-4xl mx-auto text-center pt-12 ">
+      <h2 className="text-lg font-bold text-[#a37462] mb-4">همراهان ما </h2>
       <div className="border-t-2 border-[#a37462] w-16 mx-auto mb-6"></div>
 
       <div className="relative h-64 overflow-hidden">

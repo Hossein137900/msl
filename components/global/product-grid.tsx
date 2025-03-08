@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
+import { useEffect, useState } from "react";
 
 interface ProductProps {
   _id: string;
@@ -22,6 +22,10 @@ interface ProductProps {
   thumbnails: string[];
 }
 
+interface ProductGridProps {
+  limit?: number;
+}
+
 function generateSlug(title: string) {
   return title
     .toLowerCase()
@@ -32,7 +36,7 @@ function generateSlug(title: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-const Store = () => {
+const ProductGrid = ({ limit }: ProductGridProps) => {
   const [products, setProducts] = useState<ProductProps[]>([]);
 
   useEffect(() => {
@@ -52,13 +56,15 @@ const Store = () => {
     };
     fetchProducts();
   }, []);
+  const displayedProducts = limit ? products.slice(0, limit) : products;
+
   return (
-    <div className="px-4 py-8 " dir="rtl">
+    <div className="px-4 py-8" dir="rtl">
       <h2 className="md:text-3xl text-xl border-b pb-4 w-fit mx-auto border-[#a37462] mt-24 font-bold text-center text-black/70 mb-8">
-        محصولات ما
+        {limit ? "محصولات پرفروش" : "محصولات ما"}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {products.map((product) => (
+        {displayedProducts.map((product) => (
           <motion.div
             key={product._id}
             className="group bg-white rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 duration-300 overflow-hidden"
@@ -67,7 +73,6 @@ const Store = () => {
           >
             <div className="relative h-64 w-full overflow-hidden">
               <Image
-                // src={product.image}
                 src={"/assets/images/products/prod10.jpg"}
                 alt={product.title}
                 fill
@@ -109,4 +114,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default ProductGrid;

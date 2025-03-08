@@ -22,6 +22,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ product }, { status: 200 });
   } catch (error) {
+    console.error("Error fetching product:", error);
     return NextResponse.json(
       { message: "Error fetching product" },
       { status: 500 }
@@ -49,6 +50,7 @@ export async function DELETE(request: Request) {
     }
     return NextResponse.json({ message: "Product deleted successfully" }, { status: 200 });
   }catch (error) {
+    console.error("Error deleting product:", error);
     return NextResponse.json(
       { message: "Error deleting product" },
       { status: 500 }

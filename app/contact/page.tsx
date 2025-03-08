@@ -8,15 +8,13 @@ import CardWithMouseBorder from "@/components/global/card-hover-border";
 const ContactPage = () => {
   return (
     <div className="min-h-screen " dir="rtl">
-      {/* Hero Section with Parallax */}
-      {/* Hero Section with Parallax */}
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="h-[100vh] relative overflow-hidden"
       >
         <Image
-          src="/assets/images/fade4.jpg"
+          src="/assets/images/projects/project9.jpg"
           alt="Chandelier Craftsmanship"
           fill
           className="object-cover"
@@ -50,12 +48,21 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form & Map Section */}
-      <section className="py-16 px-4 bg-transparent">
+      <section
+        className="py-16 px-4 bg-transparent"
+        style={{
+          backgroundImage: "url('/assets/images/projects/project2.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+        }}
+      >
         <div className="container mx-auto">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <motion.div className="bg-transparentp-8 rounded-2xl">
-              <h2 className="text-3xl font-bold mb-6  text-[#a37462]">
+              <h2 className="text-3xl font-bold mb-6  text-[#ffff]">
                 ارسال پیام
               </h2>
               <form className="space-y-6">
@@ -64,14 +71,14 @@ const ContactPage = () => {
                     <input
                       type="text"
                       placeholder="نام و نام خانوادگی"
-                      className="w-full px-4 py-3 rounded-lg text-black border border-gray-200  focus:ring-2 focus:outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg opacity-60  text-black border-2 border-[#a37462]  focus:ring-2 focus:outline-none transition-all"
                     />
                   </motion.div>
                   <motion.div>
                     <input
                       type="email"
                       placeholder="ایمیل"
-                      className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg opacity-60  text-black border-2 border-[#a37462]  focus:ring-2 focus:outline-none transition-all"
                     />
                   </motion.div>
                 </div>
@@ -79,20 +86,20 @@ const ContactPage = () => {
                   <input
                     type="text"
                     placeholder="موضوع"
-                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg opacity-60  text-black border-2 border-[#a37462]  focus:ring-2 focus:outline-none transition-all"
                   />
                 </motion.div>
                 <motion.div>
                   <textarea
                     rows={6}
                     placeholder="پیام شما"
-                    className="w-full px-4 py-3 rounded-lg border text-black border-gray-200  focus:ring-2 focus:outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-lg opacity-60  text-black border-2 border-[#a37462]  focus:ring-2 focus:outline-none transition-all"
                   />
                 </motion.div>
                 <motion.button
                   whileHover={{ scale: 0.99 }}
                   whileTap={{ scale: 0.95 }}
-                  className="hover:bg-[#a37462] font-bold hover:text-[#ffffff] border-b border-[#a37462] text-[#a37462]  px-8 py-3 transition-all duration-300 w-full md:w-full"
+                  className="hover:bg-[#a37462] font-bold hover:text-[#ffffff] border-b border-[#fff] text-[#fff]  px-8 py-3 transition-all duration-300 w-full md:w-full"
                 >
                   ارسال پیام
                 </motion.button>
@@ -100,16 +107,15 @@ const ContactPage = () => {
             </motion.div>
 
             {/* Map */}
-            <motion.div className="rounded-2xl overflow-hidden shadow-lg h-[500px]">
+            <motion.div className="rounded-2xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=YOUR_MAP_EMBED_URL"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
+                title="map-iframe"
+                src="https://neshan.org/maps/iframe/places/_bvhGA2xiu9F#c35.701-51.424-19z-0p/35.70077805644847/51.42394554849287"
+                width="800"
+                height="450"
                 allowFullScreen
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              ></iframe>
             </motion.div>
           </div>
         </div>

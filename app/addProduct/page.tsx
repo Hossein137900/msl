@@ -19,8 +19,8 @@ interface ProductFormData {
   image: string;
   categoryId: string;
   categoryChildren: string;
-  properties: Record<string, any>;
-  colors: Record<string, any>;
+  properties: Record<string, string>;
+  colors: Record<string, string>;
   videoes: string[];
   thumbnails: string[];
 }
@@ -107,9 +107,9 @@ export default function AddProductPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const submitFormData = new FormData();
-    
+
     // Add all required fields from the model
     submitFormData.append("title", formData.title);
     submitFormData.append("price", formData.price);
@@ -117,45 +117,45 @@ export default function AddProductPage() {
     submitFormData.append("image", formData.image);
     submitFormData.append("categoryId", formData.categoryId);
     submitFormData.append("categoryChildren", formData.categoryChildren);
-    
+
     // Convert complex objects to JSON strings as expected by the endpoint
     submitFormData.append("properties", JSON.stringify(formData.properties));
     submitFormData.append("colors", JSON.stringify(formData.colors));
     submitFormData.append("videoes", JSON.stringify(formData.videoes));
     submitFormData.append("thumbnails", JSON.stringify(formData.thumbnails));
-  
+
     try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        body: submitFormData
+      const response = await fetch("/api/products", {
+        method: "POST",
+        body: submitFormData,
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         // Handle success - maybe clear form or show success message
         console.log("Product created successfully:", result);
       } else {
-        throw new Error('Failed to create product');
+        throw new Error("Failed to create product");
       }
     } catch (error) {
       console.error("Error creating product:", error);
       // Handle error - show error message to user
     }
   };
-  
-const fetchCategories = async () => {
-  try {
-    const response = await fetch('api/category');
-    const data = await response.json();
 
-    if (data) {
-      setCategories(data.categories);
-      console.log(data.categories);
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("api/category");
+      const data = await response.json();
+
+      if (data) {
+        setCategories(data.categories);
+        console.log(data.categories);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-  } 
-}
+  };
 
   useEffect(() => {
     fetchCategories();

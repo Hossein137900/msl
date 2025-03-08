@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface Product {
@@ -9,8 +10,8 @@ interface Product {
   image: string;
   categoryId: string;
   categoryChildren: string;
-  properties: Record<string, any>;
-  colors: Record<string, any>;
+  properties: Record<string, string>;
+  colors: Record<string, string>;
   videoes: string[];
   thumbnails: string[];
 }
@@ -171,7 +172,10 @@ export const Products = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map(product => (
           <div key={product._id} className="border rounded-lg p-4 shadow">
-            <img src={product.image} alt={product.title} className="w-full h-48 object-cover rounded mb-4"/>
+            <Image src={product.image} alt={product.title}  className="w-full h-48 object-cover rounded mb-4"
+             width={300}
+             height={200}
+            />
             <h3 className="text-xl font-semibold">{product.title}</h3>
             <p className="text-gray-600">{product.price} تومان</p>
             <div className="mt-4 flex gap-2">

@@ -5,17 +5,30 @@ interface CartItem {
   quantity: number;
   productId: string;
 }
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  description: string;
+  image: string;
+  categoryId: string;
+  categoryChildren: string;
+  properties: Record<string, string>;
+  colors: Record<string, string>;
+  videoes: string[];
+  thumbnails: string[];
+}
 
 interface Cart {
   id: string;
-  items: CartItem; // Changed from CartItem[]
+  items: CartItem[];
   path: string;
   image: string;
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
   userId: User;
-  products: any[];
+  products: Product[];
 }
 
 interface User {
@@ -133,14 +146,16 @@ const Payments: React.FC = () => {
     }).format(price);
   };
   if (loading) {
-    return   <div className="fixed inset-0 bg-black/5 z-50">
-      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-600 border-t-transparent" />
-        <p className="text-gray-50 animate-pulse">
-          در حال بارگذاری سفارشات...
-        </p>
+    return (
+      <div className="fixed inset-0 bg-black/5 z-50">
+        <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-600 border-t-transparent" />
+          <p className="text-gray-50 animate-pulse">
+            در حال بارگذاری سفارشات...
+          </p>
+        </div>
       </div>
-    </div>
+    );
   }
   return (
     <>
@@ -168,7 +183,9 @@ const Payments: React.FC = () => {
                 >
                   <td className="px-4 py-2">{cart.id}</td>
                   <td className="px-4 py-2">{cart.userId.username}</td>
-                  <td className="px-4 py-2">{cart.products}</td>
+                  <td className="px-4 py-2">
+                    {cart.products.map((p) => p.title).join(", ")}
+                  </td>
                   <td className="px-4 py-2">
                     {cart.path === "card" ? "کارت به کارت" : "تلگرام"}
                   </td>

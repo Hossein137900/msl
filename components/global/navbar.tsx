@@ -136,7 +136,7 @@ const Navbar = () => {
                 <span
                   className={`
           relative py-2 px-3 rounded-lg
-          ${isScrolled ? "text-[#a37462]" : "text-[#a37462]"}
+          ${isScrolled ? "text-[#a37462]" : "text-[#e5d8d0]"}
           hover:bg-white/10 hover:text-white
           transition-all duration-300 
           flex items-center gap-2
@@ -273,14 +273,14 @@ const Navbar = () => {
               type="text"
               placeholder="جستجو ..."
               className="w-64 px-4 py-2.5 rounded-lg
-        backdrop-blur-sm placeholder:text-[#a37462]
+        backdrop-blur-sm placeholder:text-[#e5d8d0]
         border-2 border-[#a37462]/30 
-        bg-white/5 text-[#a37462]
+        bg-white/5 text-[#e5d8d0]
         focus:outline-none focus:border-[#a37462]
         transition-all duration-300"
             />
             <BiSearch
-              className="absolute text-[#a37462] left-3 top-1/2 
+              className="absolute text-[#e5d8d0] left-3 top-1/2 
         transform -translate-y-1/2 group-hover:scale-110
         transition-transform duration-200"
               size={20}
@@ -292,7 +292,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="p-2.5 rounded-full bg-white/10
-        text-[#a37462]/70 hover:bg-[#a37462] 
+        text-[#e5d8d0]/70 hover:bg-[#a37462] 
         hover:text-white transition-all duration-300
         hover:shadow-lg"
             >

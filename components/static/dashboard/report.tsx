@@ -16,6 +16,19 @@ interface User {
   password: string;
   role: string;
 }
+interface Product {
+  id: string;
+  title: string;
+  price: string;
+  description: string;
+  image: string;
+  categoryId: string;
+  categoryChildren: string;
+  properties: Record<string, string>;
+  colors: Record<string, string>;
+  videoes: string[];
+  thumbnails: string[];
+}
 
 interface Cart {
   id: string;
@@ -27,7 +40,7 @@ interface Cart {
   createdAt: string;
   updatedAt: string;
   user: User;
-  products: any[];
+  products: Product[];
 }
 
 const DashboardReport: React.FC = () => {

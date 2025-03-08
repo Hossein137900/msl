@@ -3,7 +3,8 @@ import HeroSection from "../components/static/heroSection";
 import CategoryGrid from "@/components/static/categoryGrid";
 import Slider from "@/components/static/slider";
 import SpeakersSlider from "@/components/static/sliderHuman";
-import Store from "./store/page";
+import ProjectsCard from "@/components/global/project-card";
+import ProductGrid from "@/components/global/product-grid";
 
 const Home = () => {
   return (
@@ -17,10 +18,13 @@ const Home = () => {
       <CategoryGrid />
       <Slider />
       <div>
-        <Store limit={4} />
+        <ProductGrid limit={4} />
       </div>
       <div className="relative ">
         <SpeakersSlider />
+      </div>
+      <div>
+        <ProjectsCard />
       </div>
     </div>
   );

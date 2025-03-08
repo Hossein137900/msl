@@ -204,11 +204,11 @@ export default function ProductDetailPage() {
       className="min-h-screen px-4 py-8 bg-gradient-to-br from-[#e5d8d0] to-[#a37462]"
       dir="rtl"
     >
-      <div className="max-w-6xl mx-auto bg-white mt-24 rounded-2xl shadow-xl p-8">
+      <div className="max-w-7xl mx-auto bg-white mt-24 rounded-2xl shadow-xl p-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Image Section */}
           <div className="flex-1">
-            <div className="relative w-full h-96 rounded-sm overflow-hidden">
+            <div className="relative w-full h-96 rounded-lg overflow-hidden">
               <Image
                 // src={product.images[currentImgIndex]}
                 src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -224,7 +224,7 @@ export default function ProductDetailPage() {
                   onClick={() => setCurrentImgIndex(index)}
                   className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${
                     index === currentImgIndex
-                      ? "border-[#a37462]"
+                      ? "border-[#a37462]/50"
                       : "border-transparent"
                   }`}
                 >
@@ -240,7 +240,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Details & Tabs Section */}
-          <div className="flex-1 flex flex-col justify-between">
+          <div className="flex-1 flex flex-col mt-4 justify-between">
             <div>
               <h2 className="text-3xl font-bold mb-4 text-[#a37462]">
                 {product.title}
