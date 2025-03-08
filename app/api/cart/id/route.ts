@@ -5,17 +5,21 @@ import * as jwt from "jsonwebtoken";
 import User from "@/models/user";
 import Product from "@/models/product";
 
-
 export async function GET(request: Request) {
   try {
     await connect();
-    const token = request.headers.get('token');
-    
+    const token = request.headers.get("token");
+
     if (!token) {
-      return NextResponse.json({ message: "No token provided" }, { status: 401 });
+      return NextResponse.json(
+        { message: "No token provided" },
+        { status: 401 }
+      );
     }
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET||'msl') as { id: string };
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET || "msl") as {
+      id: string;
+    };
     const userId = decodedToken.id;
  console.log(userId)
     const carts = await Cart.find({ userId:userId })

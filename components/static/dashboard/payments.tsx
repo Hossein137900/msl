@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface CartItem {
-
-    quantity: number;
-    productId: string;
+  quantity: number;
+  productId: string;
 }
 
 interface Cart {
@@ -97,13 +96,12 @@ const Payments: React.FC = () => {
     const token = localStorage.getItem("token") || "";
     if (token) {
       try {
-      const response = await fetch("api/cart/id",
-          {
-            headers: {
-              token:token,
-            },
-          }
-        );
+        const response = await fetch("api/cart/id", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch cart data");
         }
@@ -111,7 +109,7 @@ const Payments: React.FC = () => {
         setCartData(data.carts);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching cart:", error);
+        console.log("Error fetching cart:", error);
       }
     }
   };
@@ -162,7 +160,7 @@ const Payments: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {cartData.map((cart: Cart) => (
+              {cartData?.map((cart: Cart) => (
                 <tr
                   key={cart.id}
                   className="border-b text-black hover:bg-gray-50 cursor-pointer transition-colors"

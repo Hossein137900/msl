@@ -115,10 +115,10 @@ const DashboardPage: React.FC = () => {
           )}
         </AnimatePresence>
         <div className="flex-1">
-          <div className="flex items-center justify-between p-4 bg-white/70 shadow">
+          <div className="flex items-center justify-between p-4 shadow">
             <button
               onClick={toggleSidebar}
-              className="text-2xl text-gray-700 focus:outline-none"
+              className="text-2xl text-gray-300 focus:outline-none"
             >
               {sidebarOpen ? "✖" : "☰"}
             </button>

@@ -34,18 +34,15 @@ const DashboardReport: React.FC = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  
   const fetchCartData = async () => {
     const token = localStorage.getItem("token") || "";
     if (token) {
       try {
-      const response = await fetch("api/cart/id",
-          {
-            headers: {
-              token:token,
-            },
-          }
-        );
+        const response = await fetch("api/cart/id", {
+          headers: {
+            token: token,
+          },
+        });
         if (!response.ok) {
           console.log(response.body)
           throw new Error("Failed to fetch cart data");
@@ -64,8 +61,10 @@ const DashboardReport: React.FC = () => {
   }, []);
   // Fake report data which could later be fetched from an API
   const getDashboardMetrics = () => {
-    const orderCount = carts.length;
-    const totalPayments = carts.reduce((sum, cart) => sum + cart.totalPrice, 0);
+    // Only calculate metrics when we have cart data
+    const orderCount = carts?.length || 0;
+    const totalPayments =
+      carts?.reduce((sum, cart) => sum + cart.totalPrice, 0) || 0;
 
     return [
       {
