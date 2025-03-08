@@ -336,9 +336,9 @@ const Navbar = () => {
                         toggleMobileDropdown("محصولات")
                       }
                     >
-                      <span className="block text-[#e5d8d0]  ">
+                      <Link href={item.href} className="block text-[#e5d8d0]  ">
                         {item.title}
-                      </span>
+                      </Link>
                       {item.title === "محصولات" && (
                         <motion.div
                           animate={{
