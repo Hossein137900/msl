@@ -172,7 +172,8 @@ export const Products = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map(product => (
           <div key={product._id} className="border rounded-lg p-4 shadow">
-            <Image src={product.image} alt={product.title}  className="w-full h-48 object-cover rounded mb-4"
+            <Image src={"/assets/images/products/prod10.jpg"}
+             alt={product.title}  className="w-full h-48 object-cover rounded mb-4"
              width={300}
              height={200}
             />

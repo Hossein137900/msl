@@ -156,6 +156,7 @@ export default function AddBlogPage() {
     },
   }) as CustomEditor;
 
+ 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
@@ -167,7 +168,6 @@ export default function AddBlogPage() {
     }
     editor?.chain().focus().setLink({ href: url }).run();
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -218,6 +218,7 @@ export default function AddBlogPage() {
 
   return (
     <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
+     
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

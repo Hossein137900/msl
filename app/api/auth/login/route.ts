@@ -72,3 +72,47 @@ export async function POST(request: NextRequest) {
         );
     }
 }
+export async function GET(request: NextRequest) {
+    await connect();
+    const token =request.headers.get("token")
+    if (!token) {
+        return NextResponse.json(
+            { message: "Token missing" },
+            { status: 401 }
+        );
+    }
+    try {
+        interface JwtCustomPayload {
+            id: string;
+            name: string;
+            phoneNumber: string;
+            role: string;
+        }
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET!||"msl") as JwtCustomPayload;
+        const user = await User.findById(decodedToken.id)
+        if (!user) {
+            return NextResponse.json(
+                { message: "User not found" },
+                { status: 401 }
+            );
+        }
+        if (user.role !== "admin") {
+            return NextResponse.json(
+                { message: "Unauthorized" },
+                { status: 403 }
+            );
+        }
+        if (user.role === "admin") {
+            return NextResponse.json(
+                { message: "Admin access granted" },
+                { status: 200 }
+            );
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json(
+            { message: "Internal server error" },
+            { status: 500 }
+        );
+    }
+}
