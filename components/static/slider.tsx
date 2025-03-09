@@ -1,8 +1,12 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, AnimatePresence } from "framer-motion";
-
+import {
+  motion,
+  useMotionValue,
+  AnimatePresence,
+  PanInfo,
+} from "framer-motion";
 interface Slide {
   image: string;
   title: string;
@@ -28,63 +32,54 @@ const slides: Slide[] = [
 function SlideCard({
   slide,
   direction,
-  setIndex,
+  onSwipe,
 }: {
   slide: Slide;
   direction: number;
-  setIndex: (index: number | ((prev: number) => number)) => void;
+  onSwipe: (direction: number) => void;
 }) {
-  // const x = useMotionValue(0);
-  // const opacity = useTransform(x, [-300, 0, 300], [0.1, 1, 0.1]);
-  console.log(setIndex);
+  const x = useMotionValue(0);
 
   const slideVariants = {
     enter: (direction: number) => ({
-      scale: 1.4,
-      y: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 1000 : -1000,
       opacity: 0,
-      filter: "blur(20px)",
-      rotateZ: direction > 0 ? 10 : -10,
     }),
     center: {
       zIndex: 1,
-      y: 0,
-      scale: 1,
+      x: 0,
       opacity: 1,
-      filter: "blur(0px)",
-      rotateZ: 0,
     },
     exit: (direction: number) => ({
-      scale: 0.8,
-      y: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 1000 : -1000,
       opacity: 0,
-      filter: "blur(20px)",
-      rotateZ: direction < 0 ? -10 : 10,
     }),
+  };
+
+  const handleDrag = (event: any, info: PanInfo) => {
+    const swipeThreshold = 50;
+    if (Math.abs(info.offset.x) > swipeThreshold) {
+      onSwipe(Math.sign(info.offset.x));
+    }
   };
 
   return (
     <motion.div
       className="absolute w-full h-[600px]"
-      style={{
-        y: useMotionValue(0),
-        filter: useMotionValue("blur(0px)"),
-      }}
-      drag="y"
-      dragConstraints={{ top: 0, bottom: 0 }}
+      style={{ x }}
+      drag="x"
+      dragDirectionLock
+      onDragEnd={handleDrag}
+      dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.7}
       custom={direction}
       variants={slideVariants}
       initial="enter"
       animate="center"
-      exit="exit"
+      // exit="exit"
       transition={{
-        type: "spring",
-        mass: 0.8,
-        stiffness: 80,
-        damping: 15,
-        filter: { duration: 0.4 },
-        opacity: { duration: 0.6 },
+        x: { type: "spring", stiffness: 200, damping: 30 },
+        opacity: { duration: 0.4 },
       }}
     >
       <div className="flex flex-col lg:flex-row h-full ">
@@ -122,6 +117,14 @@ export default function Slider() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  const handleSwipe = (swipeDirection: number) => {
+    if (swipeDirection > 0) {
+      handlePrev();
+    } else {
+      handleNext();
+    }
+  };
+
   function handleNext() {
     setDirection(1);
     setIndex((prev) => (prev + 1) % slides.length);
@@ -133,14 +136,14 @@ export default function Slider() {
   }
 
   return (
-    <div className="relative w-full mx-auto py-10 ">
+    <div className="relative w-full mx-auto py-10">
       <div className="relative h-[700px] md:h-[600px] w-full overflow-hidden">
         <AnimatePresence initial={false} custom={direction}>
           <SlideCard
             key={index}
             slide={slides[index]}
             direction={direction}
-            setIndex={setIndex}
+            onSwipe={handleSwipe}
           />
         </AnimatePresence>
       </div>
