@@ -56,7 +56,10 @@ function SlideCard({
     }),
   };
 
-  const handleDrag = (event: any, info: PanInfo) => {
+  const handleDrag = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     const swipeThreshold = 50;
     if (Math.abs(info.offset.x) > swipeThreshold) {
       onSwipe(Math.sign(info.offset.x));

@@ -22,15 +22,15 @@ export default function AddCategory() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/category', {
-        method: 'POST',
+      const response = await fetch("/api/category", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title,
-          children
-        })
+          children,
+        }),
       });
 
       const data = await response.json();
@@ -44,13 +44,13 @@ export default function AddCategory() {
       }
     } catch (error) {
       console.log(error);
-      
+
       toast.error("خطا در ارتباط با سرور");
     }
   };
 
   return (
-    <div className="min-h-screen py-12 pt-28 px-4 sm:px-6 lg:px-8" dir="rtl">
+    <div className="min-h-screen py-12  px-4 sm:px-6 lg:px-8" dir="rtl">
       <div className="max-w-md mx-auto mt-12 md:mt-24 bg-[#a37462]/5 rounded-xl shadow-lg p-8 border border-[#a37462]/30">
         <h2 className="text-2xl font-bold text-center text-[#fff] mb-8">
           افزودن دسته‌بندی جدید
@@ -60,7 +60,7 @@ export default function AddCategory() {
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-[#a37462]"
+              className="block text-sm font-medium text-[#fff]"
             >
               عنوان دسته‌بندی
             </label>
@@ -69,7 +69,7 @@ export default function AddCategory() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 py-2 block w-full rounded-md border-[#a37462] focus:outline-none shadow-sm focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#a37462]"
+              className="mt-1 py-2 block w-full rounded-md border-[#a37462] focus:outline-none shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
               required
             />
           </div>
@@ -77,7 +77,7 @@ export default function AddCategory() {
           <div>
             <label
               htmlFor="children"
-              className="block text-sm font-medium text-[#a37462]"
+              className="block text-sm font-medium text-[#fff]"
             >
               زیر دسته‌ها
             </label>
@@ -87,12 +87,12 @@ export default function AddCategory() {
                 id="children"
                 value={currentChild}
                 onChange={(e) => setCurrentChild(e.target.value)}
-                className="block w-full focus:outline-none rounded-md border-[#a37462] shadow-sm focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#a37462]"
+                className="block w-full focus:outline-none rounded-md border-[#a37462] shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
               />
               <button
                 type="button"
                 onClick={handleAddChild}
-                className="px-4 py-2 bg-[#e5d8d0] text-xl font-bold text-[#a37462] rounded-md hover:bg-[#a37462]/80 hover:text-white transition-colors duration-200"
+                className="px-4 py-2 bg-gray-400 text-xl font-bold text-[#fff] rounded-md hover:bg-gray-600 hover:text-white transition-colors duration-200"
               >
                 +
               </button>
@@ -119,7 +119,7 @@ export default function AddCategory() {
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-[#a37462] rounded-md shadow-sm text-sm font-medium text-[#e5d8d0] bg-[#a37462] hover:bg-[#a37462]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a37462] transition-colors duration-200"
+            className="w-full flex justify-center py-2 text-white hover:text-white hover:bg-green-500 px-4 border border-green-400 rounded-md shadow-sm text-sm font-medium text-[#e5d8d0]transition-colors duration-200"
           >
             ثبت دسته‌بندی
           </button>

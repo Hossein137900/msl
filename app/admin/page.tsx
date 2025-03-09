@@ -1,16 +1,31 @@
 "use client";
 import React, { JSX, useEffect, useState } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaShoppingCart, FaUsers, FaBox, FaBlog } from "react-icons/fa";
+import {
+  FaShoppingCart,
+  FaUsers,
+  FaBoxOpen,
+  FaPlus,
+  FaLayerGroup,
+  FaTasks,
+} from "react-icons/fa";
 import { Products } from "@/components/static/adminComponent/products";
 import { Carts } from "@/components/static/adminComponent/carts";
 import { User } from "@/components/static/adminComponent/user";
 import EditBlog from "@/components/static/adminComponent/editBlog";
 import { useRouter } from "next/navigation";
+import AddBlogPage from "../addBlog/page";
+import AddCategory from "../addCategory/page";
+import AddProductPage from "../addProduct/page";
 
-
-type SidebarItem = "products" | "carts" | "users" | "blog";
+type SidebarItem =
+  | "products"
+  | "carts"
+  | "users"
+  | "blog"
+  | "Addblog"
+  | "Addproducts"
+  | "Addcategory";
 
 const sidebarVariants = {
   hidden: { x: "100%", opacity: 0 },
@@ -28,10 +43,17 @@ const Sidebar: React.FC<{
   onClose: () => void;
 }> = ({ selected, onSelect, onClose }) => {
   const items: { key: SidebarItem; label: string; icon: JSX.Element }[] = [
-    { key: "products", label: "محصولات", icon: <FaBox size={18} /> },
+    { key: "products", label: "محصولات", icon: <FaBoxOpen size={18} /> },
+    { key: "Addproducts", label: "افزودن محصول", icon: <FaPlus size={18} /> },
+    {
+      key: "Addcategory",
+      label: "افزودن دسته بندی",
+      icon: <FaLayerGroup size={18} />,
+    },
     { key: "carts", label: "سفارشات", icon: <FaShoppingCart size={18} /> },
     { key: "users", label: "کاربران", icon: <FaUsers size={18} /> },
-    { key: "blog", label: "مدیریت بلاگ", icon: <FaBlog size={18} /> },
+    { key: "Addblog", label: "افزودن بلاگ", icon: <FaPlus size={18} /> },
+    { key: "blog", label: "مدیریت بلاگ", icon: <FaTasks size={18} /> },
   ];
 
   return (
@@ -41,7 +63,7 @@ const Sidebar: React.FC<{
       animate="visible"
       exit="hidden"
       transition={{ type: "spring", stiffness: 300, damping: 50 }}
-      className="w-64 bg-gray-800 text-white h-screen p-4 fixed right-0 top-0 z-50"
+      className="w-64 bg-gray-800 text-white h-screen p-4 fixed right-0 top-0 z-[10000]"
     >
       <h2 className="text-xl font-bold mb-6">پنل ادمین</h2>
       <ul>
@@ -76,6 +98,12 @@ const AdminContent: React.FC<{ selected: SidebarItem }> = ({ selected }) => {
       return <User />;
     case "blog":
       return <EditBlog />;
+    case "Addblog":
+      return <AddBlogPage />;
+    case "Addcategory":
+      return <AddCategory />;
+    case "Addproducts":
+      return <AddProductPage />;
     default:
       return <Products />;
   }
@@ -91,7 +119,7 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     const verifyAdmin = async () => {
       const token = localStorage.getItem("token");
-      
+
       if (!token) {
         router.push("/auth");
         return;
@@ -119,8 +147,9 @@ const AdminPage: React.FC = () => {
           setIsAdmin(true);
         }
       } catch (error) {
+        console.error(error);
         router.push("/");
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
@@ -128,11 +157,10 @@ const AdminPage: React.FC = () => {
     verifyAdmin();
   }, []);
 
-
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
-  if (loading&&!isAdmin) {
+  if (loading && !isAdmin) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-yellow-500 border-solid"></div>
@@ -140,7 +168,10 @@ const AdminPage: React.FC = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500"
+      dir="rtl"
+    >
       <div className="flex">
         <AnimatePresence>
           {sidebarOpen && (
@@ -168,16 +199,10 @@ const AdminPage: React.FC = () => {
           <div className="flex items-center justify-between p-4 shadow">
             <button
               onClick={toggleSidebar}
-              className="text-2xl text-gray-300 focus:outline-none"
+              className="text-2xl mt-24 lg:mt-4 text-gray-300 focus:outline-none"
             >
               {sidebarOpen ? "✖" : "☰"}
             </button>
-            <Link
-              href="/"
-              className="text-black bg-yellow-400 px-4 py-2 rounded-md shadow-md"
-            >
-              بازگشت به صفحه اصلی
-            </Link>
           </div>
           <AdminContent selected={selectedItem} />
         </div>

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
 
 interface User {
   _id: string;
@@ -108,13 +109,16 @@ export const User = () => {
       user.phoneNumber.includes(searchTerm)
   );
   return (
-    <div className="p-6 mt-28">
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-4 text-stone-50">
+        لیست کاربران
+      </h1>
       <div className="mb-6">
         <div className="relative">
           <input
             type="text"
             placeholder="جستجو بر اساس نام کاربری یا شماره تلفن..."
-            className="w-full p-3 pr-10 rounded-lg border focus:outline-none focus:border-rose-500"
+            className="w-full p-3 pr-10 text-black rounded-lg border focus:outline-none focus:border-gray-500"
             value={searchTerm}
             dir="rtl"
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -135,19 +139,27 @@ export const User = () => {
           </thead>
           <tbody>
             {filteredUsers.map((user) => (
-              <tr key={user._id} className="border-b">
+              <tr key={user._id} className="border-b text-black">
                 <td className="px-4 py-2">{user.username}</td>
-                <td className="px-4 py-2">{user.phoneNumber}</td>
-                <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2">
+                  {user.phoneNumber.replace(
+                    /\d/g,
+                    (d) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d)]
+                  )}
+                </td>
+                <td className="px-4 py-2 text-red-500 font-bold">
+                  {user.role}
+                </td>
                 <td className="px-4 py-2">
                   <button
                     onClick={() => {
                       setSelectedUser(user);
                       setIsEditModalOpen(true);
                     }}
-                    className="bg-rose-500 text-white px-3 py-1 rounded hover:bg-rose-600 transition-colors"
+                    aria-label="Edit"
+                    className=" text-blue-500 p-2 rounded hover:bg-blue-600 hover:text-white transition-colors"
                   >
-                    ویرایش
+                    <FiEdit className="w-5 h-5" />
                   </button>
                 </td>
               </tr>
@@ -182,13 +194,16 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-96" dir="rtl">
-        <h2 className="text-xl font-bold mb-4">ویرایش نقش کاربر</h2>
+        <h2 className="text-xl font-bold mb-4 text-blue-400">
+          ویرایش نقش کاربر
+        </h2>
         <div className="mb-4">
-          <p className="mb-2">نام کاربر: {user.username}</p>
+          <p className="my-2 ml-2 text-gray-600 inline">نام کاربر: </p>
+          <strong className="mb-2 text-blue-400">{user.username}</strong>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full mt-3 text-black p-2 border rounded"
           >
             <option value="user">کاربر عادی</option>
             <option value="admin">ادمین</option>
@@ -197,7 +212,7 @@ const EditModal: React.FC<EditModalProps> = ({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-4 py-2 bg-gray-200 text-black rounded hover:bg-gray-300"
           >
             انصراف
           </button>
@@ -206,7 +221,7 @@ const EditModal: React.FC<EditModalProps> = ({
               onSave(user._id, role);
               onClose();
             }}
-            className="px-4 py-2 bg-rose-500 text-white rounded hover:bg-rose-600"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             ذخیره
           </button>

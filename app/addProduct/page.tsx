@@ -165,12 +165,12 @@ export default function AddProductPage() {
       className="max-w-4xl mx-auto mt-36 p-8  rounded-xl shadow-lg"
       dir="rtl"
     >
-      <h1 className="text-2xl font-bold mb-6">افزودن محصول جدید</h1>
+      <h1 className="text-2xl font-bold mb-6 text-white">افزودن محصول جدید</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block mb-2 text-[#a37462]">عنوان محصول</label>
+            <label className="block mb-2 text-[#fff]">عنوان محصول</label>
             <input
               type="text"
               name="title"
@@ -182,7 +182,7 @@ export default function AddProductPage() {
           </div>
 
           <div>
-            <label className="block mb-2 text-[#a37462]">قیمت</label>
+            <label className="block mb-2 text-[#fff]">قیمت</label>
             <input
               type="text"
               name="price"
@@ -194,7 +194,7 @@ export default function AddProductPage() {
           </div>
 
           <div>
-            <label className="block mb-2 text-[#a37462]">تصویر اصلی</label>
+            <label className="block mb-2 text-[#fff]">تصویر اصلی</label>
             <input
               type="text"
               name="image"
@@ -205,7 +205,7 @@ export default function AddProductPage() {
           </div>
 
           <div>
-            <label className="block mb-2 text-[#a37462]">دسته‌بندی</label>
+            <label className="block mb-2 text-[#fff]">دسته‌بندی</label>
 
             <select
               value={formData.categoryId}
@@ -243,7 +243,7 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-[#a37462]">توضیحات</label>
+          <label className="block mb-2 text-[#fff]">توضیحات</label>
           <textarea
             name="description"
             value={formData.description}
@@ -255,7 +255,7 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-[#a37462]">ویژگی‌ها</label>
+          <label className="block mb-2 text-[#fff]">ویژگی‌ها</label>
           <div className="flex gap-2 mb-2">
             <input
               type="text"
@@ -264,7 +264,7 @@ export default function AddProductPage() {
               onChange={(e) =>
                 setCurrentProperty({ ...currentProperty, key: e.target.value })
               }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <input
               type="text"
@@ -276,12 +276,12 @@ export default function AddProductPage() {
                   value: e.target.value,
                 })
               }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <button
               type="button"
               onClick={addProperty}
-              className="px-4 py-2 bg-[#a37462] text-[#e5d8d0] rounded hover:bg-[#a37462]/80 transition-colors duration-200"
+              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
             >
               افزودن ویژگی
             </button>
@@ -290,7 +290,7 @@ export default function AddProductPage() {
             {Object.entries(formData.properties).map(([key, value]) => (
               <div
                 key={key}
-                className="inline-block bg-[#a37462]/10 text-[#a37462] rounded px-3 py-1 m-1"
+                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
               >
                 {key}: {value}
               </div>
@@ -299,7 +299,7 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-[#a37462]">رنگ‌ها</label>
+          <label className="block mb-2 text-[#fff]">رنگ‌ها</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -308,7 +308,7 @@ export default function AddProductPage() {
               onChange={(e) =>
                 setCurrentColor({ ...currentColor, name: e.target.value })
               }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <input
               type="text"
@@ -317,12 +317,12 @@ export default function AddProductPage() {
               onChange={(e) =>
                 setCurrentColor({ ...currentColor, code: e.target.value })
               }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <button
               type="button"
               onClick={addColor}
-              className="px-4 py-2 bg-[#a37462] text-[#e5d8d0] rounded hover:bg-[#a37462]/80 transition-colors duration-200"
+              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
             >
               افزودن رنگ
             </button>
@@ -331,7 +331,7 @@ export default function AddProductPage() {
             {Object.entries(formData.colors).map(([name, code]) => (
               <div
                 key={name}
-                className="inline-block bg-[#a37462]/10 text-[#a37462] rounded px-3 py-1 m-1"
+                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
               >
                 {name}: {code}
               </div>
@@ -340,19 +340,19 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-[#a37462]">ویدیوها</label>
+          <label className="block mb-2 text-[#fff]">ویدیوها</label>
           <div className="flex gap-2">
             <input
               type="text"
               placeholder="لینک ویدیو"
               value={currentVideo}
               onChange={(e) => setCurrentVideo(e.target.value)}
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <button
               type="button"
               onClick={addVideo}
-              className="px-4 py-2 bg-[#a37462] text-[#e5d8d0] rounded hover:bg-[#a37462]/80 transition-colors duration-200"
+              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
             >
               افزودن ویدیو
             </button>
@@ -361,7 +361,7 @@ export default function AddProductPage() {
             {formData.videoes.map((video, index) => (
               <div
                 key={index}
-                className="inline-block bg-gray-100 rounded px-3 py-1 m-1"
+                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
               >
                 {video}
               </div>
@@ -370,19 +370,19 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label className="block mb-2 text-[#a37462]">تصاویر بندانگشتی</label>
+          <label className="block mb-2 text-[#fff]">تصاویر بندانگشتی</label>
           <div className="flex gap-2">
             <input
               type="text"
               placeholder="لینک تصویر"
               value={currentThumbnail}
               onChange={(e) => setCurrentThumbnail(e.target.value)}
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
             />
             <button
               type="button"
               onClick={addThumbnail}
-              className="px-4 py-2 bg-[#a37462] text-[#e5d8d0] rounded hover:bg-[#a37462]/80 transition-colors duration-200"
+              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
             >
               افزودن تصویر
             </button>
@@ -391,7 +391,7 @@ export default function AddProductPage() {
             {formData.thumbnails.map((thumbnail, index) => (
               <div
                 key={index}
-                className="inline-block bg-gray-100 rounded px-3 py-1 m-1"
+                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
               >
                 {thumbnail}
               </div>
@@ -401,7 +401,7 @@ export default function AddProductPage() {
 
         <button
           type="submit"
-          className="w-full py-3 bg-[#a37462] text-[#e5d8d0] rounded hover:bg-[#a37462]/90 transition-colors duration-200 shadow-md"
+          className="w-full py-3 bg-blue-500 text-[#fff] rounded hover:bg-blue-700 transition-colors duration-200 shadow-md"
         >
           ثبت محصول
         </button>
