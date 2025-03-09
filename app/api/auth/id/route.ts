@@ -2,6 +2,8 @@ import connect from "@/lib/data";
 import User from "@/models/user";
 import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+
 export async function GET(request: NextRequest) {
   await connect();
   if (!connect) {
@@ -38,6 +40,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
+
 export async function PATCH(request: NextRequest) {
   await connect();
   if (!connect) {
@@ -52,7 +55,25 @@ export async function PATCH(request: NextRequest) {
     }
     const id = decodedToken.id;
     const user = await User.findById(id);
-    const newUser = { username: body.username, phoneNumber: body.phoneNumber };
+    let newUser: { username?: string; phoneNumber?: string; password?: string } = {};
+    if (body.password && body.password.trim() !== ""){
+       newUser = { 
+      username: body.username, 
+      phoneNumber: body.phoneNumber ,
+      password: body.password
+    };}
+    else {
+       newUser = {
+        username: body.username,
+        phoneNumber: body.phoneNumber
+      };
+    }
+    // If password is provided, hash it and add to update
+    if (body.password && body.password.trim() !== "") {
+      const hashedPassword = await bcrypt.hash(body.password, 10);
+      newUser.password = hashedPassword;
+    }
+
     await User.findByIdAndUpdate(id, newUser);
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

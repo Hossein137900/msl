@@ -1,5 +1,8 @@
 "use client";
+import ImageSelectorModal from "@/components/ImageSelectorModal";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { FiUploadCloud } from "react-icons/fi";
 
 export interface Category {
   _id: string;
@@ -11,6 +14,11 @@ export interface CategoryResponse {
   success: boolean;
   data: Category[];
 }
+interface StorySettings {
+  title: string;
+  image: string;
+}
+
 
 interface ProductFormData {
   title: string;
@@ -46,7 +54,12 @@ export default function AddProductPage() {
   const [currentColor, setCurrentColor] = useState({ name: "", code: "" });
   const [currentVideo, setCurrentVideo] = useState("");
   const [currentThumbnail, setCurrentThumbnail] = useState("");
+  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [settings, setSettings] = useState<StorySettings>({
+    title: "",
+    image: "",
+  });
   const addProperty = () => {
     if (currentProperty.key && currentProperty.value) {
       setFormData((prev) => ({
@@ -92,6 +105,14 @@ export default function AddProductPage() {
       setCurrentThumbnail("");
     }
   };
+  const handleImageSelect = (image: { fileUrl: string }) => {
+    setSettings((prev) => ({
+      ...prev,
+      image: image.fileUrl,
+    }));
+    setIsImageSelectorOpen(false);
+  };
+
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -114,7 +135,7 @@ export default function AddProductPage() {
     submitFormData.append("title", formData.title);
     submitFormData.append("price", formData.price);
     submitFormData.append("description", formData.description);
-    submitFormData.append("image", formData.image);
+    submitFormData.append("image", settings.image);
     submitFormData.append("categoryId", formData.categoryId);
     submitFormData.append("categoryChildren", formData.categoryChildren);
 
@@ -194,14 +215,21 @@ export default function AddProductPage() {
           </div>
 
           <div>
-            <label className="block mb-2 text-[#fff]">تصویر اصلی</label>
-            <input
-              type="text"
-              name="image"
-              value={formData.image}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-[#a37462]/30 rounded text-black bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-            />
+            <label className="block mb-2 text-[#a37462]">تصویر اصلی</label>
+            <ImageSelectorModal
+          isOpen={isImageSelectorOpen}
+          onClose={() => setIsImageSelectorOpen(false)}
+          onSelectImage={handleImageSelect}
+        />
+            <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsImageSelectorOpen(true)}
+                  className="bg-[#eff1f2] text-black px-4 py-3 rounded-lg flex items-center space-x-2 w-full"
+                >
+                  <FiUploadCloud />
+                  <span>انتخاب تصویر</span>
+                </motion.button>
           </div>
 
           <div>
