@@ -86,7 +86,7 @@ const DashboardPage: React.FC = () => {
     setSidebarOpen((prev) => !prev);
   };
   useEffect(() => {
-    document.title =  "داشبورد - مدرن لایت";
+    document.title = "داشبورد - مدرن لایت";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", " داشبورد کاربر - مدرن لایت");
@@ -144,5 +144,3 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
-
-
