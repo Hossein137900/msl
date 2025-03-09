@@ -44,6 +44,22 @@ export default function ProductDetailPage() {
     "details"
   );
   const [product, setProduct] = useState<ProductProps | null>(null);
+
+  useEffect(() => {
+    if (product) {
+      document.title = product.title || "محصول";
+      const metaDescription = document.querySelector(
+        'meta[name="description"]'
+      );
+      if (metaDescription) {
+        metaDescription.setAttribute(
+          "content",
+          product.description.slice(0, 160)
+        );
+      }
+    }
+  }, [product]);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -55,6 +71,7 @@ export default function ProductDetailPage() {
         });
         const data = await response.json();
         setProduct(data.product);
+        console.log(data.product, "product");
         setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -201,7 +218,7 @@ export default function ProductDetailPage() {
 
   return (
     <div
-      className="min-h-screen px-4 py-8 bg-gradient-to-br from-[#e5d8d0] to-[#a37462]"
+      className="min-h-screen px-4 py-8 bg-gradient-to-t from-[#e5d8d0] to-[#a37462]"
       dir="rtl"
     >
       <div className="max-w-7xl mx-auto bg-white mt-24 rounded-2xl shadow-xl p-8">

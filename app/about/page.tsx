@@ -4,8 +4,16 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { storyCards, timelineEvents } from "../../lib/aboutData";
 import Marquee from "@/components/global/marque";
+import { useEffect } from "react";
 
 const AboutPage = () => {
+  useEffect(() => {
+    document.title = "درباره ما | مدرن لایت";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "درباره ما - مدرن لایت");
+    }
+  }, []);
   return (
     <div className="min-h-screen" dir="rtl">
       {/* Hero Section with Parallax */}
@@ -80,7 +88,6 @@ const AboutPage = () => {
       </section>
 
       {/* Contact CTA */}
-      
     </div>
   );
 };

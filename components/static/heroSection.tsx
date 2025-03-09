@@ -14,10 +14,10 @@ const HeroSection = () => {
   }, []);
 
   // Overlay animation variants
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 0.6 },
-  };
+  // const overlayVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: { opacity: 0.6 },
+  // };
 
   return (
     <div className=" h-screen w-full ">

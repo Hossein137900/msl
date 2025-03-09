@@ -67,6 +67,17 @@ export default function BlogGrid() {
     }
     fetchBlogs();
   }, []);
+
+  useEffect(() => {
+    document.title = "وبلاگ | مدرن لایت"
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+         "مدرن لایت - وبلاگ ما با مطالب جذاب و آموزنده"
+      );
+    }
+  }, []);
   const filteredBlogs = isblog.filter((blog) => {
     return (
       blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

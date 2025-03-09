@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
-import { FaShoppingCart, FaTimes } from 'react-icons/fa';
+import { FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
 
 interface CartItem {
@@ -32,7 +32,7 @@ const ItemsModal = ({
   status, 
   cartId, 
   onStatusChange ,
-  cartImage
+  // cartImage
 }: { 
   isOpen: boolean; 
   onClose: () => void; 
@@ -179,10 +179,10 @@ export const Carts = () => {
 
   return (
     <div className="p-6" dir="rtl">
-      <h2 className="text-2xl font-bold mb-6 text-yellow-400">مدیریت سفارشات</h2>
+      <h2 className="text-2xl font-bold my-6 text-stone-50">مدیریت سفارشات</h2>
       <div className="overflow-x-auto">
         <table className="w-full bg-white/10 rounded-lg overflow-hidden">
-          <thead className="bg-gray-800 text-yellow-400">
+          <thead className="bg-gray-800 text-white/70">
             <tr>
               <th className="px-6 py-3 text-right">کاربر</th>
               <th className="px-6 py-3 text-right">مبلغ کل</th>
@@ -199,11 +199,11 @@ export const Carts = () => {
                 animate={{ opacity: 1 }}
                 className="border-b border-gray-700 hover:bg-white/5"
               >
-                <td className="px-6 py-4">{cart.userId.username}</td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 text-white">{cart.userId.username}</td>
+                <td className="px-6 py-4 text-white">
                   {new Intl.NumberFormat('fa-IR').format(cart.totalPrice)} تومان
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-6 py-4 text-white">
                   {new Date(cart.createdAt).toLocaleDateString('fa-IR')}
                 </td>
                 <td className="px-6 py-4">

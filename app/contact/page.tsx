@@ -4,8 +4,16 @@ import { motion } from "framer-motion";
 import { contactMethods } from "../../lib/contactData";
 import FAQSection from "@/components/global/faq";
 import CardWithMouseBorder from "@/components/global/card-hover-border";
+import { useEffect } from "react";
 
 const ContactPage = () => {
+  useEffect(() => {
+    document.title = "ارتباط با ما | مدرن لایت";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "صفحه ارتباط با ما - مدرن لایت");
+    }
+  }, []);
   return (
     <div className="min-h-screen " dir="rtl">
       <motion.section
@@ -99,7 +107,7 @@ const ContactPage = () => {
                 <motion.button
                   whileHover={{ scale: 0.99 }}
                   whileTap={{ scale: 0.95 }}
-                  className="hover:bg-[#a37462] font-bold hover:text-[#ffffff] border-b border-[#fff] text-[#fff]  px-8 py-3 transition-all duration-300 w-full md:w-full"
+                  className="hover:bg-[#a37462] font-bold hover:text-[#ffffff] border-b border-[#fff] text-[#fff] rounded-lg px-8 py-3 transition-all duration-300 w-full md:w-full"
                 >
                   ارسال پیام
                 </motion.button>

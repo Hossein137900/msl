@@ -156,7 +156,6 @@ export default function AddBlogPage() {
     },
   }) as CustomEditor;
 
- 
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
@@ -218,18 +217,17 @@ export default function AddBlogPage() {
 
   return (
     <div className="max-w-4xl mx-6 mt-28  md:mt-36 my-16 lg:mx-auto">
-     
       <motion.h2
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-2xl md:text-4xl font-black my-4 text-center bg-gradient-to-r from-[#a37462] to-[#e5d8d0] text-transparent bg-clip-text"
+        className="text-2xl md:text-4xl font-black my-4 text-center text-white text-transparent bg-clip-text"
       >
         افزودن بلاگ جدید
       </motion.h2>
       <motion.p
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="text-base md:text-xl font-medium mb-8 text-center text-[#a37462]"
+        className="text-base md:text-xl font-medium mb-8 text-center text-[#e4e4e4]/50"
       >
         در این قسمت می‌توانید بلاگ جدید خود را ایجاد کنید
       </motion.p>
@@ -248,14 +246,14 @@ export default function AddBlogPage() {
             type="text"
             value={seoTitle}
             onChange={(e) => setSeoTitle(e.target.value)}
-            className="w-full px-6 py-4 mb-1 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
+            className="w-full px-6 py-4 mb-1 text-[#000] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="عنوان سئو"
             required
           />
           <input
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
+            className="w-full px-6 py-4 text-[#000] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="توضیحات کوتاه"
             required
           />
@@ -266,13 +264,13 @@ export default function AddBlogPage() {
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
-                className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 outline-none focus:border-[#a37462]"
+                className="w-full px-6 py-4 text-[#000] rounded-xl border border-[#e5d8d0] bg-white/80 outline-none focus:border-[#a37462]"
                 placeholder="برچسب‌ها را وارد کنید..."
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="bg-[#a37462] text-white px-6 rounded-xl hover:bg-[#8a5a50] transition-all duration-300"
+                className="bg-gray-500 text-white px-6 rounded-xl hover:bg-gray-600 transition-all duration-300"
               >
                 <i className="fas fa-plus mt-1.5"></i>
               </button>
@@ -307,7 +305,7 @@ export default function AddBlogPage() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-6 py-4 text-[#a37462] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
+            className="w-full px-6 py-4 text-[#000] rounded-xl border border-[#e5d8d0] bg-white/80 focus:outline-none focus:border-[#a37462] transition-all duration-300"
             placeholder="عنوان بلاگ"
           />
 
@@ -316,7 +314,7 @@ export default function AddBlogPage() {
               محتوای بلاگ
             </label>
             <div className="border border-[#e5d8d0] rounded-2xl overflow-hidden shadow-lg">
-              <div className="bg-[#e5d8d0]/30 p-4 border-b border-[#e5d8d0] flex flex-wrap gap-3">
+              <div className="bg-[#fff]/70 p-4 border-b border-[#e5d8d0] flex flex-wrap gap-3">
                 <MenuButton
                   onClick={() => editor?.chain().focus().toggleBold().run()}
                   active={editor?.isActive("bold")}
@@ -440,7 +438,7 @@ export default function AddBlogPage() {
                 <EditorContent editor={editor} />
               </div>
 
-              <div className="mt-2 text-sm text-[#a37462] text-right border-t border-[#e5d8d0] p-4">
+              <div className="mt-2 text-sm text-[#fff] text-right border-t border-[#e5d8d0] p-4">
                 تعداد کلمات: {wordCount}
               </div>
             </div>
@@ -450,7 +448,7 @@ export default function AddBlogPage() {
         <div className="text-right pt-6">
           <button
             type="submit"
-            className="bg-gradient-to-r from-[#a37462] to-[#8a5a50] text-white px-8 py-4 w-full rounded-sm hover:shadow-lg transition-all duration-300 font-bold text-lg"
+            className="bg-blue-400 text-white px-8 py-2.5 w-full rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg"
           >
             انتشار بلاگ
           </button>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, JSX } from "react";
+import React, { useState, JSX, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaShoppingCart, FaUserEdit, FaChartBar } from "react-icons/fa";
@@ -85,6 +85,13 @@ const DashboardPage: React.FC = () => {
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
+  useEffect(() => {
+    document.title =  "داشبورد - مدرن لایت";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", " داشبورد کاربر - مدرن لایت");
+    }
+  }, []);
 
   return (
     <div
@@ -137,3 +144,5 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
+
+
