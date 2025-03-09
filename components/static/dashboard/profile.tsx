@@ -7,7 +7,9 @@ const Profile: React.FC = () => {
     username: "",
     phoneNumber: "",
     id: "",
+    password: "",  // Initialize all fields
   });
+  
  const fetchUser = async () => {
     const response = await fetch(`/api/auth/id`, {
       method: "GET",
@@ -41,15 +43,18 @@ const Profile: React.FC = () => {
         body: JSON.stringify({
           username: user.username,
           phoneNumber: user.phoneNumber,
+          password: user.password, // Add this
         }),
       });
       response.json();
       toast.success("پروفایل با موفقیت بروزرسانی شد");
+      setUser({...user, password: ""}); // Clear password after update
     } catch (error) {
       toast.error("خطا در بروزرسانی پروفایل");
       console.error(error);
     }
   };
+  
   if (loading) {
     return  <div className="fixed inset-0 bg-black/5 z-50">
       <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
@@ -96,6 +101,21 @@ if (!loading) {
             className="w-full border px-3 py-2 rounded text-black/70 focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
+        <div className="mb-4">
+  <label className="block text-gray-700 mb-2" htmlFor="password">
+    رمز عبور جدید
+  </label>
+  <input
+    type="password"
+    id="password"
+    value={user.password||""}
+    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+      setUser({...user, password: e.target.value})
+    }
+    className="w-full border px-3 py-2 rounded text-black/70 focus:outline-none focus:ring focus:border-blue-300"
+  />
+</div>
+
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
