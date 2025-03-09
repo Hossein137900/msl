@@ -140,7 +140,7 @@ const AdminPage: React.FC = () => {
     );
   }
   return (
-    <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500 " dir="rtl">
       <div className="flex">
         <AnimatePresence>
           {sidebarOpen && (
