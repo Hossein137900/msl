@@ -15,32 +15,9 @@ interface BlogPost {
   user: {
     name: string;
   };
+  seoTitle: string;
+  description: string;
 }
-
-// export async function generateMetadata() {
-//   // Await params to get an object that includes "id"
-//   const params = usePathname();
-
-//   const id = params.split(":")[0].split("/")[2];
-
-//   const response = await fetch(`/api/blog/${id}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   const blog = await response.json();
-//   if (!blog || !blog.title || !blog.content || !blog.createdAt) {
-//     return {
-//       title: "Blog Not Found",
-//       description: "The requested blog post could not be found.",
-//     };
-//   }
-//   return {
-//     title: blog.seoTitle,
-//     description: blog.description,
-//   };
-// }
 
 export default function BlogDetailPage() {
   const [blog, setBlog] = useState<BlogPost | null>(null);
@@ -55,7 +32,7 @@ export default function BlogDetailPage() {
       },
     });
     const blogs = await response.json();
-    console.log(blogs);
+    console.log(blogs, "blogs");
     setBlog(blogs.blog);
   };
   useEffect(() => {
@@ -78,6 +55,8 @@ export default function BlogDetailPage() {
     readTime: 5,
     image: blog.image || "/assets/images/fade3.jpg",
     tags: blog.tags || ["لوستر", "دکوراسیون"],
+    seoTitle: blog.seoTitle,
+    description: blog.description,
   };
 
   return <BlogPost {...blogPostData} />;

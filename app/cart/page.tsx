@@ -26,10 +26,6 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-  useEffect(() => {
-    loadCartItems();
-  }, []);
-
   const loadCartItems = () => {
     const request = indexedDB.open("CartDB", 1);
 
@@ -67,6 +63,17 @@ export default function CartPage() {
       }
     };
   };
+  useEffect(() => {
+    loadCartItems();
+  }, []);
+
+  useEffect(() => {
+    document.title = "سبد خرید | مدرن لایت";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "سبد خرید مدرن لایت");
+    }
+  }, []);
 
   const handlePurchaseClick = () => {
     const token = localStorage.getItem("token");
@@ -161,7 +168,10 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#e5d8d0] p-4 md:p-8" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-t from-[#e5d8d0] to-[#a37462] p-4 md:p-8"
+      dir="rtl"
+    >
       <div className="max-w-7xl mx-auto mt-24">
         <h1 className="text-3xl font-bold text-[#a37462] mb-8">سبد خرید</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

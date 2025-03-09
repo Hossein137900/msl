@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
@@ -14,6 +14,14 @@ interface Project {
 
 const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  useEffect(() => {
+    document.title = "پروژه ما | مدرن لایت";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "پروژّه ها - مدرن لایت");
+    }
+  }, []);
 
   const projects: Project[] = [
     {

@@ -156,6 +156,13 @@ const AdminPage: React.FC = () => {
 
     verifyAdmin();
   }, []);
+  useEffect(() => {
+    document.title = "مدرن لایت -  ادمین";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", " ادمین - مدرن لایت");
+    }
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);

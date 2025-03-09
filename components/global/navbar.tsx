@@ -109,8 +109,8 @@ const Navbar = () => {
         borderWidth: { duration: 0.3 },
       }}
       dir="rtl"
-      className={`fixed z-[9999] top-4 right-2 left-2 backdrop-blur-md lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
-        isScrolled ? "bg-white/10" : "bg-transparent"
+      className={`fixed z-[9999] top-4 right-2 left-2  lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
+        isScrolled ? "bg-[#a37462]/80" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -136,7 +136,7 @@ const Navbar = () => {
                 <span
                   className={`
           relative py-2 px-3 rounded-lg
-          ${isScrolled ? "text-[#a37462]" : "text-[#e5d8d0]"}
+          ${isScrolled ? "text-[#e5d8d0]" : "text-[#e5d8d0]"}
           hover:bg-white/10 hover:text-white
           transition-all duration-300 
           flex items-center gap-2

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import moment from "moment-jalaali";
+import { useEffect } from "react";
 
 interface BlogPost {
   title: string;
@@ -9,6 +10,8 @@ interface BlogPost {
   readTime: number;
   image: string;
   tags: string[];
+  seoTitle: string;
+  description: string;
 }
 
 export default function BlogPost(blogPostData: BlogPost) {
@@ -33,11 +36,19 @@ export default function BlogPost(blogPostData: BlogPost) {
     .replace("Bahman", "بهمن")
     .replace("Esfand", "اسفند");
 
+  useEffect(() => {
+    document.title = sampleBlogPost.seoTitle;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute(
+        "content",
+        sampleBlogPost.description ? sampleBlogPost.description : "بلاگ مشترک"
+      );
+    }
+  }, []);
+
   return (
-    <article
-      className="px-4 py-8 bg-gradient-to-t from-[#a37462] to-[#e5d8d0]"
-      dir="rtl"
-    >
+    <article className="px-4 py-8 bg-[#a37462]" dir="rtl">
       <div className="max-w-5xl mx-auto mt-24">
         <div className="relative h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300">
           <Image
