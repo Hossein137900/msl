@@ -69,7 +69,8 @@ const Navbar = () => {
   }, [handleScroll]);
 
   // Toggle functions
-  const toggleMobileMenu = () => setIsOpen((prev) => !prev);
+  const toggleMobileMenu = () => {setIsOpen((prev) => !prev)
+  };
   const toggleMobileDropdown = (title: string) => {
     setMobileDropdown((prev) => (prev === title ? null : title));
   };
