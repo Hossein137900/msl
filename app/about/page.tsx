@@ -5,8 +5,11 @@ import Image from "next/image";
 import { storyCards, timelineEvents } from "../../lib/aboutData";
 import Marquee from "@/components/global/marque";
 import { useEffect } from "react";
+import { useEventTracker } from "@/hooks/useEventTracker";
 
 const AboutPage = () => {
+    useEventTracker();
+  
   useEffect(() => {
     document.title = "درباره ما | مدرن لایت";
     const metaDescription = document.querySelector('meta[name="description"]');

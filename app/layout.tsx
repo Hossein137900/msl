@@ -4,7 +4,6 @@ import { doranregular } from "@/next-persian-fonts/doran";
 import Navbar from "@/components/global/navbar";
 import Footer from "@/components/global/footer";
 import { ToastContainer } from "react-toastify";
-import { ActivityTrackerProvider } from '@/components/providers/ActivityTrackerProvider';
 
 export const metadata: Metadata = {
   title: "مدرن لایت",
@@ -21,12 +20,10 @@ export default function RootLayout({
       <body
         className={` ${doranregular.className} bg-[#e5d8d0] antialiased relative`}
       >
-        <ActivityTrackerProvider>
         <Navbar />
         <ToastContainer position="top-center" rtl={true} />
         {children}
         <Footer />
-        </ActivityTrackerProvider>
       </body>
     </html>
   );
