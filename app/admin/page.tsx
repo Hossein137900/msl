@@ -8,7 +8,6 @@ import {
   FaPlus,
   FaLayerGroup,
   FaTasks,
-  FaUber,
   FaUser,
   FaAmazon,
 } from "react-icons/fa";
