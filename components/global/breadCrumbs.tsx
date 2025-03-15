@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { HomeIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
 const pathTranslations: { [key: string]: string } = {
@@ -18,7 +19,7 @@ const pathTranslations: { [key: string]: string } = {
   admin: "مدیریت",
 };
 
-const Breadcrumbs = () => {
+const BreadcrumbsContent = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const pathSegments = pathname.split("/").filter((segment) => segment);
@@ -87,6 +88,19 @@ const Breadcrumbs = () => {
         ))}
       </ol>
     </nav>
+  );
+};
+const Breadcrumbs = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="backdrop-blur-[2px] py-1 px-6 rounded-lg absolute top-20 right-4 lg:right-9 z-10">
+          Loading...
+        </div>
+      }
+    >
+      <BreadcrumbsContent />
+    </Suspense>
   );
 };
 

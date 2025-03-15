@@ -1,11 +1,12 @@
 "use client";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 import {
   BiSearch,
@@ -63,14 +64,14 @@ function generateSlug(title: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-const Store = () => {
+const StoreContent = () => {
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductProps[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const searchParams = useSearchParams();
-  const categoryFromUrl = searchParams.get('category');
+  const categoryFromUrl = searchParams.get("category");
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -487,6 +488,24 @@ const Store = () => {
         <EmptyProducts />
       )}
     </div>
+  );
+};
+const Store = () => {
+  return (
+    <Suspense
+      fallback={
+        <div
+          className="px-4 py-8 bg-gradient-to-t from-[#e5d8d0] to-[#a37462]"
+          dir="rtl"
+        >
+          <h2 className="md:text-3xl text-xl border-b pb-4 w-fit mx-auto border-[#e4e4e4] mt-24 font-bold text-center text-white/90 mb-8">
+            در حال بارگذاری...
+          </h2>
+        </div>
+      }
+    >
+      <StoreContent />
+    </Suspense>
   );
 };
 
