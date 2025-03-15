@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FiEye } from "react-icons/fi";
 import { JsonValue } from "@prisma/client/runtime/library";
+import { useSearchParams } from 'next/navigation';
+
 import {
   BiSearch,
   BiCategory,
@@ -67,7 +69,8 @@ const Store = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get('category');
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -75,7 +78,15 @@ const Store = () => {
     maxPrice: "",
     sort: "newest",
   });
-
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl);
+      const filteredProducts = products.filter(
+        (product: ProductProps) => product.categoryChildren === categoryFromUrl
+      );
+      setFilteredProducts(filteredProducts);
+    }
+  }, [categoryFromUrl, products]);
   useEffect(() => {
     const fetchData = async () => {
       try {

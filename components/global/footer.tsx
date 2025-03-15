@@ -101,7 +101,7 @@ const Footer = () => {
                       <Link
                         key={index}
                         aria-label={`View ${child} in ${category.title}`}
-                        href={`/category/${category.id}/${child}`}
+                         href={`/store?category=${child}`} 
                         className="text-gray-200 hover:text-[#e5d8d0] text-sm block transition-all duration-300 hover:translate-x-2"
                       >
                         {child}

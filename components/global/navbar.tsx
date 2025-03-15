@@ -69,7 +69,9 @@ const Navbar = () => {
   }, [handleScroll]);
 
   // Toggle functions
-  const toggleMobileMenu = () => setIsOpen((prev) => !prev);
+  const toggleMobileMenu = () => {
+    setIsOpen((prev) => !prev)
+  };
   const toggleMobileDropdown = (title: string) => {
     setMobileDropdown((prev) => (prev === title ? null : title));
   };
@@ -109,9 +111,8 @@ const Navbar = () => {
         borderWidth: { duration: 0.3 },
       }}
       dir="rtl"
-      className={`fixed z-[9999] top-4 right-2 left-2  lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
-        isScrolled ? "bg-[#a37462]/80" : "bg-transparent"
-      }`}
+      className={`fixed z-[9999] top-4 right-2 left-2  lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${isScrolled ? "bg-[#a37462]/80" : "bg-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
@@ -188,11 +189,10 @@ const Navbar = () => {
                                 backgroundColor: "rgba(255,255,255,0.15)",
                               }}
                               className={`px-6 py-4 cursor-pointer transition-all duration-300
-      ${
-        activeCategory === category._id
-          ? "bg-white/10 border-r-4 border-[#a37462]"
-          : ""
-      }`}
+      ${activeCategory === category._id
+                                  ? "bg-white/10 border-r-4 border-[#a37462]"
+                                  : ""
+                                }`}
                             >
                               <h3 className="text-[#a37462] font-bold text-lg">
                                 {category.title}
@@ -225,17 +225,19 @@ const Navbar = () => {
                                     categories
                                       .find((c) => c._id === activeCategory)
                                       ?.children.map((child, idx) => (
-                                        <motion.div
-                                          key={idx}
-                                          initial={{ opacity: 0, x: -10 }}
-                                          animate={{ opacity: 1, x: 0 }}
-                                          transition={{ delay: idx * 0.1 }}
-                                          className="text-gray-50 hover:text-white 
-          cursor-pointer py-1 px-2 rounded
-          hover:bg-white/10 transition-all duration-200"
-                                        >
-                                          {child}
-                                        </motion.div>
+                                        <Link href={`/store?category=${child}`} key={idx}>
+                                          <motion.div
+                                            key={idx}
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: idx * 0.1 }}
+                                            className="text-gray-50 hover:text-white 
+                                            cursor-pointer py-1 px-2 rounded
+                                            hover:bg-white/10 transition-all duration-200"
+                                          >
+                                            {child}
+                                          </motion.div>
+                                        </Link>
                                       ))}
                                 </div>
                               </div>
@@ -245,7 +247,7 @@ const Navbar = () => {
                                   initial={{ opacity: 0, scale: 0.95 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   className="relative h-48 w-full rounded-xl overflow-hidden
-                          shadow-lg transform hover:scale-105 transition-transform duration-300"
+                                  shadow-lg transform hover:scale-105 transition-transform duration-300"
                                 >
                                   <Image
                                     src="/assets/images/fade3.jpg"

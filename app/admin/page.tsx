@@ -8,8 +8,8 @@ import {
   FaPlus,
   FaLayerGroup,
   FaTasks,
-  FaUber,
   FaUser,
+  FaAmazon,
 } from "react-icons/fa";
 import { Products } from "@/components/static/adminComponent/products";
 import { Carts } from "@/components/static/adminComponent/carts";
@@ -20,6 +20,9 @@ import AddBlogPage from "../addBlog/page";
 import AddCategory from "../addCategory/page";
 import AddProductPage from "../addProduct/page";
 import Profile from "@/components/static/dashboard/profile";
+import AnalyticsDashboard from "@/components/static/adminComponent/AnalyticsDashboard";
+// import HeatmapViewer from "@/components/static/adminComponent/HeatmapViewer";
+// import UserSegmentation from "@/components/static/adminComponent/UserSegmentation";
 
 type SidebarItem =
   | "products"
@@ -29,7 +32,9 @@ type SidebarItem =
   | "Addblog"
   | "Addproducts"
   | "Addcategory"
+  | "analytics"
   | "profile";
+  
 
 const sidebarVariants = {
   hidden: { x: "100%", opacity: 0 },
@@ -59,6 +64,7 @@ const Sidebar: React.FC<{
     { key: "Addblog", label: "افزودن بلاگ", icon: <FaPlus size={18} /> },
     { key: "blog", label: "مدیریت بلاگ", icon: <FaTasks size={18} /> },
     { key: "profile", label: "مدیریت پروفایل", icon: <FaUser size={18} /> },
+    { key: "analytics", label: " انالاتیکس", icon: <FaAmazon size={18} /> },
   ];
 
   return (
@@ -111,6 +117,15 @@ const AdminContent: React.FC<{ selected: SidebarItem }> = ({ selected }) => {
       return <AddProductPage />;
     case "profile":
       return <Profile />;
+case "analytics":
+  return (
+    <div className="p-6">
+      <AnalyticsDashboard />
+      {/* <UserSegmentation /> */}
+      {/* <HeatmapViewer path="/" /> */}
+    </div>
+  );
+
     default:
       return <Products />;
   }
