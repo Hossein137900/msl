@@ -110,7 +110,7 @@ export const User = () => {
   );
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4 text-stone-50">
+      <h1 className="text-2xl font-semibold my-6 text-stone-50">
         لیست کاربران
       </h1>
       <div className="mb-6">

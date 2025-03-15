@@ -429,7 +429,7 @@ export default function AddProductPage() {
 
         <button
           type="submit"
-          className="w-full py-3 bg-blue-500 text-[#fff] rounded hover:bg-blue-700 transition-colors duration-200 shadow-md"
+          className="w-full py-3 bg-transparent text-[#fff] border rounded hover:bg-gray-700 transition-colors duration-200 shadow-md"
         >
           ثبت محصول
         </button>

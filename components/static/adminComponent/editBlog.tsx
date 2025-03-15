@@ -280,7 +280,7 @@ export default function EditBlog() {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       />
 
-      <h1 className="text-3xl font-bold text-stone-50 mb-8">مدیریت بلاگ‌ها</h1>
+      <h1 className="text-3xl font-bold text-stone-50 my-6">مدیریت بلاگ‌ها</h1>
 
       {selectedBlog ? (
         <motion.form

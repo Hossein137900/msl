@@ -149,7 +149,7 @@ export default function CartPage() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-[#e5d8d0] flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-[#a37462] to-[#e5d8d0] flex flex-col items-center justify-center p-4">
         <FiShoppingBag className="w-24 h-24 text-[#a37462] mb-4" />
         <h2 className="text-2xl text-[#a37462] font-bold mb-4">
           سبد خرید شما خالی است
@@ -173,7 +173,7 @@ export default function CartPage() {
       dir="rtl"
     >
       <div className="max-w-7xl mx-auto mt-24">
-        <h1 className="text-3xl font-bold text-[#a37462] mb-8">سبد خرید</h1>
+        <h1 className="text-3xl font-bold text-[#fff] mb-8">سبد خرید</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (

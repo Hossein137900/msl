@@ -3,10 +3,13 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BsCart3 } from "react-icons/bs";
 import { BiSearch, BiMenu, BiX, BiChevronDown } from "react-icons/bi";
+import { FaUserCircle, FaSignOutAlt, FaUserPlus } from "react-icons/fa";
+import { RiLoginBoxLine, RiUserSettingsLine } from "react-icons/ri";
+
 import Link from "next/link";
 import Image from "next/image";
 import { navItems } from "@/lib/navbarData";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export interface Category {
   _id: string;
@@ -16,6 +19,10 @@ export interface Category {
   updatedAt: string;
   __v: number;
 }
+interface User {
+  username: string;
+  role: string;
+}
 
 export interface CategoryResponse {
   success: boolean;
@@ -23,6 +30,7 @@ export interface CategoryResponse {
 }
 
 const Navbar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -30,6 +38,9 @@ const Navbar = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobileAuthOpen, setIsMobileAuthOpen] = useState(false);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [isAuthDropdownOpen, setIsAuthDropdownOpen] = useState(false);
   const pathname = usePathname();
 
   const fetchCategories = async () => {
@@ -57,8 +68,59 @@ const Navbar = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+  // Add this useEffect after other useEffects
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
 
-  // Optimize scroll handler with useCallback
+      if (token) {
+        try {
+          const response = await fetch("/api/auth/id", {
+            method: "GET",
+            cache: "default",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              token: token,
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            throw new TypeError("Response was not JSON");
+          }
+
+          const data = await response.json();
+          console.log(data);
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          localStorage.removeItem("token");
+          setUserData(null);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  const handleProfileClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (userData?.role === "admin") {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setUserData(null);
+    setIsAuthDropdownOpen(false);
+  };
+
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 40);
   }, []);
@@ -70,7 +132,7 @@ const Navbar = () => {
 
   // Toggle functions
   const toggleMobileMenu = () => {
-    setIsOpen((prev) => !prev)
+    setIsOpen((prev) => !prev);
   };
   const toggleMobileDropdown = (title: string) => {
     setMobileDropdown((prev) => (prev === title ? null : title));
@@ -111,8 +173,9 @@ const Navbar = () => {
         borderWidth: { duration: 0.3 },
       }}
       dir="rtl"
-      className={`fixed z-[9999] top-4 right-2 left-2  lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${isScrolled ? "bg-[#a37462]/80" : "bg-transparent"
-        }`}
+      className={`fixed z-[9999] top-4 right-2 left-2  lg:right-20 lg:left-20 rounded-lg px-6 py-4 transition-all duration-300 ${
+        isScrolled ? "bg-[#a37462]/80" : "bg-transparent"
+      }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
@@ -189,10 +252,11 @@ const Navbar = () => {
                                 backgroundColor: "rgba(255,255,255,0.15)",
                               }}
                               className={`px-6 py-4 cursor-pointer transition-all duration-300
-      ${activeCategory === category._id
-                                  ? "bg-white/10 border-r-4 border-[#a37462]"
-                                  : ""
-                                }`}
+      ${
+        activeCategory === category._id
+          ? "bg-white/10 border-r-4 border-[#a37462]"
+          : ""
+      }`}
                             >
                               <h3 className="text-[#a37462] font-bold text-lg">
                                 {category.title}
@@ -225,7 +289,10 @@ const Navbar = () => {
                                     categories
                                       .find((c) => c._id === activeCategory)
                                       ?.children.map((child, idx) => (
-                                        <Link href={`/store?category=${child}`} key={idx}>
+                                        <Link
+                                          href={`/store?category=${child}`}
+                                          key={idx}
+                                        >
                                           <motion.div
                                             key={idx}
                                             initial={{ opacity: 0, x: -10 }}
@@ -301,6 +368,83 @@ const Navbar = () => {
               <BsCart3 size={24} />
             </motion.div>
           </Link>
+          {/* User Auth Section - Desktop */}
+          <div className="relative">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 cursor-pointer p-2 rounded-lg hover:bg-white/10"
+              onClick={() => setIsAuthDropdownOpen(!isAuthDropdownOpen)}
+            >
+              <FaUserCircle className="text-[#e5d8d0] text-2xl" />
+              <span className="text-[#e5d8d0]">
+                {userData?.username ? userData?.username : "ورود"}
+              </span>
+            </motion.div>
+
+            <AnimatePresence>
+              {isAuthDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute top-12 right-0 w-48 bg-white/10 backdrop-blur-md 
+        border border-[#a37462] rounded-lg shadow-xl overflow-hidden"
+                >
+                  {userData ? (
+                    <>
+                      <Link href="/dashboard">
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          }}
+                          onClick={handleProfileClick}
+                          className="px-4 py-3 text-[#e5d8d0] hover:text-white flex items-center gap-2"
+                        >
+                          <RiUserSettingsLine />
+                          پروفایل
+                        </motion.div>
+                      </Link>
+                      <motion.div
+                        whileHover={{
+                          backgroundColor: "rgba(255,255,255,0.1)",
+                        }}
+                        className="px-4 py-3 text-[#e5d8d0] hover:text-white cursor-pointer flex items-center gap-2"
+                        onClick={handleLogout}
+                      >
+                        <FaSignOutAlt />
+                        خروج
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <Link href="/auth">
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          }}
+                          className="px-4 py-3 text-[#e5d8d0] hover:text-white flex items-center gap-2"
+                        >
+                          <RiLoginBoxLine />
+                          ورود
+                        </motion.div>
+                      </Link>
+                      <Link href="/auth">
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          }}
+                          className="px-4 py-3 text-[#e5d8d0] hover:text-white flex items-center gap-2"
+                        >
+                          <FaUserPlus />
+                          ثبت نام
+                        </motion.div>
+                      </Link>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -318,6 +462,84 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <>
+            {/* User Auth Section - Mobile */}
+            <motion.div className="border-t border-[#a37462]/30 mt-2 pt-2">
+              <div
+                className="p-4 flex items-center gap-3 cursor-pointer"
+                onClick={() => setIsMobileAuthOpen(!isMobileAuthOpen)}
+              >
+                <FaUserCircle className="text-[#e5d8d0] text-2xl" />
+                <span className="text-[#e5d8d0]">
+                  {userData?.username ? userData.username : "حساب کاربری"}
+                </span>
+              </div>
+
+              <AnimatePresence>
+                {isMobileAuthOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="px-4 pb-4 space-y-2 overflow-hidden"
+                  >
+                    {/* Your existing auth content */}
+                    {userData ? (
+                      <>
+                        <Link href="/profile">
+                          <motion.div
+                            whileHover={{
+                              backgroundColor: "rgba(255,255,255,0.1)",
+                            }}
+                            onClick={handleProfileClick}
+                            className="px-4 py-2 rounded-lg text-[#e5d8d0] hover:text-white text-sm flex items-center gap-2"
+                          >
+                            <RiUserSettingsLine />
+                            پروفایل
+                          </motion.div>
+                        </Link>
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          }}
+                          className="px-4 py-2 rounded-lg text-[#e5d8d0] hover:text-white text-sm cursor-pointer flex items-center gap-2"
+                          onClick={handleLogout}
+                        >
+                          <FaSignOutAlt />
+                          خروج
+                        </motion.div>
+                      </>
+                    ) : (
+                      <>
+                        <Link href="/login">
+                          <motion.div
+                            whileHover={{
+                              backgroundColor: "rgba(255,255,255,0.1)",
+                            }}
+                            className="px-4 py-2 rounded-lg text-[#e5d8d0] hover:text-white text-sm flex items-center gap-2"
+                          >
+                            <RiLoginBoxLine />
+                            ورود
+                          </motion.div>
+                        </Link>
+                        <Link href="/register">
+                          <motion.div
+                            whileHover={{
+                              backgroundColor: "rgba(255,255,255,0.1)",
+                            }}
+                            className="px-4 py-2 rounded-lg text-[#e5d8d0] hover:text-white text-sm flex items-center gap-2"
+                          >
+                            <FaUserPlus />
+                            ثبت نام
+                          </motion.div>
+                        </Link>
+                      </>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
             {/* Mobile Nav Items */}
             <motion.div
               initial={{ opacity: 0, height: 0 }}

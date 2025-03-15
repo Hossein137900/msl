@@ -34,7 +34,6 @@ type SidebarItem =
   | "Addcategory"
   | "analytics"
   | "profile";
-  
 
 const sidebarVariants = {
   hidden: { x: "100%", opacity: 0 },
@@ -74,7 +73,7 @@ const Sidebar: React.FC<{
       animate="visible"
       exit="hidden"
       transition={{ type: "spring", stiffness: 300, damping: 50 }}
-      className="w-64 bg-gray-800 text-white h-screen p-4 fixed right-0 top-0 z-[10000]"
+      className="w-64 bg-white/10 backdrop-blur-xl text-white h-screen p-4 fixed right-0 top-0 z-[10000]"
     >
       <h2 className="text-xl font-bold mb-6">پنل ادمین</h2>
       <ul>
@@ -117,14 +116,14 @@ const AdminContent: React.FC<{ selected: SidebarItem }> = ({ selected }) => {
       return <AddProductPage />;
     case "profile":
       return <Profile />;
-case "analytics":
-  return (
-    <div className="p-6">
-      <AnalyticsDashboard />
-      {/* <UserSegmentation /> */}
-      {/* <HeatmapViewer path="/" /> */}
-    </div>
-  );
+    case "analytics":
+      return (
+        <div className="p-6">
+          <AnalyticsDashboard />
+          {/* <UserSegmentation /> */}
+          {/* <HeatmapViewer path="/" /> */}
+        </div>
+      );
 
     default:
       return <Products />;
@@ -197,10 +196,7 @@ const AdminPage: React.FC = () => {
     );
   }
   return (
-    <div
-      className="min-h-screen bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500"
-      dir="rtl"
-    >
+    <div className="min-h-screen bg-[#a37462] text-yellow-500" dir="rtl">
       <div className="flex">
         <AnimatePresence>
           {sidebarOpen && (
@@ -225,7 +221,7 @@ const AdminPage: React.FC = () => {
           )}
         </AnimatePresence>
         <div className="flex-1">
-          <div className="flex items-center justify-between p-4 shadow">
+          <div className="flex items-center justify-between p-4 ">
             <button
               onClick={toggleSidebar}
               className="text-2xl mt-24 lg:mt-4 text-gray-300 focus:outline-none"

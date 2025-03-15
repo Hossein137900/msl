@@ -119,7 +119,7 @@ export default function AddCategory() {
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 text-white hover:text-white hover:bg-green-500 px-4 border border-green-400 rounded-md shadow-sm text-sm font-medium text-[#e5d8d0]transition-colors duration-200"
+            className="w-full flex justify-center py-2 text-white hover:text-white hover:bg-gray-700 px-4 border  rounded-md shadow-sm text-sm font-medium text-[#e5d8d0]transition-colors duration-200"
           >
             ثبت دسته‌بندی
           </button>
