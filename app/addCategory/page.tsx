@@ -69,7 +69,7 @@ export default function AddCategory() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 py-2 block w-full rounded-md border-[#a37462] focus:outline-none shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
+              className="mt-1 py-2 block border w-full rounded-md border-[#fff]/60 focus:outline-none shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/30 text-[#fff]"
               required
             />
           </div>
@@ -87,7 +87,7 @@ export default function AddCategory() {
                 id="children"
                 value={currentChild}
                 onChange={(e) => setCurrentChild(e.target.value)}
-                className="block w-full focus:outline-none rounded-md border-[#a37462] shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
+                className="block w-full border focus:outline-none rounded-md border-[#fff]/60 shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/30 text-[#fff]"
               />
               <button
                 type="button"

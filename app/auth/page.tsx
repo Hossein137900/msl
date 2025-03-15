@@ -116,7 +116,7 @@ const AuthPage = () => {
               color: "#fff",
             },
           });
-          window.location.href = "/dashboard";
+          window.location.href = "/";
         } else {
           const userData = await handleSignup(
             formData.name,
@@ -130,7 +130,7 @@ const AuthPage = () => {
             },
           });
 
-          window.location.href = "/dashboard";
+          window.location.href = "/";
         }
       } catch (error) {
         console.log("Authentication error:", error);

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { toast } from "react-toastify";
 
 interface Product {
   _id: string;
@@ -158,6 +159,7 @@ export const Products = () => {
       });
 
       if (response.ok) {
+        toast.success("محصول با موفقیت ویرایش شد");
         fetchProducts();
         setEditingProduct(null);
       } else {
@@ -178,6 +180,8 @@ export const Products = () => {
       });
 
       if (response.ok) {
+        toast.success("محصول با موفقیت حذف شد");
+
         fetchProducts();
       }
     } catch (error) {
