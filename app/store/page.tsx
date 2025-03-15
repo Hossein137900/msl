@@ -18,7 +18,7 @@ interface ProductProps {
   createdAt: Date;
   updatedAt: Date;
   title: string;
-  image: string ;
+  image: string;
   description: string;
   slug: string;
   price: string;
