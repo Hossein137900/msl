@@ -41,7 +41,7 @@ const Sidebar: React.FC<{
       animate="visible"
       exit="hidden"
       transition={{ type: "spring", stiffness: 300, damping: 50 }}
-      className="w-64 bg-gray-800 text-white h-screen p-4 fixed  right-0 top-0 z-50"
+      className="w-64 bg-white/20 backdrop-blur-xl text-white h-screen p-4 fixed  right-0 top-0 z-50"
     >
       <h2 className="text-xl font-bold mb-6">داشبورد</h2>
       <ul>
@@ -94,10 +94,7 @@ const DashboardPage: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className="min-h-screen  bg-gradient-to-l from-[#16222A] to-[#3A6073] text-yellow-500"
-      dir="rtl"
-    >
+    <div className="min-h-screen bg-[#a37462] text-white" dir="rtl">
       <div className="flex">
         <AnimatePresence>
           {sidebarOpen && (

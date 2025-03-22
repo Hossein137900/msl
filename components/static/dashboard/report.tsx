@@ -57,7 +57,7 @@ const DashboardReport: React.FC = () => {
           },
         });
         if (!response.ok) {
-          console.log(response.body)
+          console.log(response.body);
           throw new Error("Failed to fetch cart data");
         }
         const data = await response.json();
@@ -102,7 +102,7 @@ const DashboardReport: React.FC = () => {
       transition={{ duration: 0.5 }}
       className="p-6"
     >
-      <h2 className="text-2xl font-semibold mb-4">گزارش کلی</h2>
+      <h2 className="text-2xl font-semibold text-white my-6">گزارش کلی</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {isLoading ? (
           // Loading skeleton

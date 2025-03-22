@@ -60,9 +60,41 @@ const ProductGrid = ({ limit }: ProductGridProps) => {
 
   return (
     <div className="px-4 py-8" dir="rtl">
-      <h2 className="md:text-3xl text-xl border-b pb-4 w-fit mx-auto border-[#a37462] mt-24 font-bold text-center text-black/70 mb-8">
-        {limit ? "محصولات پرفروش" : "محصولات ما"}
-      </h2>
+      <div className="flex justify-between md:justify-center items-center mt-24 mb-8 relative">
+        <h2 className="md:text-3xl text-xl border-b pb-4 w-fit border-[#a37462] font-bold text-center text-black/70">
+          {limit ? "محصولات پرفروش" : "محصولات ما"}
+        </h2>
+
+        {/* Show All Products Button - positioned to the left of the heading */}
+        {limit && (
+          <div className="absolute left-0 md:left-2/5">
+            <Link href="/store">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="border-[#a37462] border-2 text-[#a37462] hover:text-white px-4 py-2 rounded-lg hover:bg-[#8a6253] transition-colors duration-200 text-sm font-medium flex items-center gap-2"
+              >
+                <span>مشاهده همه</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 rotate-180 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                  />
+                </svg>
+              </motion.button>
+            </Link>
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {displayedProducts.map((product) => (
           <motion.div

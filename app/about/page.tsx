@@ -2,14 +2,14 @@
 import CardWithMouseBorder from "@/components/global/card-hover-border";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { storyCards, timelineEvents } from "../../lib/aboutData";
+import { storyCards } from "../../lib/aboutData";
 import Marquee from "@/components/global/marque";
 import { useEffect } from "react";
 import { useEventTracker } from "@/hooks/useEventTracker";
 
 const AboutPage = () => {
-    useEventTracker();
-  
+  useEventTracker();
+
   useEffect(() => {
     document.title = "درباره ما | مدرن لایت";
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -69,22 +69,58 @@ const AboutPage = () => {
             <h2 className="text-3xl font-bold text-center text-[#a37462]  mb-12">
               تاریخچه ما
             </h2>
-            <div className="flex flex-col md:flex-row gap-8">
-              {timelineEvents.map((event, index) => (
-                <motion.div
-                  key={event.year}
-                  transition={{ delay: index * 0.3 }}
-                  className="flex-1 relative"
-                >
-                  <div className="border-l-4 border-[#a37462] pl-4">
-                    <span className="text-[#a37462] text-xl">{event.year}</span>
-                    <h3 className="text-lg font-semibold my-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-gray-400">{event.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="max-w-4xl mx-auto p-8 bg-[#a37462]/10 rounded-md text-justify">
+              <section className="mb-8">
+                <p className="leading-7 mb-4">
+                  <span className="font-bold text-[#a37462]">
+                    شرکت سینا مدرن لایت
+                  </span>
+                  ، پیشگام در صنعت روشنایی لوکس ایران، با افتخار از سال ۱۳۹۵ به
+                  عنوان مرجع تخصصی واردات محصولات روشنایی مدرن و دکوراتیو فعالیت
+                  می‌کند. ما به عنوان نماینده انحصاری برندهای معتبر جهانی،
+                  مجموعه‌ای بی‌نظیر از لوسترهای مدرن، نئوکلاسیک، چراغ‌های
+                  نورپردازی هوشمند و محصولات دکوراتیو را به بازار ایران عرضه
+                  می‌کنیم.
+                </p>
+              </section>
+
+              <section className="mb-8">
+                <h2 className="text-2xl font-semibold text-[#a37462] mt-8 mb-4">
+                  تعهد ما
+                </h2>
+                <p className="leading-7 mb-4">
+                  ما با بهره‌گیری از پیشرفته‌ترین تکنولوژی‌های روز دنیا و تحلیل
+                  مداوم نیازهای بازار، همواره در تلاشیم تا:
+                </p>
+                <ul className="list-disc pr-6 mb-6 space-y-3">
+                  <li>
+                    محصولاتی با طراحی منحصربه‌فرد و کارکرد بی‌عیب ارائه دهیم
+                  </li>
+                  <li>
+                    مشاوره تخصصی در انتخاب بهترین گزینه‌های روشنایی متناسب با
+                    فضای شما ارائه کنیم
+                  </li>
+                  <li>
+                    خدمات پس از فروش حرفه‌ای و پشتیبانی مادام‌العمر از محصولات
+                    را تضمین کنیم
+                  </li>
+                </ul>
+              </section>
+
+              <section className="mb-8">
+                <p className="leading-7 font-medium mt-8 mb-4">
+                  افتخار ما، روشن کردن فضای زندگی و کار شماست. با انتخاب{" "}
+                  <span className="font-bold text-[#a37462]">
+                    سینا مدرن لایت
+                  </span>
+                  ، تنها به یک محصول دست نمی‌یابید، بلکه به یک تجربه منحصربه‌فرد
+                  از زیبایی، کیفیت و نوآوری می‌پیوندید.
+                </p>
+                <p className="leading-7 italic mt-6">
+                  با سپاس از اعتماد و همراهی شما، مشتاقانه منتظر خلق فضاهای
+                  درخشان‌تر در کنار شما هستیم.
+                </p>
+              </section>
             </div>
           </motion.div>
         </div>

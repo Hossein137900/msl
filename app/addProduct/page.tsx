@@ -3,6 +3,7 @@ import ImageSelectorModal from "@/components/ImageSelectorModal";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export interface Category {
   _id: string;
@@ -18,7 +19,6 @@ interface StorySettings {
   title: string;
   image: string;
 }
-
 
 interface ProductFormData {
   title: string;
@@ -113,7 +113,6 @@ export default function AddProductPage() {
     setIsImageSelectorOpen(false);
   };
 
-
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -153,7 +152,7 @@ export default function AddProductPage() {
 
       if (response.ok) {
         const result = await response.json();
-        // Handle success - maybe clear form or show success message
+        toast.success("محصول با موفقیت ایجاد شد");
         console.log("Product created successfully:", result);
       } else {
         throw new Error("Failed to create product");
@@ -217,19 +216,19 @@ export default function AddProductPage() {
           <div>
             <label className="block mb-2 text-[#a37462]">تصویر اصلی</label>
             <ImageSelectorModal
-          isOpen={isImageSelectorOpen}
-          onClose={() => setIsImageSelectorOpen(false)}
-          onSelectImage={handleImageSelect}
-        />
+              isOpen={isImageSelectorOpen}
+              onClose={() => setIsImageSelectorOpen(false)}
+              onSelectImage={handleImageSelect}
+            />
             <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsImageSelectorOpen(true)}
-                  className="bg-[#eff1f2] text-black px-4 py-3 rounded-lg flex items-center space-x-2 w-full"
-                >
-                  <FiUploadCloud />
-                  <span>انتخاب تصویر</span>
-                </motion.button>
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsImageSelectorOpen(true)}
+              className="bg-[#eff1f2] text-black px-4 py-3 rounded-lg flex items-center space-x-2 w-full"
+            >
+              <FiUploadCloud />
+              <span>انتخاب تصویر</span>
+            </motion.button>
           </div>
 
           <div>
@@ -429,7 +428,7 @@ export default function AddProductPage() {
 
         <button
           type="submit"
-          className="w-full py-3 bg-blue-500 text-[#fff] rounded hover:bg-blue-700 transition-colors duration-200 shadow-md"
+          className="w-full py-3 bg-transparent text-[#fff] border rounded hover:bg-gray-700 transition-colors duration-200 shadow-md"
         >
           ثبت محصول
         </button>

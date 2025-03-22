@@ -69,7 +69,7 @@ export default function AddCategory() {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 py-2 block w-full rounded-md border-[#a37462] focus:outline-none shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
+              className="mt-1 py-2 block border w-full rounded-md border-[#fff]/60 focus:outline-none shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/30 text-[#fff]"
               required
             />
           </div>
@@ -87,7 +87,7 @@ export default function AddCategory() {
                 id="children"
                 value={currentChild}
                 onChange={(e) => setCurrentChild(e.target.value)}
-                className="block w-full focus:outline-none rounded-md border-[#a37462] shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/10 text-[#fff]"
+                className="block w-full border focus:outline-none rounded-md border-[#fff]/60 shadow-sm px-2 focus:border-[#a37462] focus:ring-[#a37462] bg-white/30 text-[#fff]"
               />
               <button
                 type="button"
@@ -119,7 +119,7 @@ export default function AddCategory() {
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2 text-white hover:text-white hover:bg-green-500 px-4 border border-green-400 rounded-md shadow-sm text-sm font-medium text-[#e5d8d0]transition-colors duration-200"
+            className="w-full flex justify-center py-2 text-white hover:text-white hover:bg-gray-700 px-4 border  rounded-md shadow-sm text-sm font-medium text-[#e5d8d0]transition-colors duration-200"
           >
             ثبت دسته‌بندی
           </button>

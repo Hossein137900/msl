@@ -448,7 +448,7 @@ export default function AddBlogPage() {
         <div className="text-right pt-6">
           <button
             type="submit"
-            className="bg-blue-400 text-white px-8 py-2.5 w-full rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg"
+            className="bg-transparent text-white px-8 py-2.5 border hover:bg-gray-700 w-full rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg"
           >
             انتشار بلاگ
           </button>

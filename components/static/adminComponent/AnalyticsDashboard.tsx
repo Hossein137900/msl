@@ -10,7 +10,7 @@ import {
   BarElement,
   BarController,
 } from "chart.js";
-import { Scatter, Bar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { motion } from "framer-motion";
 
 // Register Chart.js components
@@ -136,81 +136,81 @@ const TrackerDashboard: React.FC = () => {
   }));
 
   // Enhanced Heatmap Options
-  const heatmapOptions = {
-    scales: {
-      x: {
-        min: 0,
-        max: 390,
-        grid: { display: true, color: "rgba(255,255,255,0.1)" },
-        title: { display: true, text: "X" },
-      },
-      y: {
-        min: 0,
-        max: 844,
-        grid: { display: true, color: "rgba(255,255,255,0.1)" },
-        title: { display: true, text: "Y" },
-      },
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (context: any) => `Clicks: ${context.raw.value}`,
-        },
-      },
-      legend: { display: false },
-    },
-    elements: {
-      point: {
-        radius: (context: any) => Math.min(20, context.raw.value * 5), // Size based on intensity
-        backgroundColor: (context: any) => {
-          const value = context.raw.value;
-          return value > 5
-            ? "rgba(255, 99, 132, 0.8)"
-            : value > 2
-            ? "rgba(255, 159, 64, 0.6)"
-            : "rgba(54, 162, 235, 0.4)";
-        },
-      },
-    },
-  };
+  // const heatmapOptions = {
+  //   scales: {
+  //     x: {
+  //       min: 0,
+  //       max: 390,
+  //       grid: { display: true, color: "rgba(255,255,255,0.1)" },
+  //       title: { display: true, text: "X" },
+  //     },
+  //     y: {
+  //       min: 0,
+  //       max: 844,
+  //       grid: { display: true, color: "rgba(255,255,255,0.1)" },
+  //       title: { display: true, text: "Y" },
+  //     },
+  //   },
+  //   plugins: {
+  //     tooltip: {
+  //       callbacks: {
+  //         label: (context: any) => `Clicks: ${context.raw.value}`,
+  //       },
+  //     },
+  //     legend: { display: false },
+  //   },
+  //   elements: {
+  //     point: {
+  //       radius: (context: any) => Math.min(20, context.raw.value * 5), // Size based on intensity
+  //       backgroundColor: (context: any) => {
+  //         const value = context.raw.value;
+  //         return value > 5
+  //           ? "rgba(255, 99, 132, 0.8)"
+  //           : value > 2
+  //           ? "rgba(255, 159, 64, 0.6)"
+  //           : "rgba(54, 162, 235, 0.4)";
+  //       },
+  //     },
+  //   },
+  // };
 
-  const desktopHeatmapOptions = {
-    scales: {
-      x: {
-        min: 0,
-        max: 1920,
-        grid: { display: true, color: "rgba(255,255,255,0.1)" },
-        title: { display: true, text: "X" },
-      },
-      y: {
-        min: 0,
-        max: 1080,
-        grid: { display: true, color: "rgba(255,255,255,0.1)" },
-        title: { display: true, text: "Y" },
-      },
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (context: any) => `Clicks: ${context.raw.value}`,
-        },
-      },
-      legend: { display: false },
-    },
-    elements: {
-      point: {
-        radius: (context: any) => Math.min(30, context.raw.value * 5),
-        backgroundColor: (context: any) => {
-          const value = context.raw.value;
-          return value > 5
-            ? "rgba(255, 99, 132, 0.8)"
-            : value > 2
-            ? "rgba(255, 159, 64, 0.6)"
-            : "rgba(54, 162, 235, 0.4)";
-        },
-      },
-    },
-  };
+  // const desktopHeatmapOptions = {
+  //   scales: {
+  //     x: {
+  //       min: 0,
+  //       max: 1920,
+  //       grid: { display: true, color: "rgba(255,255,255,0.1)" },
+  //       title: { display: true, text: "X" },
+  //     },
+  //     y: {
+  //       min: 0,
+  //       max: 1080,
+  //       grid: { display: true, color: "rgba(255,255,255,0.1)" },
+  //       title: { display: true, text: "Y" },
+  //     },
+  //   },
+  //   plugins: {
+  //     tooltip: {
+  //       callbacks: {
+  //         label: (context: any) => `Clicks: ${context.raw.value}`,
+  //       },
+  //     },
+  //     legend: { display: false },
+  //   },
+  //   elements: {
+  //     point: {
+  //       radius: (context: any) => Math.min(30, context.raw.value * 5),
+  //       backgroundColor: (context: any) => {
+  //         const value = context.raw.value;
+  //         return value > 5
+  //           ? "rgba(255, 99, 132, 0.8)"
+  //           : value > 2
+  //           ? "rgba(255, 159, 64, 0.6)"
+  //           : "rgba(54, 162, 235, 0.4)";
+  //       },
+  //     },
+  //   },
+  // };
 
   // Enhanced Bar Chart Data
   const barData = {
@@ -239,42 +239,42 @@ const TrackerDashboard: React.FC = () => {
     ],
   };
 
-  const barOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: { color: "rgba(255,255,255,0.1)" },
-        title: { display: true, text: "تعداد کاربران", color: "#fff" },
-        ticks: { color: "#fff" },
-      },
-      x: {
-        grid: { display: false },
-        title: { display: true, text: "صفحه", color: "#fff" },
-        ticks: { color: "#fff" },
-      },
-    },
-    plugins: {
-      tooltip: {
-        backgroundColor: "rgba(0,0,0,0.8)",
-        titleColor: "#fff",
-        bodyColor: "#fff",
-      },
-      legend: { labels: { color: "#fff" } },
-      datalabels: {
-        anchor: "end",
-        align: "top",
-        color: "#fff",
-        font: { weight: "bold" },
-        formatter: (value: number) => value,
-      },
-    },
-    animation: {
-      duration: 2000,
-      easing: "easeInOutQuart",
-    },
-  };
+  // const barOptions = {
+  //   responsive: true,
+  //   maintainAspectRatio: false,
+  //   scales: {
+  //     y: {
+  //       beginAtZero: true,
+  //       grid: { color: "rgba(255,255,255,0.1)" },
+  //       title: { display: true, text: "تعداد کاربران", color: "#fff" },
+  //       ticks: { color: "#fff" },
+  //     },
+  //     x: {
+  //       grid: { display: false },
+  //       title: { display: true, text: "صفحه", color: "#fff" },
+  //       ticks: { color: "#fff" },
+  //     },
+  //   },
+  //   plugins: {
+  //     tooltip: {
+  //       backgroundColor: "rgba(0,0,0,0.8)",
+  //       titleColor: "#fff",
+  //       bodyColor: "#fff",
+  //     },
+  //     legend: { labels: { color: "#fff" } },
+  //     datalabels: {
+  //       anchor: "end",
+  //       align: "top",
+  //       color: "#fff",
+  //       font: { weight: "bold" },
+  //       formatter: (value: number) => value,
+  //     },
+  //   },
+  //   animation: {
+  //     duration: 2000,
+  //     easing: "easeInOutQuart",
+  //   },
+  // };
 
   return (
     <motion.div

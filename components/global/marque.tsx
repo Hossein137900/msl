@@ -2,12 +2,11 @@ import Image from "next/image";
 import Marquee from "react-fast-marquee";
 
 const brands = [
-  "/assets/images/logo.png",
-  "/assets/images/logo.png",
-  "/assets/images/logo.png",
-  "/assets/images/logo.png",
-  "/assets/images/logo.png",
-  "/assets/images/logo.png",
+  "/assets/images/logo/Baccarat-removebg-preview.png",
+  "/assets/images/logo/Lalique-removebg-preview.png",
+  "/assets/images/logo/Schonbek.webp",
+  "/assets/images/logo/images-removebg-preview.png",
+  "/assets/images/logo/Venini-removebg-preview.png",
 ];
 
 const MarqueSlider = () => {
@@ -16,7 +15,7 @@ const MarqueSlider = () => {
       <h2 className="text-2xl font-bold text-center mb-8 text-[#a37462]">
         همراهان همیشگی ما
       </h2>
-      <div className=" border border-[#a37462] py-12">
+      <div className=" border border-[#a37462]/80 shadow-lg shadow-[#a37462]/20">
         <Marquee
           speed={50}
           loop={0}

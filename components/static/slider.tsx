@@ -16,7 +16,7 @@ interface Slide {
 
 const slides: Slide[] = [
   {
-    image: "/assets/images/projects/project7.jpg",
+    image: "/assets/images/projects/skatch.jpeg",
     title: "مشاوره نورپردازی |  مدرن لایت",
     text: "علم و هنر نورپردازی با ایجاد نور و سایه...",
     buttonText: "درخواست مشاوره",
