@@ -58,7 +58,7 @@ const AuthPage = () => {
       const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        toast.error(data.message || 'Login failed');
       }
   
       localStorage.setItem("token", data.token);
@@ -71,7 +71,7 @@ const AuthPage = () => {
       };
     } catch (error) {
       console.log(error);
-      throw new Error("Login failed");
+      toast.error("Login failed");
     }
   };
 
@@ -88,7 +88,7 @@ const AuthPage = () => {
       const data = await response.json();
   
       if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
+        toast.error(data.message || 'Signup failed');
       }
   
       localStorage.setItem("token", data.token);
@@ -100,7 +100,7 @@ const AuthPage = () => {
       };
     } catch (error) {
       console.log(error);
-      throw new Error("خطا در ثبت نام");
+      toast.error("خطا در ثبت نام");
     }
   };
 
@@ -110,12 +110,14 @@ const AuthPage = () => {
       try {
         if (isLogin) {
           const userData = await handleLogin(formData.phone, formData.password);
-          toast.success(`خوش آمدید ${userData.user.name}`, {
-            style: {
-              background: "#333",
-              color: "#fff",
-            },
-          });
+          if (userData) {
+            toast.success(`خوش آمدید ${userData.user.name}`, {
+              style: {
+                background: "#333",
+                color: "#fff",
+              },
+            });
+          }
           window.location.href = "/";
         } else {
           const userData = await handleSignup(
@@ -123,12 +125,14 @@ const AuthPage = () => {
             formData.phone,
             formData.password
           );
-          toast.success(`ثبت نام ${userData.user.name} موفقیت انجام شد`, {
-            style: {
-              background: "#333",
-              color: "#fff",
-            },
-          });
+          if (userData) {
+            toast.success(`ثبت نام ${userData.user.name} موفقیت انجام شد`, {
+              style: {
+                background: "#333",
+                color: "#fff",
+              },
+            });
+          }
 
           window.location.href = "/";
         }
@@ -156,8 +160,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center p-4" dir="rtl">
-      <motion.div className="bg-white/40 backdrop-blur-lg rounded-3xl p-8 w-full max-w-md my-32 md:my-36">
+    <div className=" flex items-center justify-center p-5 bg-[#a37462] " dir="rtl">
+      <motion.div className="bg-white backdrop-blur-lg rounded-3xl p-8 w-full max-w-md my-32 md:my-36">
         <AnimatePresence mode="wait">
           <motion.div key={isLogin ? "login" : "signup"}>
             <h2 className="text-3xl font-bold text-[#a37462] text-center flex items-center justify-center gap-2">
@@ -220,7 +224,7 @@ const AuthPage = () => {
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
+                  className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-black focus:outline-none focus:border-[#a37462]"
                   placeholder="رمز عبور"
                 />
                 {errors.password && (
@@ -241,7 +245,7 @@ const AuthPage = () => {
                     type="password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#a37462]"
+                    className="w-full px-4 py-3 pr-10 rounded-xl bg-white/5 border border-white/10 text-black focus:outline-none focus:border-[#a37462]"
                     placeholder="تکرار رمز عبور"
                   />
                   {errors.confirmPassword && (

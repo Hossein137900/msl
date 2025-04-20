@@ -80,18 +80,35 @@ const DashboardContent: React.FC<{ selected: SidebarItem }> = ({
 };
 const DashboardPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<SidebarItem>("report");
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-
-  const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
-  };
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  
   useEffect(() => {
     document.title = "داشبورد - مدرن لایت";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", " داشبورد کاربر - مدرن لایت");
     }
+    
+    // Check authentication
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
   }, []);
+
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+  
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#a37462] text-white flex flex-col items-center justify-center">
+        <p className="mb-4">لطفا ابتدا وارد شوید</p>
+        <Link href="/auth" className="bg-yellow-400 text-black px-4 py-2 rounded-md">
+          ورود
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#a37462] text-white" dir="rtl">

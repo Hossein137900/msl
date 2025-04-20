@@ -12,6 +12,7 @@ import {
   FiInfo,
   FiMessageSquare,
   FiVideo,
+  FiZoomIn,
 } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import DynamicTable from "@/components/global/Table";
@@ -34,9 +35,10 @@ interface ProductProps {
 
 export default function ProductDetailPage() {
   const params = usePathname();
-  const [currentImgIndex, setCurrentImgIndex] = useState<number>(0);
+  const [tempImage, setTempImage] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [hoveredThumbnail, setHoveredThumbnail] = useState<number | null>(null);
   const id = params.split(":")[0].split("/")[2];
 
   // Tab state: details, comments, video
@@ -79,7 +81,7 @@ export default function ProductDetailPage() {
       }
     };
     fetchProduct();
-  }, []);
+  });
 
   useEffect(() => {
     if (!product) return;
@@ -105,7 +107,7 @@ export default function ProductDetailPage() {
         console.log("Store access error:", error);
       }
     };
-  }, [product?._id]);
+  }, [product]);
 
   const handleQuantityChange = async (
     action: "increase" | "decrease" | "remove"
@@ -140,6 +142,21 @@ export default function ProductDetailPage() {
       );
     };
   };
+
+  // Handlers for thumbnail hover
+  const handleThumbnailMouseEnter = (thumbnailSrc: string, index: number) => {
+    setTempImage(thumbnailSrc);
+    setHoveredThumbnail(index);
+  };
+
+  const handleThumbnailMouseLeave = () => {
+    setTempImage(null);
+    setHoveredThumbnail(null);
+  };
+
+  // Get the current image to display (either temp hover image or product image)
+  const displayImage = tempImage || (product?.image || "");
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-l from-[#e5d8d0] to-[#a37462]">
@@ -225,33 +242,59 @@ export default function ProductDetailPage() {
         <div className="flex flex-col md:flex-row gap-8">
           {/* Image Section */}
           <div className="flex-1">
-            <div className="relative w-full h-96 rounded-lg overflow-hidden">
-              <Image
-                // src={product.images[currentImgIndex]}
-                src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                alt={`${product.title} - تصویر ${currentImgIndex + 1}`}
-                fill
-                className="object-cover transition-transform duration-500 hover:scale-105"
-              />
-            </div>
-            <div className="mt-4 flex gap-4 overflow-x-auto">
-              {product.thumbnails.map((img, index) => (
-                <div
-                  key={index}
-                  onClick={() => setCurrentImgIndex(index)}
-                  className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer border-2 ${
-                    index === currentImgIndex
-                      ? "border-[#a37462]/50"
-                      : "border-transparent"
-                  }`}
+            <div className="relative w-full h-96 rounded-lg overflow-hidden group">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={displayImage}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0"
                 >
                   <Image
-                    src="https://images.pexels.com/photos/1005644/pexels-photo-1005644.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    src={displayImage}
+                    alt={product.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+              <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg">
+                  <FiZoomIn className="w-5 h-5 text-[#a37462]" />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 mx-2 flex gap-4 overflow-x-auto p-2">
+              {product.thumbnails.map((img, index) => (
+                <motion.div
+                  key={index}
+                  onMouseEnter={() => handleThumbnailMouseEnter(img, index)}
+                  onMouseLeave={handleThumbnailMouseLeave}
+                  className={`relative w-24 h-24 rounded-lg overflow-hidden cursor-pointer shadow-md transition-all duration-300 ${
+                    hoveredThumbnail === index
+                      ? "ring-2 ring-[#a37462] scale-105"
+                      : "hover:ring-2 hover:ring-[#a37462]/50"
+                  }`}
+                  whileHover={{ y: -5 }}
+                >
+                  <Image
+                    src={img}
                     alt={`${product.title} - تصویر ${index + 1}`}
                     fill
                     className="object-cover"
+                    sizes="96px"
                   />
-                </div>
+                  <div 
+                    className={`absolute inset-0 bg-[#a37462]/10 transition-opacity duration-300 ${
+                      hoveredThumbnail === index ? 'opacity-0' : 'opacity-0 hover:opacity-100'
+                    }`}
+                  />
+                </motion.div>
               ))}
             </div>
           </div>
@@ -337,99 +380,100 @@ export default function ProductDetailPage() {
                       </motion.div>
                     )}
                     {activeTab === "comments" && (
-                      <motion.div
-                        key="comments"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className="space-y-4">
-                          <p className="text-gray-700">
-                            کامنتی یافت نشد. منتظر کامنت کاربران باشید...
-                          </p>
-                          {/* Integration point for a comments API or comments form */}
-                        </div>
-                      </motion.div>
-                    )}
-                    {activeTab === "video" && (
-                      <motion.div
-                        key="video"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <div className="relative pb-[56.25%]">
-                          <iframe
-                            className="absolute inset-0 w-full h-full rounded-lg shadow-md"
-                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                            title="Video"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          ></iframe>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
-            {/* Cart Controls */}
-            <div className="flex flex-col gap-6 mt-10">
-              {quantity === 0 ? (
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleQuantityChange("increase")}
-                  className="w-full flex items-center justify-center bg-[#a37462] hover:bg-[#8a5a50] text-white px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
-                >
-                  افزودن به سبد خرید
-                </motion.button>
-              ) : (
-                <div className="flex items-center justify-between bg-[#a37462] rounded-xl p-3 shadow-inner">
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleQuantityChange("increase")}
-                    className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
-                  >
-                    <FiPlus className="text-white w-6 h-6" />
-                  </motion.button>
-                  <span className="text-white font-extrabold text-2xl mx-4">
-                    {quantity}
-                  </span>
-                  {quantity === 1 ? (
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleQuantityChange("remove")}
-                      className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
-                    >
-                      <FiTrash2 className="text-white w-6 h-6" />
-                    </motion.button>
-                  ) : (
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleQuantityChange("decrease")}
-                      className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
-                    >
-                      <FiMinus className="text-white w-6 h-6" />
-                    </motion.button>
-                  )}
-                </div>
-              )}
-              <Link href="/cart">
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full flex items-center justify-center border-2 border-[#a37462] hover:bg-[#a37462] hover:text-white text-[#a37462] px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
-                >
-                  مشاهده سبد خرید
-                </motion.button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                                           <motion.div
+                                           key="comments"
+                                           initial={{ opacity: 0, y: 10 }}
+                                           animate={{ opacity: 1, y: 0 }}
+                                           exit={{ opacity: 0, y: -10 }}
+                                           transition={{ duration: 0.3 }}
+                                         >
+                                           <div className="space-y-4">
+                                             <p className="text-gray-700">
+                                               کامنتی یافت نشد. منتظر کامنت کاربران باشید...
+                                             </p>
+                                             {/* Integration point for a comments API or comments form */}
+                                           </div>
+                                         </motion.div>
+                                       )}
+                                       {activeTab === "video" && (
+                                         <motion.div
+                                           key="video"
+                                           initial={{ opacity: 0, y: 10 }}
+                                           animate={{ opacity: 1, y: 0 }}
+                                           exit={{ opacity: 0, y: -10 }}
+                                           transition={{ duration: 0.3 }}
+                                         >
+                                           <div className="relative pb-[56.25%]">
+                                             <iframe
+                                               className="absolute inset-0 w-full h-full rounded-lg shadow-md"
+                                               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                                               title="Video"
+                                               frameBorder="0"
+                                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                               allowFullScreen
+                                             ></iframe>
+                                           </div>
+                                         </motion.div>
+                                       )}
+                                     </AnimatePresence>
+                                   </div>
+                                 </div>
+                               </div>
+                   
+                               {/* Cart Controls */}
+                               <div className="flex flex-col gap-6 mt-10">
+                                 {quantity === 0 ? (
+                                   <motion.button
+                                     whileTap={{ scale: 0.95 }}
+                                     onClick={() => handleQuantityChange("increase")}
+                                     className="w-full flex items-center justify-center bg-[#a37462] hover:bg-[#8a5a50] text-white px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
+                                   >
+                                     افزودن به سبد خرید
+                                   </motion.button>
+                                 ) : (
+                                   <div className="flex items-center justify-between bg-[#a37462] rounded-xl p-3 shadow-inner">
+                                     <motion.button
+                                       whileTap={{ scale: 0.95 }}
+                                       onClick={() => handleQuantityChange("increase")}
+                                       className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                                     >
+                                       <FiPlus className="text-white w-6 h-6" />
+                                     </motion.button>
+                                     <span className="text-white font-extrabold text-2xl mx-4">
+                                       {quantity}
+                                     </span>
+                                     {quantity === 1 ? (
+                                       <motion.button
+                                         whileTap={{ scale: 0.95 }}
+                                         onClick={() => handleQuantityChange("remove")}
+                                         className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                                       >
+                                         <FiTrash2 className="text-white w-6 h-6" />
+                                       </motion.button>
+                                     ) : (
+                                       <motion.button
+                                         whileTap={{ scale: 0.95 }}
+                                         onClick={() => handleQuantityChange("decrease")}
+                                         className="p-3 hover:bg-[#8a5a50] rounded-full transition-all duration-200"
+                                       >
+                                         <FiMinus className="text-white w-6 h-6" />
+                                       </motion.button>
+                                     )}
+                                   </div>
+                                 )}
+                                 <Link href="/cart">
+                                   <motion.button
+                                     whileTap={{ scale: 0.95 }}
+                                     className="w-full flex items-center justify-center border-2 border-[#a37462] hover:bg-[#a37462] hover:text-white text-[#a37462] px-8 py-4 rounded-xl font-bold shadow-md transition-all duration-200"
+                                   >
+                                     مشاهده سبد خرید
+                                   </motion.button>
+                                 </Link>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     );
+                   }
+                   

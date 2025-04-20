@@ -86,7 +86,7 @@ const Navbar = () => {
           });
 
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.log(`HTTP error! status: ${response.status}`);
           }
 
           const contentType = response.headers.get("content-type");
@@ -397,7 +397,10 @@ const Navbar = () => {
                           whileHover={{
                             backgroundColor: "rgba(255,255,255,0.1)",
                           }}
-                          onClick={handleProfileClick}
+                          onClick={(e) => {
+                            setIsAuthDropdownOpen(!isAuthDropdownOpen)
+                            handleProfileClick(e)
+                          }}
                           className="px-4 py-3 text-[#e5d8d0] hover:text-white flex items-center gap-2"
                         >
                           <RiUserSettingsLine />
@@ -409,7 +412,9 @@ const Navbar = () => {
                           backgroundColor: "rgba(255,255,255,0.1)",
                         }}
                         className="px-4 py-3 text-[#e5d8d0] hover:text-white cursor-pointer flex items-center gap-2"
-                        onClick={handleLogout}
+                        onClick={() => {handleLogout()
+                          setIsAuthDropdownOpen(!isAuthDropdownOpen)
+                        }}
                       >
                         <FaSignOutAlt />
                         خروج
@@ -419,6 +424,7 @@ const Navbar = () => {
                     <>
                       <Link href="/auth">
                         <motion.div
+                          onClick={() => setIsAuthDropdownOpen(!isAuthDropdownOpen)}
                           whileHover={{
                             backgroundColor: "rgba(255,255,255,0.1)",
                           }}
@@ -430,6 +436,7 @@ const Navbar = () => {
                       </Link>
                       <Link href="/auth">
                         <motion.div
+                             onClick={() => setIsAuthDropdownOpen(!isAuthDropdownOpen)}
                           whileHover={{
                             backgroundColor: "rgba(255,255,255,0.1)",
                           }}

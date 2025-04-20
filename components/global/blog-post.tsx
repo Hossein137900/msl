@@ -45,7 +45,7 @@ export default function BlogPost(blogPostData: BlogPost) {
         sampleBlogPost.description ? sampleBlogPost.description : "بلاگ مشترک"
       );
     }
-  }, []);
+  });
 
   return (
     <article className="px-4 py-8 bg-[#a37462]" dir="rtl">

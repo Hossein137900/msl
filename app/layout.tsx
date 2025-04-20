@@ -5,7 +5,7 @@ import Navbar from "@/components/global/navbar";
 import Footer from "@/components/global/footer";
 import { ToastContainer } from "react-toastify";
 import Breadcrumbs from "@/components/global/breadCrumbs";
-
+import { EdgeStoreProvider } from "@/lib/edgestore";
 export const metadata: Metadata = {
   title: "مدرن لایت",
   description: "فروشگاه اینترنتی مدرن لایت",
@@ -22,6 +22,8 @@ export default function RootLayout({
         className={` ${doranregular.className} bg-[#e5d8d0] antialiased relative`}
       >
         <Navbar />
+        <EdgeStoreProvider>{children}</EdgeStoreProvider>
+
         <Breadcrumbs />
         <ToastContainer position="top-center" rtl={true} />
         {children}

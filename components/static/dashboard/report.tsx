@@ -45,7 +45,7 @@ interface Cart {
 
 const DashboardReport: React.FC = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchCartData = async () => {
     const token = localStorage.getItem("token") || "";
@@ -58,13 +58,15 @@ const DashboardReport: React.FC = () => {
         });
         if (!response.ok) {
           console.log(response.body);
-          throw new Error("Failed to fetch cart data");
+          console.log("Failed to fetch cart data");
+          setIsLoading(false);
         }
         const data = await response.json();
         setCarts(data.carts);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching cart:", error);
+        setIsLoading(false);
       }
     }
   };

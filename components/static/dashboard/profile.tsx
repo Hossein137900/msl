@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
       },
     });
     if (!response.ok) {
-      throw new Error("Failed to fetch user data");
+      toast.error("Failed to fetch user data");
     }
     if (response.ok) {
       const data = await response.json();

@@ -13,13 +13,13 @@ const cartSchema = new mongoose.Schema({
     },
     items: {
         type: mongoose.Schema.Types.Mixed,
-        required: true
+        required: true,
     },
     path: {
         type: String,
         required: true
     },
-    image: {
+    receiptImageUrl: {
         type: String,
         required: true
     },

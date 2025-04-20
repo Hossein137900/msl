@@ -103,7 +103,7 @@ const DetailModal = ({
 const Payments: React.FC = () => {
   const [cartData, setCartData] = useState<Cart[]>([]);
   const [selectedCart, setSelectedCart] = useState<Cart | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchCartData = async () => {
     const token = localStorage.getItem("token") || "";
@@ -116,13 +116,15 @@ const Payments: React.FC = () => {
           },
         });
         if (!response.ok) {
-          throw new Error("Failed to fetch cart data");
+          console.log("Failed to fetch cart data");
         }
         const data = await response.json();
         setCartData(data.carts);
         setLoading(false);
       } catch (error) {
         console.log("Error fetching cart:", error);
+      }finally {
+        setLoading(false);
       }
     }
   };

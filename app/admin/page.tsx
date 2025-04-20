@@ -116,6 +116,7 @@ const AdminContent: React.FC<{ selected: SidebarItem }> = ({ selected }) => {
       return <AddProductPage />;
     case "profile":
       return <Profile />;
+
     case "analytics":
       return (
         <div className="p-6">
@@ -132,7 +133,7 @@ const AdminContent: React.FC<{ selected: SidebarItem }> = ({ selected }) => {
 
 const AdminPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<SidebarItem>("products");
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
@@ -176,14 +177,14 @@ const AdminPage: React.FC = () => {
     };
 
     verifyAdmin();
-  }, []);
+  });
   useEffect(() => {
     document.title = "مدرن لایت -  ادمین";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", " ادمین - مدرن لایت");
     }
-  }, []);
+  });
 
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);

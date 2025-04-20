@@ -105,7 +105,7 @@ const ProductGrid = ({ limit }: ProductGridProps) => {
           >
             <div className="relative h-64 w-full overflow-hidden">
               <Image
-                src={"/assets/images/products/prod10.jpg"}
+                src={product.image||""} 
                 alt={product.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"

@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     userId:userId,
       items: JSON.parse(formData.get("items") as string),
       path: formData.get("paymentMethod"),
-      image: 'image.name',
+      image: formData.get("receiptImageUrl") as string,
       totalPrice: parseInt(formData.get("totalPrice") as string)
     });
     console.log(newCart)

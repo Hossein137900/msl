@@ -22,7 +22,7 @@ const ProjectsCard = () => {
       location: "تهران ، فرشته",
       description:
         " در کادر زیر هر متنی را که دوست دارید تایپ کنید تا ما آن را برایتان نگه داریم و همیشه در دسترس شما قرار دهیم؛ از این طریق می‌توانید متن آزمایشی و متن تستی خودتان را تایپ کرده و در طرح‌هایتان از این متن استفاده کنید... تایپ کنید، به صورت خودکار ذخیره می‌شود.",
-      imageUrl: "/assets/images/projects/project1.png",
+      imageUrl: "//files.edgestore.dev/piuexpkjn2i41nvo/publicFiles/_public/d3287947-275a-4b2f-b2ee-08b665cb70df.png",
     },
     {
       id: 2,
@@ -67,13 +67,13 @@ const ProjectsCard = () => {
             className="cursor-pointer rounded-lg border border-[#a37462]/30 hover:shadow-xl hover:border-[#a37462] transition-all duration-200 ease-in-out overflow-hidden"
             whileTap={{ scale: 0.95 }}
           >
-            <Image
-              src={project.imageUrl}
+            {/* <Image
+              src='{project.imageUrl}'
               alt={project.title}
               width={4000}
               height={4000}
               className="w-full h-64 object-cover"
-            />
+            /> */}
             <motion.div className="p-4 flex flex-row justify-between bg-white">
               <div>
                 <h3 className="text-xl font-bold text-black">

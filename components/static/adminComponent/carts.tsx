@@ -10,6 +10,7 @@ interface CartItem {
     title: string;
     image: string;
   };
+  image: string;
   quantity: number;
 }
 
@@ -32,6 +33,7 @@ const ItemsModal = ({
   status,
   cartId,
   onStatusChange,
+  cartImage,
 }: // cartImage
 {
   isOpen: boolean;
@@ -64,7 +66,7 @@ const ItemsModal = ({
             initial={{ opacity: 0, scale: 0.75 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.75 }}
-            className="fixed top-1/4 md:right-1/4 right-0 lg:right-1/3 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-md"
+            className="fixed top-[100px] md:right-1/4 right-0 lg:right-1/3 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 rounded-lg shadow-xl z-50 w-full max-w-md "
           >
             <div className="space-y-4 max-h-[50vh] overflow-y-auto">
               {items.map((item, index) => (
@@ -73,11 +75,11 @@ const ItemsModal = ({
                   className="bg-gray-700 p-4 rounded-lg flex items-center gap-4"
                 >
                   <Image
-                    src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                    src={item.image}
                     alt={item.productId.title}
-                    width={80}
-                    height={80}
-                    className="w-20 h-20 object-cover rounded"
+                    width={70}
+                    height={60}
+                    className="w-20 h-15 object-cover rounded"
                   />
                   <div>
                     <h4 className="text-white font-medium">
@@ -103,11 +105,11 @@ const ItemsModal = ({
                 </select>
               </div>
               <Image
-                src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={cartImage}
                 alt="Cart Image"
                 width={50}
                 height={50}
-                className="w-full h-auto object-cover rounded"
+                className="w-full max-h-[350px] object-cover rounded"
               />
               <button
                 onClick={handleSubmit}

@@ -163,7 +163,7 @@ export const Products = () => {
         fetchProducts();
         setEditingProduct(null);
       } else {
-        throw new Error("Failed to update product");
+        toast.error("Failed to update product");
       }
     } catch (error) {
       console.error("Error updating product:", error);

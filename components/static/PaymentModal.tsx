@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCreditCard, FaTelegram } from "react-icons/fa";
 import { toast } from "react-toastify";
+import MultiImageDropzoneUsage from "@/components/static/adminComponent/FileUploadForm";
+import Image from "next/image";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -15,8 +17,18 @@ interface CartItem {
   price: number;
   images: string[];
   quantity: number;
+  image?: string; // Add optional image property
 }
 
+interface UploadedFile {
+  name: string;
+  url: string;
+  type: string;
+  _id: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const PaymentModal: React.FC<PaymentModalProps> = ({
   isOpen,
@@ -25,38 +37,28 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   totalPrice,
 }) => {
   const [activeTab, setActiveTab] = useState("");
-  const [receipt, setReceipt] = useState<File | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
 
-  // const [formData, setFormData] = useState<PaymentFormData>({
-  //   token: localStorage.getItem("token") || "",
-  //   items: cartItems.map((item) => ({
-  //     productId: item.id,
-  //     quantity: item.quantity,
-  //   })),
-  //   paymentMethod: "card",
-  //   totalPrice: totalPrice,
-  // });
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setReceipt(e.target.files[0]);
-    }
+  const handleUploadComplete = (files: UploadedFile[]) => {
+    setUploadedFiles(files);
+    toast.success("تصویر رسید با موفقیت آپلود شد");
   };
 
   const handleSubmitReceipt = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!receipt) {
-      toast.error("لطفا تصویر رسید را انتخاب کنید");
+    if (uploadedFiles.length === 0) {
+      toast.error("لطفا تصویر رسید را آپلود کنید");
       return;
     }
   
     const submitFormData = new FormData();
     const token = localStorage.getItem("token") || "";
   
-    // Match the cart model structure
+    // Include image property in each item
     submitFormData.append("items", JSON.stringify(cartItems.map(item => ({
       productId: item.id,
-      quantity: item.quantity
+      quantity: item.quantity,
+      image: item.image || (item.images && item.images.length > 0 ? item.images[0] : null)
     }))));
     
     // Add products array for the cart model
@@ -64,7 +66,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     
     submitFormData.append("paymentMethod", "card");
     submitFormData.append("totalPrice", totalPrice.toString());
-    submitFormData.append("receiptImage", receipt);
+    
+    // Use the URL from the uploaded file instead of a local file
+    submitFormData.append("receiptImageUrl", uploadedFiles[0].url);
     submitFormData.append("path", "card"); // Required by cart model
   
     try {
@@ -83,56 +87,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         toast.error("خطا در ثبت سفارش");
       }
     } catch (error) {
-      console.error("خطا در ارتبا�� با سرور" , error);
+      console.error("خطا در ارتباط با سرور", error);
       toast.error("خطا در ارسال اطلاعات");
     }
   };
-  
-
-  // const handleTelegramSubmit = async () => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     paymentMethod: "telegram",
-  //   }));
-
-  //   const submitFormData = new FormData();
-  //   Object.keys(formData).forEach((key) => {
-  //     if (key === "items") {
-  //       submitFormData.append(
-  //         key,
-  //         JSON.stringify(formData[key as keyof PaymentFormData])
-  //       );
-  //     } else if (key !== "receiptImage") {
-  //       submitFormData.append(
-  //         key,
-  //         String(formData[key as keyof PaymentFormData])
-  //       );
-  //     }
-  //   });
-
-  //   try {
-  //     const response = await fetch("/api/orders/create", {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization: `Bearer ${formData.token}`,
-  //       },
-  //       body: submitFormData,
-  //     });
-
-  //     if (response.ok) {
-  //       toast.success("سفارش شما با موفقیت ثبت شد");
-  //       // clearCart();
-  //       onClose();
-  //     } else {
-  //       const data = await response.json();
-  //       toast.error(data.error || "خطا در ثبت سفارش");
-  //     }
-  //   } catch (error) {
-  //     toast.error("خطا در ارسال اطلاعات");
-  //   }
-  // };
-
-  
 
   const CARD_NUMBER = "6037-9974-1234-5678";
 
@@ -143,7 +101,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 "
           onClick={onClose}
         >
           <motion.div
@@ -180,9 +138,9 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
             {activeTab === "card" && (
               <form className="space-y-8" onSubmit={handleSubmitReceipt}>
-                <div className="bg-gradient-to-r flex justify-between items-center  w-full from-emerald-500 to-green-500 p-4 rounded-2xl text-white shadow-xl">
+                <div className="bg-gradient-to-r flex justify-between items-center w-full from-emerald-500 to-green-500 p-4 rounded-2xl text-white shadow-xl">
                   <p className="text-lg">شماره کارت:</p>
-                  <p className="font-mono text-sm  mr-auto md:text-xl text-center tracking-wider">
+                  <p className="font-mono text-sm mr-auto md:text-xl text-center tracking-wider">
                     {CARD_NUMBER}
                   </p>
                 </div>
@@ -190,27 +148,30 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   <p className="text-gray-700 text-lg">
                     لطفا رسید پرداخت را آپلود کنید:
                   </p>
-                  <div className="relative">
-                    <input
-                      type="file"
-                      name="receiptImage"
-                      required
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="opacity-0 absolute inset-0 w-full h-full cursor-pointer z-10"
-                    />
-                    <div className="w-full flex items-center gap-2 border rounded-lg p-2">
-                      <button
-                        aria-label="choose file"
-                        className="bg-blue-50 text-gray-700 px-4 py-2 rounded-full text-sm hover:bg-violet-100"
-                      >
-                        انتخاب فایل
-                      </button>
-                      <span className="text-green-500 text-sm">
-                        {receipt ? receipt.name : "فایلی انتخاب نشده"}
-                      </span>
-                    </div>
+                  
+                  {/* Replace the old file input with MultiImageDropzoneUsage */}
+                  <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <MultiImageDropzoneUsage onUploadComplete={handleUploadComplete} />
                   </div>
+
+                  {uploadedFiles.length > 0 && (
+                    <div className="mt-4 p-3 bg-green-50 border border-green-100 rounded-lg">
+                      <p className="text-green-600 font-medium">تصویر رسید با موفقیت آپلود شد:</p>
+                      <div className="flex items-center mt-2">
+                        <div className="w-16 h-16 relative rounded overflow-hidden mr-3">
+                          <Image 
+                            src={uploadedFiles[0].url} 
+                            alt="Receipt" 
+                            className="object-cover w-full h-full"
+                            fill
+                          />
+                        </div>
+                        <div className="flex-1 truncate">
+                          <p className="text-sm text-gray-600 truncate">{uploadedFiles[0].name}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -218,6 +179,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     className="w-full bg-emerald-600 text-white py-4 rounded-xl hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200"
+                    disabled={uploadedFiles.length === 0}
                   >
                     ارسال رسید
                   </motion.button>

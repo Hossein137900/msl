@@ -37,7 +37,7 @@ export default function BlogDetailPage() {
   };
   useEffect(() => {
     fetchDetails();
-  }, []);
+  });
 
   if (!blog) {
     return (

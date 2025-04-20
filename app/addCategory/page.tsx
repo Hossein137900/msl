@@ -105,7 +105,7 @@ export default function AddCategory() {
                 key={index}
                 className="flex items-center bg-[#a37462]/30 rounded-full px-3 py-1"
               >
-                <span className="text-[#a37462]">{child}</span>
+                <span className="text-[#fff]">{child}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveChild(index)}

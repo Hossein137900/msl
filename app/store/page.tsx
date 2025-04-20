@@ -1,5 +1,5 @@
 "use client";
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -116,34 +116,34 @@ const StoreContent = () => {
     }));
   };
   // Apply filters whenever filter criteria changes
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let result = [...products];
-
+  
     // Only apply filters if they have values
     if (filters.search) {
       result = result.filter((product) =>
         product.title.toLowerCase().includes(filters.search.toLowerCase())
       );
     }
-
+  
     if (filters.category) {
       result = result.filter(
         (product) => product.categoryId._id === filters.category
       );
     }
-
+  
     if (filters.minPrice) {
       result = result.filter(
         (product) => parseInt(product.price) >= parseInt(filters.minPrice)
       );
     }
-
+  
     if (filters.maxPrice) {
       result = result.filter(
         (product) => parseInt(product.price) <= parseInt(filters.maxPrice)
       );
     }
-
+  
     // Sorting
     switch (filters.sort) {
       case "price-low":
@@ -159,14 +159,15 @@ const StoreContent = () => {
         );
         break;
     }
-
+  
     setFilteredProducts(result);
-  };
-
+  }, [filters, products]);
+  
   // Apply filters only when filter values change
   useEffect(() => {
     applyFilters();
-  }, [filters]);
+  }, [applyFilters]);
+
 
   return (
     <div
@@ -442,8 +443,7 @@ const StoreContent = () => {
             >
               <div className="relative h-64 w-full overflow-hidden">
                 <Image
-                  // src={product.image}
-                  src={"/assets/images/products/prod10.jpg"}
+                  src={product.image}
                   alt={product.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"

@@ -153,11 +153,8 @@ export default function EditBlog() {
   useEffect(() => {
     fetchBlogs();
   }, []);
-  useEffect(() => {
-    if (editor && selectedBlog) {
-      editor.commands.setContent(selectedBlog.content);
-    }
-  }, [selectedBlog]);
+ 
+  
   const setLink = () => {
     const previousUrl = editor?.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
@@ -272,7 +269,11 @@ export default function EditBlog() {
       toast.error("خطا در حذف بلاگ");
     }
   };
-
+  useEffect(() => {
+    if (editor && selectedBlog) {
+      editor.commands.setContent(selectedBlog.content);
+    }
+  }, [selectedBlog, editor]);
   return (
     <div className="min-h-screen p-6" dir="rtl">
       <link

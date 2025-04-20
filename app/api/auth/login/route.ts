@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const tokenSecret = (await process.env.JWT_SECRET) || "msl";
+    const tokenSecret = (await process.env.JWT_SECRET!) || "msl";
 
     if (!tokenSecret) {
       console.log("JWT_SECRET missing");

@@ -15,8 +15,8 @@ export async function GET(request: NextRequest) {
     if (!token) {
       return NextResponse.json({ error: "Token not found" }, { status: 401 });
     }
-
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!||'msl');
+ console.log(token)
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET||'msl');
     if (!decodedToken || typeof decodedToken !== "object") {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }

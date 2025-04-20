@@ -1,8 +1,9 @@
 "use client";
-import ImageSelectorModal from "@/components/ImageSelectorModal";
+import MultiImageDropzoneUsage from "@/components/static/adminComponent/FileUploadForm";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FiUploadCloud } from "react-icons/fi";
+import { FiUploadCloud, FiPlusCircle, FiX } from "react-icons/fi";
 import { toast } from "react-toastify";
 
 export interface Category {
@@ -15,22 +16,32 @@ export interface CategoryResponse {
   success: boolean;
   data: Category[];
 }
-interface StorySettings {
-  title: string;
-  image: string;
+
+interface UploadedFile {
+  name: string;
+  url: string;
+  type: string;
+  _id: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
 }
+
+
 
 interface ProductFormData {
   title: string;
   price: string;
   description: string;
   image: string;
+  imageAlt: string;
   categoryId: string;
   categoryChildren: string;
   properties: Record<string, string>;
   colors: Record<string, string>;
   videoes: string[];
   thumbnails: string[];
+  thumbnailAlts: string[];
 }
 
 export default function AddProductPage() {
@@ -39,12 +50,14 @@ export default function AddProductPage() {
     price: "",
     description: "",
     image: "",
+    imageAlt: "",
     categoryId: "",
     categoryChildren: "",
     properties: {},
     colors: {},
     videoes: [],
     thumbnails: [],
+    thumbnailAlts: [],
   });
 
   const [currentProperty, setCurrentProperty] = useState({
@@ -53,13 +66,11 @@ export default function AddProductPage() {
   });
   const [currentColor, setCurrentColor] = useState({ name: "", code: "" });
   const [currentVideo, setCurrentVideo] = useState("");
-  const [currentThumbnail, setCurrentThumbnail] = useState("");
-  const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [settings, setSettings] = useState<StorySettings>({
-    title: "",
-    image: "",
-  });
+  
+  const [showFileUploader, setShowFileUploader] = useState(false);
+  const [uploadType, setUploadType] = useState<"main" | "thumbnail">("main");
+
   const addProperty = () => {
     if (currentProperty.key && currentProperty.value) {
       setFormData((prev) => ({
@@ -96,22 +107,7 @@ export default function AddProductPage() {
     }
   };
 
-  const addThumbnail = () => {
-    if (currentThumbnail) {
-      setFormData((prev) => ({
-        ...prev,
-        thumbnails: [...prev.thumbnails, currentThumbnail],
-      }));
-      setCurrentThumbnail("");
-    }
-  };
-  const handleImageSelect = (image: { fileUrl: string }) => {
-    setSettings((prev) => ({
-      ...prev,
-      image: image.fileUrl,
-    }));
-    setIsImageSelectorOpen(false);
-  };
+
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -125,8 +121,48 @@ export default function AddProductPage() {
     }));
   };
 
+  const handleFileUploadComplete = (files: UploadedFile[]) => {
+    if (files.length > 0) {
+      if (uploadType === "main") {
+        // Use the first uploaded file for the main product image
+        setFormData(prev => ({
+          ...prev,
+          image: files[0].url,
+          imageAlt: files[0].name
+        }));
+      } else if (uploadType === "thumbnail") {
+        // Add all uploaded files as thumbnails
+        const newThumbnails = files.map(file => file.url);
+        const newThumbnailAlts = files.map(file => file.name);
+        
+        setFormData(prev => ({
+          ...prev,
+          thumbnails: [...prev.thumbnails, ...newThumbnails],
+          thumbnailAlts: [...prev.thumbnailAlts, ...newThumbnailAlts]
+        }));
+      }
+      
+      setShowFileUploader(false);
+      toast.success("تصاویر با موفقیت آپلود شدند");
+    }
+  };
+
+  const removeThumbnail = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      thumbnails: prev.thumbnails.filter((_, i) => i !== index),
+      thumbnailAlts: prev.thumbnailAlts.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validate required fields
+    if (!formData.image) {
+      toast.error("لطفا تصویر اصلی محصول را انتخاب کنید");
+      return;
+    }
 
     const submitFormData = new FormData();
 
@@ -134,7 +170,7 @@ export default function AddProductPage() {
     submitFormData.append("title", formData.title);
     submitFormData.append("price", formData.price);
     submitFormData.append("description", formData.description);
-    submitFormData.append("image", settings.image);
+    submitFormData.append("image", formData.image);
     submitFormData.append("categoryId", formData.categoryId);
     submitFormData.append("categoryChildren", formData.categoryChildren);
 
@@ -143,6 +179,9 @@ export default function AddProductPage() {
     submitFormData.append("colors", JSON.stringify(formData.colors));
     submitFormData.append("videoes", JSON.stringify(formData.videoes));
     submitFormData.append("thumbnails", JSON.stringify(formData.thumbnails));
+
+    console.log("Submitting product with image URL:", formData.image);
+    console.log("Thumbnails:", formData.thumbnails);
 
     try {
       const response = await fetch("/api/products", {
@@ -154,12 +193,28 @@ export default function AddProductPage() {
         const result = await response.json();
         toast.success("محصول با موفقیت ایجاد شد");
         console.log("Product created successfully:", result);
+        
+        // Reset form after successful submission
+        setFormData({
+          title: "",
+          price: "",
+          description: "",
+          image: "",
+          imageAlt: "",
+          categoryId: "",
+          categoryChildren: "",
+          properties: {},
+          colors: {},
+          videoes: [],
+          thumbnails: [],
+          thumbnailAlts: [],
+        });
       } else {
-        throw new Error("Failed to create product");
+        toast.error("Failed to create product");
       }
     } catch (error) {
       console.error("Error creating product:", error);
-      // Handle error - show error message to user
+      toast.error("خطا در ایجاد محصول");
     }
   };
 
@@ -177,12 +232,18 @@ export default function AddProductPage() {
     }
   };
 
+  const openFileUploader = (type: "main" | "thumbnail") => {
+    setUploadType(type);
+    setShowFileUploader(true);
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
+  
   return (
     <div
-      className="max-w-4xl mx-auto mt-36 p-8  rounded-xl shadow-lg"
+      className="max-w-4xl mx-auto mt-36 p-8 rounded-xl shadow-lg"
       dir="rtl"
     >
       <h1 className="text-2xl font-bold mb-6 text-white">افزودن محصول جدید</h1>
@@ -214,20 +275,40 @@ export default function AddProductPage() {
           </div>
 
           <div>
-            <label className="block mb-2 text-[#a37462]">تصویر اصلی</label>
-            <ImageSelectorModal
-              isOpen={isImageSelectorOpen}
-              onClose={() => setIsImageSelectorOpen(false)}
-              onSelectImage={handleImageSelect}
-            />
+            <label className="block mb-2 text-[#fff]">تصویر اصلی</label>
+            {formData.image ? (
+              <div className="mb-2">
+                <div className="flex items-center space-x-2">
+                  <Image 
+                    src={formData.image} 
+                    alt={formData.imageAlt} 
+                    className="w-20 h-20 object-cover rounded"
+                    width={200}
+                    height={80}
+                  />
+                  <div className="text-sm">
+                    <p className="text-white">{formData.imageAlt}</p>
+                    <button 
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, image: "", imageAlt: "" }))}
+                      className="text-red-400 hover:text-red-500"
+                    >
+                      حذف
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+            
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsImageSelectorOpen(true)}
+              onClick={() => openFileUploader("main")}
+              type="button"
               className="bg-[#eff1f2] text-black px-4 py-3 rounded-lg flex items-center space-x-2 w-full"
             >
               <FiUploadCloud />
-              <span>انتخاب تصویر</span>
+              <span>آپلود تصویر اصلی</span>
             </motion.button>
           </div>
 
@@ -316,111 +397,161 @@ export default function AddProductPage() {
           <div className="mt-2">
             {Object.entries(formData.properties).map(([key, value]) => (
               <div
-                key={key}
-                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
-              >
-                {key}: {value}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label className="block mb-2 text-[#fff]">رنگ‌ها</label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="نام رنگ"
-              value={currentColor.name}
-              onChange={(e) =>
-                setCurrentColor({ ...currentColor, name: e.target.value })
-              }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-            />
-            <input
-              type="text"
-              placeholder="کد رنگ"
-              value={currentColor.code}
-              onChange={(e) =>
-                setCurrentColor({ ...currentColor, code: e.target.value })
-              }
-              className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-            />
-            <button
-              type="button"
-              onClick={addColor}
-              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
+              key={key}
+              className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
             >
-              افزودن رنگ
-            </button>
-          </div>
-          <div className="mt-2">
-            {Object.entries(formData.colors).map(([name, code]) => (
-              <div
-                key={name}
-                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
+              {key}: {value}
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData(prev => {
+                    const newProperties = { ...prev.properties };
+                    delete newProperties[key];
+                    return { ...prev, properties: newProperties };
+                  });
+                }}
+                className="ml-2 text-red-300 hover:text-red-500"
               >
-                {name}: {code}
-              </div>
-            ))}
-          </div>
+                ×
+              </button>
+            </div>
+          ))}
         </div>
+      </div>
 
-        <div>
-          <label className="block mb-2 text-[#fff]">ویدیوها</label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="لینک ویدیو"
-              value={currentVideo}
-              onChange={(e) => setCurrentVideo(e.target.value)}
-              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-            />
-            <button
-              type="button"
-              onClick={addVideo}
-              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
+      <div>
+        <label className="block mb-2 text-[#fff]">رنگ‌ها</label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="نام رنگ"
+            value={currentColor.name}
+            onChange={(e) =>
+              setCurrentColor({ ...currentColor, name: e.target.value })
+            }
+            className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+          />
+          <input
+            type="text"
+            placeholder="کد رنگ"
+            value={currentColor.code}
+            onChange={(e) =>
+              setCurrentColor({ ...currentColor, code: e.target.value })
+            }
+            className=" p-2 border border-[#a37462]/30 rounded text-black bg-white/50 placeholder:text-white/60 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+          />
+          <button
+            type="button"
+            onClick={addColor}
+            className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
+          >
+            افزودن رنگ
+          </button>
+        </div>
+        <div className="mt-2">
+          {Object.entries(formData.colors).map(([name, code]) => (
+            <div
+              key={name}
+              className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
             >
-              افزودن ویدیو
-            </button>
-          </div>
-          <div className="mt-2">
-            {formData.videoes.map((video, index) => (
-              <div
-                key={index}
-                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
+              {name}: {code}
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData(prev => {
+                    const newColors = { ...prev.colors };
+                    delete newColors[name];
+                    return { ...prev, colors: newColors };
+                  });
+                }}
+                className="ml-2 text-red-300 hover:text-red-500"
               >
-                {video}
-              </div>
-            ))}
-          </div>
+                ×
+              </button>
+            </div>
+          ))}
         </div>
+      </div>
 
-        <div>
-          <label className="block mb-2 text-[#fff]">تصاویر بندانگشتی</label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="لینک تصویر"
-              value={currentThumbnail}
-              onChange={(e) => setCurrentThumbnail(e.target.value)}
-              className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
-            />
-            <button
-              type="button"
-              onClick={addThumbnail}
-              className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
+      <div>
+        <label className="block mb-2 text-[#fff]">ویدیوها</label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="لینک ویدیو"
+            value={currentVideo}
+            onChange={(e) => setCurrentVideo(e.target.value)}
+            className=" p-2 border border-[#a37462]/30 rounded text-black placeholder:text-white/60 bg-white/50 focus:outline-none focus:border-[#a37462] focus:ring-[#a37462] transition-colors duration-200"
+          />
+          <button
+            type="button"
+            onClick={addVideo}
+            className="px-4 py-2 bg-green-400 text-white rounded hover:bg-green-500"
+          >
+            افزودن ویدیو
+          </button>
+        </div>
+        <div className="mt-2">
+          {formData.videoes.map((video, index) => (
+            <div
+              key={index}
+              className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
             >
-              افزودن تصویر
-            </button>
+              {video}
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData(prev => ({
+                    ...prev,
+                    videoes: prev.videoes.filter((_, i) => i !== index)
+                  }));
+                }}
+                className="ml-2 text-red-300 hover:text-red-500"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label className="block mb-2 text-[#fff]">تصاویر بندانگشتی</label>
+        <div className="mb-4">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => openFileUploader("thumbnail")}
+            type="button"
+            className="bg-[#eff1f2] text-black px-4 py-3 rounded-lg flex items-center space-x-2 w-full"
+          >
+                         <FiPlusCircle />
+              <span>افزودن تصاویر بندانگشتی</span>
+            </motion.button>
           </div>
-          <div className="mt-2">
+          
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {formData.thumbnails.map((thumbnail, index) => (
-              <div
-                key={index}
-                className="inline-block bg-[#4ade80]/30 text-[#fff]/80 rounded px-3 py-1 m-1"
-              >
-                {thumbnail}
+              <div key={index} className="relative group">
+                <Image 
+                  src={thumbnail} 
+                  alt={formData.thumbnailAlts[index] || `thumbnail-${index}`} 
+                  className="w-full h-24 object-cover rounded"
+                  width={200}
+                  height={200}
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={() => removeThumbnail(index)}
+                    className="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+                <p className="text-xs text-white mt-1 truncate">
+                  {formData.thumbnailAlts[index] || `تصویر ${index + 1}`}
+                </p>
               </div>
             ))}
           </div>
@@ -433,6 +564,41 @@ export default function AddProductPage() {
           ثبت محصول
         </button>
       </form>
+
+      {/* File Upload Modal */}
+      {showFileUploader && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-gray-800">
+                {uploadType === "main" ? "آپلود تصویر اصلی" : "آپلود تصاویر بندانگشتی"}
+              </h2>
+              <button 
+                onClick={() => setShowFileUploader(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="custom-file-uploader">
+              <MultiImageDropzoneUsage 
+                onUploadComplete={handleFileUploadComplete}
+              />
+            </div>
+            
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={() => setShowFileUploader(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+              >
+                بستن
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
