@@ -26,7 +26,6 @@ export default function RootLayout({
 
         <Breadcrumbs />
         <ToastContainer position="top-center" rtl={true} />
-        {children}
         <Footer />
       </body>
     </html>
