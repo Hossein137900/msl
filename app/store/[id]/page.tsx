@@ -81,7 +81,7 @@ export default function ProductDetailPage() {
       }
     };
     fetchProduct();
-  });
+  }, [id]);
 
   useEffect(() => {
     if (!product) return;

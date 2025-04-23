@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { FaShoppingCart } from "react-icons/fa";
 import Image from "next/image";
 
@@ -23,7 +23,7 @@ interface Cart {
   items: CartItem[];
   totalPrice: number;
   createdAt: string;
-  image: string;
+  receiptImageUrl: string;
 }
 
 const ItemsModal = ({
@@ -154,11 +154,9 @@ export const Carts = () => {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-
-      if (response.ok) {
+            if (response.ok) {
         toast.success("وضعیت سفارش با موفقیت بروزرسانی شد");
-        fetchCarts();
-      }
+        fetchCarts();}
     } catch (error) {
       console.error("خطا در بروزرسانی وضعیت سفارش", error);
       toast.error("خطا در بروزرسانی وضعیت سفارش");
@@ -247,7 +245,7 @@ export const Carts = () => {
           status={selectedCart.status}
           cartId={selectedCart._id}
           onStatusChange={handleStatusChange}
-          cartImage={selectedCart.image}
+          cartImage={selectedCart.receiptImageUrl}
         />
       )}
     </div>

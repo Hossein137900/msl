@@ -32,27 +32,28 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await connect();
-    const formData = await request.formData();
-    const token = request.headers.get('token')
-    console.log(token)
+    const data = await request.json();
+    const token = request.headers.get('token');
+    
     if (!token) {
       return NextResponse.json({ message: "No token provided" }, { status: 401 });
     }
 
     const decodedToken = jwt.verify(token, 'msl') as { id: string };
-    console.log(decodedToken)
     const userId = decodedToken.id;
+    
     if (!userId) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
+    
     const newCart = new Cart({
-    userId:userId,
-      items: JSON.parse(formData.get("items") as string),
-      path: formData.get("paymentMethod"),
-      image: formData.get("receiptImageUrl") as string,
-      totalPrice: parseInt(formData.get("totalPrice") as string)
+      userId: userId,
+      items: data.items,
+      path: data.path,
+      receiptImageUrl: data.receiptImageUrl, // Use the correct field name
+      totalPrice: data.totalPrice
     });
-    console.log(newCart)
+    
     await newCart.save();
 
     return NextResponse.json(
@@ -67,3 +68,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

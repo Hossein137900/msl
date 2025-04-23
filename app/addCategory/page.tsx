@@ -1,4 +1,5 @@
 "use client";
+import EditCategory from "@/components/static/adminComponent/editCategory";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -124,7 +125,8 @@ export default function AddCategory() {
             ثبت دسته‌بندی
           </button>
         </form>
-      </div>
+      </div>        <EditCategory/>
+
     </div>
   );
 }

@@ -47,8 +47,12 @@ export async function PATCH(request: Request) {
     try {
       const id = request.headers.get("id");
       const { name ,children } = await request.json();
+      console.log("Received data:", { id, name, children });
       await connect();
-      const category = await Category.findByIdAndUpdate(id, { name ,children });
+      const category = await Category.findByIdAndUpdate(id, 
+        { title: name ,children: children },
+        { new: true }
+      );
       if (!category) {
         return NextResponse.json(
           { message: "Category not found" },

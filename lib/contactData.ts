@@ -9,22 +9,22 @@ export const contactMethods = [
   {
     icon: FaPhone,
     title: "تماس مستقیم",
-    description: "۰۲۱-۱۲۳۴۵۶۷۸",
+    description: "۰۹۳۵۹۰۰۴۱۱۴",
   },
   {
     icon: FaWhatsapp,
     title: "واتساپ",
-    description: "۰۹۱۲۳۴۵۶۷۸۹",
+    description: "۰۹۳۵۹۰۰۴۱۱۴",
   },
   {
     icon: FaEnvelope,
     title: "ایمیل",
-    description: "info@msl-chandeliers.com",
+    description: "msl-chandeliers.com",
   },
   {
     icon: FaMapMarkerAlt,
     title: "آدرس",
-    description: "تهران، خیابان ولیعصر، پاساژ نور",
+    description: "تهران،لاله زار نو، نرسیده به انقلاب ،روبه روی کوچه معمار مخصوص ، پلاک ۱۳۲",
   },
 ];
 
